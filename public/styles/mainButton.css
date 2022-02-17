@@ -4,6 +4,7 @@
     padding: 15px 50px;
     color: var(--white);
     border: none;
+    align-self: center;
 }
 
 .orangeRoundedButton:hover {

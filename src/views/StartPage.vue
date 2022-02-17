@@ -1,8 +1,9 @@
 <template>
     <div id="mainContainer">
         <div id="title">Bienvenue à notre séance de tests</div>
-        <div id="title">Aujourd'hui vous allez tester : {{ product }}</div>
+        <div id="subtitle">Aujourd'hui vous allez tester : {{ product }}</div>
         <MainButton message="Commencer la séance"/>
+        <div id="subtitle">ou dites "Commencer la séance"</div>
     </div>
 </template>
 
