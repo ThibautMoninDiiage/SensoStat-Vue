@@ -1,0 +1,23 @@
+body {
+    background-color: var(--pale-yellow);
+}
+
+/* Définition des constantes CSS */
+:root {
+    --pale-yellow: #FFFCF2;
+    --orange: #FF9D0A;
+    --purple: #B007FF;
+    --white: #FFFFFF;
+    --black: #000000;
+}
+
+#mainContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+#title {
+    color: var(--black);
+    font-size: 200%;
+    text-align: center;
+}
