@@ -27,5 +27,5 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-- script: sudo firebase deploy --only hosting
+- script: firebase deploy --only hosting
   displayName: 'firebase deployment'
