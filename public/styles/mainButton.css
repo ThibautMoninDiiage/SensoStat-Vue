@@ -1,0 +1,13 @@
+.orangeRoundedButton {
+    background-color: var(--orange);
+    border-radius: 10px;
+    padding: 15px 50px;
+    color: var(--white);
+    border: none;
+    align-self: center;
+}
+
+.orangeRoundedButton:hover {
+    cursor: pointer;
+    background-color: var(--orange);
+}
