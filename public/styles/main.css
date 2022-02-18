@@ -1,0 +1,33 @@
+body {
+    background-color: var(--pale-yellow);
+    margin: 0;
+}
+
+/* Définition des constantes CSS */
+:root {
+    --pale-yellow: #FFFCF2;
+    --orange: #FF9D0A;
+    --purple: #B007FF;
+    --white: #FFFFFF;
+    --black: #000000;
+}
+
+#mainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#title {
+    color: var(--black);
+    font-size: 300%;
+    text-align: center;
+    align-self: center;
+}
+
+#subtitle {
+    color: var(--black);
+    font-size: 150%;
+    text-align: center;
+    align-self: center;
+}
