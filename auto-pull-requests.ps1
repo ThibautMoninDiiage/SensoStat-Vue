@@ -7,24 +7,28 @@ $headers = @{}
 $headers.Add("Authorization", "Bearer $env:SYSTEM_ACCESSTOKEN")
 $headers.Add("Content-Type", "application/json")
 
+# Defining source branch / target branch
+$sourceBranch = "dev"
+$targetBranch = "master"
+
 # Create a Pull Request
 $pullRequestUrl = "$projectUrl/pullrequests?api-version=5.1"
 $pullRequest = @{
-        "sourceRefName" = "refs/heads/dev"
-        "targetRefName" = "refs/heads/master"
-        "title" = "Pull from dev to master"
+        "sourceRefName" = "refs/heads/$sourceBranch"
+        "targetRefName" = "refs/heads/$targetBranch"
+        "title" = "Pull from $sourceBranch to $targetBranch"
         "description" = ""
     }
 
 $pullRequestJson = ($pullRequest | ConvertTo-Json -Depth 5)
 
-Write-Output "Sending a REST call to create a new pull request from dev to master"
+Write-Output "Sending a REST call to create a new pull request from $sourceBranch to $targetBranch"
 
 # REST call to create a Pull Request
 $pullRequestResult = Invoke-RestMethod -Method POST -Headers $headers -Body $pullRequestJson -Uri $pullRequestUrl;
 $pullRequestId = $pullRequestResult.pullRequestId
 
-Write-Output "Pull request created. Pull Request Id: $pullRequestId"
+Write-Output "Pull request created. Pull Request Id : $pullRequestId"
 
 # Set PR to auto-complete
 $setAutoComplete = @{
