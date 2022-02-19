@@ -6,7 +6,7 @@ $organization = "$env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"
 $project = "$env:SYSTEM_TEAMPROJECT"
 $repositoryId = "sensostatvue"
 
-Write-Output "Org : $organization | project : $project | repositoryId : $repositoryId"
+Write-Output "$organization/$project/$repositoryId"
 
 # create common headers
 $headers = @{}
@@ -19,7 +19,7 @@ $targetBranch = "master"
 
 # Create a Pull Request
 $pullRequestUrl = "$organization/$project/_apis/git/repositories/$repositoryId/pullrequests?api-version=7.1-preview.1"
-# $pullRequestUrl = "$projectUrl/pullrequests?api-version=5.1"
+Write-Output "$pullRequestUrl"
 $pullRequest = @{
         "sourceRefName" = "refs/heads/$sourceBranch"
         "targetRefName" = "refs/heads/$targetBranch"
