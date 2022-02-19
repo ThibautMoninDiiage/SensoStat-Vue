@@ -54,6 +54,5 @@ $pullRequestUpdateUrl = "$organization$project/_apis/git/repositories/$repositor
 Write-Output $pullRequestUpdateUrl
 
 $setAutoCompleteResult = Invoke-RestMethod -Method PATCH -Headers $headers -Body $setAutoCompleteBody -Uri $pullRequestUpdateUrl
-Write-Output "AutoComplete : $setAutoCompleteResult"
 
 Write-Output "Pull request set to auto-complete"
