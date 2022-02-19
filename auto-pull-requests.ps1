@@ -30,6 +30,7 @@ Write-Output "Creating a new pull request from $sourceBranch to $targetBranch"
 # REST call to create a Pull Request
 
 $pullRequestCall = Invoke-RestMethod -Method POST -Headers $headers -Body $pullRequestJson -Uri $pullRequestUrl
+Write-Output $pullRequestCall
 $pullRequestId = $pullRequestCall.pullRequestId
 
 Write-Output "Pull request created. Pull Request Id : $pullRequestId"
@@ -37,7 +38,7 @@ Write-Output "Pull request created. Pull Request Id : $pullRequestId"
 # Set PR to auto-complete
 $setAutoComplete = @{
     "autoCompleteSetBy" = @{
-        "id" = $pullRequestCall.createdBy.id
+        "id" = $pullRequestCall.createdBy.displayName
     }
     "completionOptions" = @{       
         "deleteSourceBranch" = $False
