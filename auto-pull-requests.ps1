@@ -14,6 +14,7 @@ $targetBranch = "master"
 
 # Create a Pull Request
 $pullRequestUrl = "$organization$project/_apis/git/repositories/$repositoryId/pullrequests?api-version=7.1-preview.1"
+Write-Output "Request URL : $pullRequestUrl"
 
 $pullRequest = @{
         "sourceRefName" = "refs/heads/$sourceBranch"
@@ -30,7 +31,7 @@ Write-Output "Creating a new pull request from $sourceBranch to $targetBranch"
 
 $pullRequestCall = Invoke-RestMethod -Method POST -Headers $headers -Body $pullRequestJson -Uri $pullRequestUrl;
 $pullRequestId = $pullRequestCall.pullRequestId
-Write-Output $pullRequestCall
+
 Write-Output "Pull request created. Pull Request Id : $pullRequestId"
 
 # Set PR to auto-complete
