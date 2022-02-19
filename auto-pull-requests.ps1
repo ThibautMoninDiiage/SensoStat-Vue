@@ -13,6 +13,7 @@ $sourceBranch = "dev"
 $targetBranch = "master"
 
 # Create a Pull Request
+Write-Output https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/pullrequests?api-version=7.1-preview.1
 $pullRequestUrl = "$organization$project/_apis/git/repositories/$repositoryId/pullrequests?api-version=7.1-preview.1"
 Write-Output "Request URL : $pullRequestUrl"
 
