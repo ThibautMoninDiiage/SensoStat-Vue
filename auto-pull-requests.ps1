@@ -23,14 +23,12 @@ $pullRequest = @{
         "description" = "Merge $sourceBranch to $targetBranch"
     }
 
-$pullRequestJson = ($pullRequest | ConvertTo-Json -Depth 5)
+$pullRequestBody = ($pullRequest | ConvertTo-Json -Depth 5)
 
 Write-Output "Creating a new pull request from $sourceBranch to $targetBranch"
 
 # REST call to create a Pull Request
-$pullRequestCall = Invoke-RestMethod -Method POST -Headers $headers -Body $pullRequestJson -Uri $pullRequestUrl
-Write-Output "URL : $pullRequestUrl"
-Write-Output "Body : $pullRequestJson"
+$pullRequestCall = Invoke-RestMethod -Method POST -Headers $headers -Body $pullRequestBody -Uri $pullRequestUrl
 $pullRequestId = $pullRequestCall.pullRequestId
 
 Write-Output "Pull request created. Pull Request Id : $pullRequestId"
