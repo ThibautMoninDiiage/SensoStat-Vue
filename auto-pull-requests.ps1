@@ -1,7 +1,8 @@
 # construct base URLs
 $apisUrl = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/$($env:SYSTEM_TEAMPROJECT)/_apis"
 $projectUrl = "$apisUrl/git/repositories/sensostatvue"
-
+Write-Output $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI
+Write-Output $env:SYSTEM_TEAMPROJECT
 # create common headers
 $headers = @{}
 $headers.Add("Authorization", "Bearer $env:SYSTEM_ACCESSTOKEN")
@@ -12,6 +13,7 @@ $sourceBranch = "dev"
 $targetBranch = "master"
 
 # Create a Pull Request
+# POST https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/pullrequests?api-version=7.1-preview.1
 $pullRequestUrl = "$projectUrl/pullrequests?api-version=5.1"
 $pullRequest = @{
         "sourceRefName" = "refs/heads/$sourceBranch"
@@ -25,6 +27,7 @@ $pullRequestJson = ($pullRequest | ConvertTo-Json -Depth 5)
 Write-Output "Sending a REST call to create a new pull request from $sourceBranch to $targetBranch"
 
 # REST call to create a Pull Request
+
 $pullRequestResult = Invoke-RestMethod -Method POST -Headers $headers -Body $pullRequestJson -Uri $pullRequestUrl;
 $pullRequestId = $pullRequestResult.pullRequestId
 
