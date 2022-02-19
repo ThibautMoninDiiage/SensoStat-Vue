@@ -23,7 +23,7 @@ $pullRequest = @{
         "description" = "Merge $sourceBranch to $targetBranch"
     }
 
-$pullRequestJson = ($pullRequest | ConvertTo-Json -Depth 5)
+$pullRequestJson = ($pullRequest | ConvertTo-Json -Depth 4)
 
 Write-Output "Creating a new pull request from $sourceBranch to $targetBranch"
 
