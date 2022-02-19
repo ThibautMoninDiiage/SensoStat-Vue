@@ -32,6 +32,9 @@ Write-Output "Creating a new pull request from $sourceBranch to $targetBranch"
 $pullRequestCall = Invoke-RestMethod -Method POST -Headers $headers -Body $pullRequestJson -Uri $pullRequestUrl;
 $pullRequestId = $pullRequestCall.pullRequestId
 
+$response = ($pullRequestCall | ConvertTo-Json -Depth 5)
+Write-Output $response
+
 Write-Output "Pull request created. Pull Request Id : $pullRequestId"
 
 # Set PR to auto-complete
