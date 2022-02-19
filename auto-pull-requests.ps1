@@ -18,13 +18,13 @@ $sourceBranch = "dev"
 $targetBranch = "master"
 
 # Create a Pull Request
-$pullRequestUrl = "$organization/$project/_apis/git/repositories/$repositoryId/pullrequests?api-version=7.1-preview.1"
+$pullRequestUrl = "$organization$project/_apis/git/repositories/$repositoryId/pullrequests?api-version=7.1-preview.1"
 Write-Output "$pullRequestUrl"
 $pullRequest = @{
         "sourceRefName" = "refs/heads/$sourceBranch"
         "targetRefName" = "refs/heads/$targetBranch"
         "title" = "Pull from $sourceBranch to $targetBranch"
-        "description" = ""
+        "description" = "Merge $sourceBranch to $targetBranch"
     }
 
 $pullRequestJson = ($pullRequest | ConvertTo-Json -Depth 5)
