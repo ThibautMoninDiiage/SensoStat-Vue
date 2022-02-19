@@ -5,7 +5,7 @@ $repositoryId = "sensostatvue"
 
 # Creating a HEADER
 $headers = @{}
-$headers.Add("Authorization", "Bearer $env:SYSTEM_ACCESSTOKEN")
+$headers.Add("Authorization", "Bearer cuywk3f7xu3gvb2u3aqfnga76ea5of3c4yueuviqjl2k7qoiviaa)
 $headers.Add("Content-Type", "Accept: application/json")
 
 # Defining source branch / target branch
