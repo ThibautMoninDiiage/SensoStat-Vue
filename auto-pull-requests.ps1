@@ -18,7 +18,7 @@ $sourceBranch = "dev"
 $targetBranch = "master"
 
 # Create a Pull Request
-$pullRequestUrl = $organization/$project/_apis/git/repositories/$repositoryId/pullrequests?api-version=7.1-preview.1
+$pullRequestUrl = "$organization/$project/_apis/git/repositories/$repositoryId/pullrequests?api-version=7.1-preview.1"
 # $pullRequestUrl = "$projectUrl/pullrequests?api-version=5.1"
 $pullRequest = @{
         "sourceRefName" = "refs/heads/$sourceBranch"
