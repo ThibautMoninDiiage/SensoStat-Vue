@@ -1,8 +1,13 @@
 # construct base URLs
-$apisUrl = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/$($env:SYSTEM_TEAMPROJECT)/_apis"
-$projectUrl = "$apisUrl/git/repositories/sensostatvue"
-Write-Output $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI
-Write-Output $env:SYSTEM_TEAMPROJECT
+#$apisUrl = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/$($env:SYSTEM_TEAMPROJECT)/_apis"
+#$projectUrl = "$apisUrl/git/repositories/sensostatvue"
+# Variables
+$organization = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)"
+$project = "$($env:SYSTEM_TEAMPROJECT)""
+$repositoryId = "$($env:repositoryId)"
+
+Write-Output "Org : $organization | project : $project | repositoryId : $repositoryId"
+
 # create common headers
 $headers = @{}
 $headers.Add("Authorization", "Bearer $env:SYSTEM_ACCESSTOKEN")
@@ -13,8 +18,8 @@ $sourceBranch = "dev"
 $targetBranch = "master"
 
 # Create a Pull Request
-# POST https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/pullrequests?api-version=7.1-preview.1
-$pullRequestUrl = "$projectUrl/pullrequests?api-version=5.1"
+$pullRequestUrl = POST https://dev.azure.com/$organization/$project/_apis/git/repositories/$repositoryId/pullrequests?api-version=7.1-preview.1
+# $pullRequestUrl = "$projectUrl/pullrequests?api-version=5.1"
 $pullRequest = @{
         "sourceRefName" = "refs/heads/$sourceBranch"
         "targetRefName" = "refs/heads/$targetBranch"
