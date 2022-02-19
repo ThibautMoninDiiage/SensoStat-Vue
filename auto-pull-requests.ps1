@@ -49,7 +49,8 @@ $setAutoCompleteJson = ($setAutoComplete | ConvertTo-Json -Depth 5)
 Write-Output "Sending a REST call to set auto-complete on the newly created pull request"
 
 # REST call to set auto-complete on Pull Request
-$pullRequestUpdateUrl = "$organization$project/_apis/git/repositories/$repositoryId/pullrequests/$pullRequestId?api-version=7.1-preview.1"
+# $pullRequestUpdateUrl = "$organization$project/_apis/git/repositories/$repositoryId/pullrequests/$pullRequestId?api-version=7.1-preview.1"
+$pullRequestUpdateUrl = "$organization$project/_apis/git/repositories/$repositoryId/pullrequests/23?api-version=7.1-preview.1"
 Write-Output $pullRequestUpdateUrl
 
 $setAutoCompleteResult = Invoke-RestMethod -Method PATCH -Headers $headers -Body $setAutoCompleteJson -Uri $pullRequestUpdateUrl
