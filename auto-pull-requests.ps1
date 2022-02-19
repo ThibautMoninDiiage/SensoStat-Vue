@@ -2,9 +2,9 @@
 #$apisUrl = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)/$($env:SYSTEM_TEAMPROJECT)/_apis"
 #$projectUrl = "$apisUrl/git/repositories/sensostatvue"
 # Variables
-$organization = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)"
-$project = "$($env:SYSTEM_TEAMPROJECT)""
-$repositoryId = "$($env:repositoryId)"
+$organization = $env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)
+$project = $env:SYSTEM_TEAMPROJECT)
+$repositoryId = $env:repositoryId
 
 Write-Output "Org : $organization | project : $project | repositoryId : $repositoryId"
 
