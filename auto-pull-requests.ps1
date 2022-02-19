@@ -24,14 +24,13 @@ $pullRequest = @{
     }
 
 $pullRequestJson = ($pullRequest | ConvertTo-Json -Depth 5)
-Write-Output "JSON object : $pullRequestJson"
 
 Write-Output "Creating a new pull request from $sourceBranch to $targetBranch"
 
 # REST call to create a Pull Request
-
 $pullRequestCall = Invoke-RestMethod -Method POST -Headers $headers -Body $pullRequestJson -Uri $pullRequestUrl
-Write-Output $pullRequestCall
+Write-Output "URL : $pullRequestUrl"
+Write-Output "Body : $pullRequestJson"
 $pullRequestId = $pullRequestCall.pullRequestId
 
 Write-Output "Pull request created. Pull Request Id : $pullRequestId"
