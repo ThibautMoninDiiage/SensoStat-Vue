@@ -2,8 +2,8 @@
     <form @submit="startSurvey" id="mainContainer">
         <div id="title">Bienvenue à notre séance de tests</div>
         <div id="subtitle">Aujourd'hui vous allez tester : {{ product }}</div>
-        <MainButton message="Commencer la séance"/>
-        <div id="subtitle">ou dites "Commencer la séance"</div>
+        <MainButton class="itemCentered" message="Commencer la séance"/>
+        <MicrophoneText class="itemCentered" message="Commencer la séance"/>
     </form>
 </template>
 
@@ -13,11 +13,13 @@
 
 <script>
     import MainButton from '../components/MainButton.vue'
+    import MicrophoneText from '../components/MicrophoneText.vue'
 
     export default {
         name : 'StartPage',
         components : {
-            MainButton
+            MainButton,
+            MicrophoneText
         },
         data() {
             return {

@@ -1,17 +1,16 @@
 <template>
     <div>
-        <button class="orangeRoundedButton">{{ message }}</button>
+        <h3 id="mainMessage">ou dites "{{ message }}"</h3>
     </div>
 </template>
 
 <style scoped>
-    @import '../../public/styles/mainButton.css';
     @import '../../public/styles/main.css';
 </style>
 
 <script>
     export default {
-        name : 'MainButton',
+        name : 'MicrophoneText',
         props : {
             message : String
         }
