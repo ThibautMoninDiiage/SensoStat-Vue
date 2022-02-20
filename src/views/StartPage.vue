@@ -12,6 +12,7 @@
 </style>
 
 <script>
+    import router from '../router/index'
     import MainButton from '../components/MainButton.vue'
     import MicrophoneText from '../components/MicrophoneText.vue'
 
@@ -31,7 +32,7 @@
         },
         methods : {
             startSurvey() {
-                alert('Vous démarrez un nouveau questionnaire')
+                router.push({name : 'InstructionPage'})
             }
         }
     }
