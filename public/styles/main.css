@@ -15,7 +15,29 @@ body {
 #mainContainer {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     align-items: flex-start;
+    height: 90vh;
+    padding: 1%;
+}
+
+#microphoneContainer {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+
+#iconText {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100vw;
+    justify-content: center;
+}
+
+#iconText > .itemCentered {
+    margin-left: 1%;
+    position: relative;
 }
 
 #title {

@@ -1,10 +1,17 @@
 <template>
-    <form @submit="startSurvey" id="mainContainer">
-        <div id="title">Bienvenue à notre séance de tests</div>
-        <div id="subtitle">Aujourd'hui vous allez tester : {{ product }}</div>
-        <MainButton class="itemCentered" message="Commencer la séance"/>
-        <MicrophoneText class="itemCentered" message="Commencer la séance"/>
-    </form>
+    <div>
+        <form @submit="startSurvey" id="mainContainer">
+            <div id="title">Bienvenue à notre séance de tests</div>
+            <div id="subtitle">Aujourd'hui vous allez tester : {{ product }}</div>
+            <div id="microphoneContainer">
+                <MainButton class="itemCentered" message="Commencer la séance"/>
+                <div id="iconText">
+                    <i class="fa-solid fa-microphone"></i>
+                    <MicrophoneText class="itemCentered" message="Commencer la séance"/>
+                </div>
+            </div>
+        </form>
+    </div>
 </template>
 
 <style scoped>
@@ -12,6 +19,7 @@
 </style>
 
 <script>
+    import router from '../router/index'
     import MainButton from '../components/MainButton.vue'
     import MicrophoneText from '../components/MicrophoneText.vue'
 
@@ -31,7 +39,7 @@
         },
         methods : {
             startSurvey() {
-                alert('Vous démarrez un nouveau questionnaire')
+                router.push({name : 'InstructionPage'})
             }
         }
     }
