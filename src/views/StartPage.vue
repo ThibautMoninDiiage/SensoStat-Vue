@@ -38,8 +38,9 @@
             this.product = 'Savon de marseille'
         },
         methods : {
-            startSurvey() {
-                router.push({name : 'InstructionPage'})
+            startSurvey(event) {
+                event.preventDefault()
+                router.push('instructionPage')
             }
         }
     }
