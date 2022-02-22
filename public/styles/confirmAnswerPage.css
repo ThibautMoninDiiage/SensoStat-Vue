@@ -1,0 +1,51 @@
+body {
+  background-color: var(--pale-yellow);
+  margin: 0;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  padding: 1%;
+  align-items: center;
+}
+
+#microphoneContainerRetour {
+  display: flex;
+  flex-direction: column;
+}
+
+#iconText {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+}
+
+/* BODY */
+.title {
+  font-size: 30px;
+}
+
+.areaAnswer {
+  border: 1px solid var(--black);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+/* BTN CONTINUER */
+#microphoneContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#iconText {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+}
+
+#iconText > .itemCentered {
+  margin-left: 1%;
+  position: relative;
+}
