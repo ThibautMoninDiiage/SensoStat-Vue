@@ -1,8 +1,8 @@
 <template>
     <div>
         <form @submit="startSurvey" id="mainContainer">
-            <div id="title">Bienvenue à notre séance de tests</div>
-            <div id="subtitle">Aujourd'hui vous allez tester : {{ product }}</div>
+            <div id="title">{{ title }}</div>
+            <div id="subtitle">{{ instruction }} {{ product }}</div>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" message="Commencer la séance"/>
                 <div id="iconText">
@@ -23,6 +23,7 @@
     import router from '../router/index'
     import MainButton from '../components/MainButton.vue'
     import MicrophoneText from '../components/MicrophoneText.vue'
+    import TextToSpeechService from '../services/textToSpeechService'
 
     export default {
         name : 'StartPage',
@@ -32,11 +33,19 @@
         },
         data() {
             return {
-                product : undefined
+                title : undefined,
+                instruction : undefined,
+                product : undefined,
+                text : undefined,
+                TTSService : new TextToSpeechService()
             }
         },
         mounted() {
-            this.product = 'Savon de marseille'
+            this.title = 'Bienvenue à notre séance de tests'
+            this.instruction = 'Aujourd\'hui vous allez tester :'
+            this.product = 'Canard',
+            this.text = this.title + this.instruction + this.product
+            this.TTSService.textToSpeech(this.text)
         },
         methods : {
             startSurvey(event) {
