@@ -8,6 +8,7 @@
                 <div id="iconText">
                     <i class="fa-solid fa-microphone"></i>
                     <MicrophoneText class="itemCentered" message="Commencer la séance"/>
+                    <router-view/>
                 </div>
             </div>
         </form>
@@ -40,7 +41,7 @@
         methods : {
             startSurvey(event) {
                 event.preventDefault()
-                router.push('instructionPage')
+                router.push('/instructionPage')
             }
         }
     }
