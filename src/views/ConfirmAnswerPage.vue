@@ -1,27 +1,23 @@
 <template>
-  <div class="mainContainer">
-    <div id="microphoneContainerRetour">
-      <MainButton class="itemCentered" id="btnRetour" message="Reformuler"/>
-      <div id="iconText">
-        <i class="fa-solid fa-microphone"></i>
-        <MicrophoneText class="itemCentered" message="Reformuler"/>
-      </div>
-    </div>
+	<div class="mainContainer">
+    	<div id="microphoneContainerRetour">
+			<MainButton class="itemCentered" id="btnRetour" message="Reformuler"/>
+			<div id="iconText">
+				<i class="fa-solid fa-microphone"></i>
+				<MicrophoneText class="itemCentered" message="Reformuler"/>
+			</div>
+    	</div>
 
-    <div class="title">C'est à vous !</div>
+    	<textarea class="areaAnswer" rows="15" cols="30"></textarea>
 
-    <textarea class="areaAnswer" rows="15" cols="30"></textarea>
-
-    <div></div>
-
-    <div id="microphoneContainer">
-      <MainButton class="itemCentered" message="Étape suivante"/>
-      <div id="iconText">
-        <i class="fa-solid fa-microphone"></i>
-        <MicrophoneText class="itemCentered" message="Étape suivante"/>
-      </div>
-    </div>
-  </div>
+		<div id="microphoneContainer">
+			<MainButton @click="endSurvey" class="itemCentered" message="Valider"/>
+			<div id="iconText">
+				<i class="fa-solid fa-microphone"></i>
+				<MicrophoneText class="itemCentered" message="Valider"/>
+			</div>
+		</div>
+	</div>
 </template>
 
 <style scoped>
@@ -36,8 +32,14 @@
     export default {
         name: "ConfirmAnswerPage",
         components: {
-        MainButton,
-        MicrophoneText,
-      },
-    };
+        	MainButton,
+        	MicrophoneText,
+    	},
+		methods : {
+			endSurvey(event) {
+				event.preventDefault()
+				router.push('/endPage')
+			}
+		}
+    }
 </script>

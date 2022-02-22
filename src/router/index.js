@@ -3,6 +3,7 @@ import StartPage from "../views/StartPage.vue"
 import InstructionPage from "../views/InstructionPage.vue"
 import AnswerPage from "../views/AnswerPage.vue"
 import ConfirmAnswerPage from '../views/ConfirmAnswerPage.vue'
+import EndPage from '../views/EndPage.vue'
 import NotFound from '../views/NotFound.vue'
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
     path: "/confirmAnswerPage",
     name: "ConfirmAnswerPage",
     component: ConfirmAnswerPage,
+  },
+  {
+    path: '/endPage',
+    name: 'EndPage',
+    component: EndPage
   },
   {
     path: '/404',
