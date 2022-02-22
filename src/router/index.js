@@ -1,7 +1,8 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import StartPage from "../views/StartPage.vue";
 import InstructionPage from "../views/InstructionPage.vue";
 import AnswerPage from "../views/AnswerPage.vue";
+import NotFound from '../views/NotFound.vue'
 
 const routes = [
   {
@@ -19,11 +20,17 @@ const routes = [
     name: "AnswerPage",
     component: AnswerPage,
   },
-];
+  {
+    path: '/404',
+    name: '404',
+    component: NotFound
+  }
+]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 
-export default router;
+
+export default router
