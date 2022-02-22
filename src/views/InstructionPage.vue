@@ -41,8 +41,8 @@
         },
         mounted() {
             this.instruction = "Vous allez tester : "
-            this.product = "Butagazzzzz 39 "
-            this.productNumber = 45
+            this.product = "Chips"
+            this.productNumber = 23
             this.text = this.instruction + this.product + this.productNumber
             this.TTSService.textToSpeech(this.text)
         },
