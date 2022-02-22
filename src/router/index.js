@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory } from "vue-router";
-import StartPage from "../views/StartPage.vue";
-import InstructionPage from "../views/InstructionPage.vue";
-import AnswerPage from "../views/AnswerPage.vue";
+import { createRouter, createWebHistory } from "vue-router"
+import StartPage from "../views/StartPage.vue"
+import InstructionPage from "../views/InstructionPage.vue"
+import AnswerPage from "../views/AnswerPage.vue"
+import ConfirmAnswerPage from '../views/ConfirmAnswerPage.vue'
 import NotFound from '../views/NotFound.vue'
 
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
     path: "/answerPage",
     name: "AnswerPage",
     component: AnswerPage,
+  },
+  {
+    path: "/confirmAnswerPage",
+    name: "ConfirmAnswerPage",
+    component: ConfirmAnswerPage,
   },
   {
     path: '/404',

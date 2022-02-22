@@ -2,8 +2,13 @@
     <div>
         <form @submit="nextStep" id="mainContainer">
             <h1>{{ instruction }} {{ product }} {{ productNumber }}</h1>
-            <MainButton message="Étape suivante"/>
-            <MicrophoneText message="Étape suivante"/>
+            <div id="microphoneContainer">
+                <MainButton class="itemCentered" message="Étape suivante"/>
+                <div id="iconText">
+                    <i class="fa-solid fa-microphone"></i>
+                    <MicrophoneText class="itemCentered" message="Étape suivante"/>
+                </div>
+            </div>
             <router-view/>
         </form>
     </div>
@@ -36,8 +41,8 @@
         },
         mounted() {
             this.instruction = "Vous allez tester : "
-            this.product = "Les chips"
-            this.productNumber = 120
+            this.product = "Butagazzzzz 39 "
+            this.productNumber = 45
             this.text = this.instruction + this.product + this.productNumber
             this.TTSService.textToSpeech(this.text)
         },

@@ -43,7 +43,7 @@
         mounted() {
             this.title = 'Bienvenue à notre séance de tests'
             this.instruction = 'Aujourd\'hui vous allez tester :'
-            this.product = 'Canard',
+            this.product = 'Des bombonnes de gaz',
             this.text = this.title + this.instruction + this.product
             this.TTSService.textToSpeech(this.text)
         },
