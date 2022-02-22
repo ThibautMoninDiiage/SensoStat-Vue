@@ -5,6 +5,9 @@
 
     <textarea class="areaAnswer" rows="15" cols="30"></textarea>
 
+    <button id="playAudio" @click="allowMicro">Test</button>
+
+
     <div id="microphoneContainer">
       <MainButton class="itemCentered" message="Commencer la séance" />
       <div id="iconText">
@@ -23,6 +26,7 @@
     import router from "../router/index";
     import MainButton from "../components/MainButton.vue";
     import MicrophoneText from "../components/MicrophoneText.vue";
+    import SpeechToTextService from "../services/speechToTextService.js"
 
     export default {
       name: "AnswerPage",
@@ -30,5 +34,15 @@
         MainButton,
         MicrophoneText,
       },
+      data() {
+        return{
+          STTService : new SpeechToTextService()
+        }
+      },
+      methods:{
+        allowMicro(){
+          this.STTService.speechToText();
+        }
+      }
     };
 </script>
