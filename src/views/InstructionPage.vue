@@ -1,9 +1,10 @@
 <template>
     <div>
         <form @submit="nextStep" id="mainContainer">
-            <h1>Vous allez désormais tester {{ product }} {{ productNumber }}</h1>
+            <h1>{{ instruction }} {{ product }} {{ productNumber }}</h1>
             <MainButton message="Étape suivante"/>
             <MicrophoneText message="Étape suivante"/>
+            <router-view/>
         </form>
     </div>
 </template>
@@ -13,8 +14,10 @@
 </style>
 
 <script>
+    import router from '../router/index'
     import MainButton from '../components/MainButton.vue'
     import MicrophoneText from '../components/MicrophoneText.vue'
+    import TextToSpeechService from '../services/textToSpeechService'
 
     export default {
         name : 'InstructionPage',
@@ -24,16 +27,25 @@
         },
         data() {
             return {
+                instruction : undefined,
                 product : undefined,
-                productNumber : undefined
+                productNumber : undefined,
+                text : undefined,
+                TTSService : new TextToSpeechService()
             }
         },
         mounted() {
-            this.product = "Les chips",
-            this.productNumber = 1
+            this.instruction = "Vous allez tester : "
+            this.product = "Les chips"
+            this.productNumber = 120
+            this.text = this.instruction + this.product + this.productNumber
+            this.TTSService.textToSpeech(this.text)
         },
-        methods() {
-            nextStep()
+        methods : {
+            nextStep(event) {
+                event.preventDefault()
+                router.push('/answerPage')
+            }
         }
     }
 </script>

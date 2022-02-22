@@ -25,19 +25,19 @@
 </template>
 
 <style scoped>
-@import "../../public/styles/confirmAnswerPage.css";
+    @import "../../public/styles/confirmAnswerPage.css";
 </style>
 
 <script>
-import router from "../router/index";
-import MainButton from "../components/MainButton.vue";
-import MicrophoneText from "../components/MicrophoneText.vue";
+    import router from "../router/index";
+    import MainButton from "../components/MainButton.vue";
+    import MicrophoneText from "../components/MicrophoneText.vue";
 
-export default {
-  name: "ConfirmAnswerPage",
-  components: {
-    MainButton,
-    MicrophoneText,
-  },
-};
+    export default {
+        name: "ConfirmAnswerPage",
+        components: {
+        MainButton,
+        MicrophoneText,
+      },
+    };
 </script>

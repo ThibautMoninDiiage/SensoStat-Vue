@@ -16,19 +16,19 @@
 </template>
 
 <style scoped>
-@import "../../public/styles/answerPage.css";
+    @import "../../public/styles/answerPage.css";
 </style>
 
 <script>
-import router from "../router/index";
-import MainButton from "../components/MainButton.vue";
-import MicrophoneText from "../components/MicrophoneText.vue";
+    import router from "../router/index";
+    import MainButton from "../components/MainButton.vue";
+    import MicrophoneText from "../components/MicrophoneText.vue";
 
-export default {
-  name: "AnswerPage",
-  components: {
-    MainButton,
-    MicrophoneText,
-  },
-};
+    export default {
+      name: "AnswerPage",
+      components: {
+        MainButton,
+        MicrophoneText,
+      },
+    };
 </script>
