@@ -1,7 +1,7 @@
 <template>
   <div class="mainContainer">
     <div id="microphoneContainerRetour">
-      <MainButton class="itemCentered" id="btnRetour" message="Reformuler"/>
+      <MainButton @click="goBack" class="itemCentered" id="btnRetour" message="Reformuler"/>
       <div id="iconText">
         <i class="fa-solid fa-microphone"></i>
         <MicrophoneText class="itemCentered" message="Reformuler"/>
@@ -39,5 +39,10 @@
         MainButton,
         MicrophoneText,
       },
+      methods : {
+        goBack() {
+          router.back()
+        }
+      }
     };
 </script>
