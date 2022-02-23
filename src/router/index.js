@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
+import AllowMicrophone from '../views/AllowMicrophone.vue'
 import StartPage from "../views/StartPage.vue"
 import InstructionPage from "../views/InstructionPage.vue"
 import QuestionPage from '../views/QuestionPage.vue'
@@ -10,7 +11,12 @@ import NotFound from '../views/NotFound.vue'
 const routes = [
   {
     path: "/",
-    name: "Start",
+    name: "AllowMicrophone",
+    component: AllowMicrophone,
+  },
+  {
+    path: "/startPage",
+    name: "StartPage",
     component: StartPage,
   },
   {
