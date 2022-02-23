@@ -3,10 +3,10 @@
         <form @submit="nextStep" id="mainContainer">
             <h1>{{ instruction }}</h1>
             <div id="microphoneContainer">
-                <MainButton class="itemCentered" message="Étape suivante"/>
+                <MainButton class="itemCentered" message="Suivant"/>
                 <div id="iconText">
                     <i class="fa-solid fa-microphone"></i>
-                    <MicrophoneText class="itemCentered" message="Étape suivante"/>
+                    <MicrophoneText class="itemCentered" message="Suivant"/>
                 </div>
             </div>
             <router-view/>

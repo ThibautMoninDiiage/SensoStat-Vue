@@ -7,10 +7,10 @@
     <button id="playAudio" @click="allowMicro">Test</button>
 
 			<div id="microphoneContainer">
-				<MainButton class="itemCentered" message="Étape suivante"/>
+				<MainButton class="itemCentered" message="Suivant"/>
 				<div id="iconText">
         <i id="mic" class="fa-solid fa-microphone"></i>
-					<MicrophoneText class="itemCentered" message="Étape suivante"/>
+					<MicrophoneText class="itemCentered" message="Suivant"/>
 				</div>
 			</div>
 		</form>

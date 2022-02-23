@@ -7,7 +7,7 @@
                 <MainButton class="itemCentered" message="Commencer la séance"/>
                 <div id="iconText">
                     <i class="fa-solid fa-microphone"></i>
-                    <MicrophoneText class="itemCentered" message="Commencer la séance"/>
+                    <MicrophoneText class="itemCentered" message="Commencer"/>
                 </div>
             </div>
         </form>
