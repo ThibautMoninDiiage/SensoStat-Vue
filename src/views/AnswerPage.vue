@@ -53,16 +53,17 @@
 		  	},
 			writeReponse(speechRecognizer){
 				event.preventDefault()
-				//let test = document.getElementById("response")
+				let test = document.getElementById("response")
+				let micro = document.getElementById("mic")
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
               			router.push('/confirmAnswerPage');
             		}
-            		// else{
-              		// 	micro.style.color = "red";
-					// 	console.log(e.result.text)
-              		// 	test.innerHTML =  e.result.text;
-            		// }
+            		else{
+              			micro.style.color = "red";
+						console.log(e.result.text)
+              			test.innerHTML =  e.result.text;
+            		}
           		};
 			}
 	 	}
