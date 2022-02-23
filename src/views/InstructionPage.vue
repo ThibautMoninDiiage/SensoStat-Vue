@@ -14,10 +14,6 @@
     </div>
 </template>
 
-<style scoped>
-    @import '../../public/styles/main.css';
-</style>
-
 <script>
     import router from '../router/index'
     import MainButton from '../components/MainButton.vue'

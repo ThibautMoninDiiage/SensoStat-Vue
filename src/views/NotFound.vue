@@ -1,10 +1,8 @@
 <template>
-    <h1>Erreur 404 : La page que vous recherchez n'existe pas !</h1>
+    <div id="mainContainer">
+        <h1>Erreur 404 : La page que vous recherchez n'existe pas !</h1>
+    </div>
 </template>
-
-<style scoped>
-
-</style>
 
 <script>
     export default {

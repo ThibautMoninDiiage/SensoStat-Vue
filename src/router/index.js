@@ -39,8 +39,8 @@ const routes = [
     component: EndPage
   },
   {
-    path: '/404',
-    name: '404',
+    path: '/notFound',
+    name: 'NotFound',
     component: NotFound
   }
 ]
