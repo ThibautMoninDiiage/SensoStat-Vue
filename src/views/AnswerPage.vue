@@ -3,7 +3,7 @@
     <div></div>
     <div class="title">C'est à vous !</div>
 
-    <textarea class="areaAnswer" rows="15" cols="30"></textarea>
+    <textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
 
     <button id="playAudio" @click="allowMicro">Test</button>
 
@@ -11,7 +11,7 @@
     <div id="microphoneContainer">
       <MainButton class="itemCentered" message="Commencer la séance" />
       <div id="iconText">
-        <i class="fa-solid fa-microphone"></i>
+        <i id="mic" class="fa-solid fa-microphone"></i>
         <MicrophoneText class="itemCentered" message="Commencer la séance" />
       </div>
     </div>
@@ -40,8 +40,24 @@
         }
       },
       methods:{
-        allowMicro(){
-          this.STTService.speechToText();
+        async allowMicro(){
+          var test = document.getElementById("response");
+          var micro = document.getElementById("mic");
+          const sdk = require("microsoft-cognitiveservices-speech-sdk");
+          const speechConfig = sdk.SpeechConfig.fromSubscription('1e006e65b78049bc83e6f795d1e3d893', 'francecentral')
+          speechConfig.speechRecognitionLanguage = "fr-FR";
+          let audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
+          let speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+          speechRecognizer.recognizing = (s, e) => {
+            if(e.result.text.toLowerCase().includes("suivant")){
+              router.push('/confirmAnswerPage');
+            }
+            else{
+              micro.style.color = "red";
+              test.innerHTML = test.innerHTML + " " + e.result.text.toLowerCase().replace(test.innerHTML.toLowerCase()," ");
+            }
+          };
+          speechRecognizer.startContinuousRecognitionAsync();
         }
       }
     };
