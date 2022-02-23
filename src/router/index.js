@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 import StartPage from "../views/StartPage.vue"
 import InstructionPage from "../views/InstructionPage.vue"
+import QuestionPage from '../views/QuestionPage.vue'
 import AnswerPage from "../views/AnswerPage.vue"
 import ConfirmAnswerPage from '../views/ConfirmAnswerPage.vue'
 import EndPage from '../views/EndPage.vue'
@@ -16,6 +17,11 @@ const routes = [
     path: "/instructionPage",
     name: "InstructionPage",
     component: InstructionPage,
+  },
+  {
+    path: "/questionPage",
+    name: "QuestionPage",
+    component: QuestionPage,
   },
   {
     path: "/answerPage",
@@ -43,6 +49,5 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
 
 export default router
