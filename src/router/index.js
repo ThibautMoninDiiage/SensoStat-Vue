@@ -39,8 +39,7 @@ const routes = [
     component: EndPage
   },
   {
-    path: '/notFound',
-    name: 'NotFound',
+    path: '/:pathMatch(.*)',
     component: NotFound
   }
 ]
