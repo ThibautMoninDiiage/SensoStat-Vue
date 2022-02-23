@@ -25,7 +25,7 @@
     import router from "../router/index";
     import MainButton from "../components/MainButton.vue";
     import MicrophoneText from "../components/MicrophoneText.vue";
-	  import TextToSpeechService from '../services/textToSpeechService'
+	import TextToSpeechService from '../services/textToSpeechService'
     import SpeechToTextService from "../services/speechToTextService.js"
 
     export default {
@@ -33,43 +33,43 @@
       	components: {
     		MainButton,
        		MicrophoneText,
-      },
-	  data() {
-		  return {
-			  title : 'C\'est à vous !',
-			  text : undefined,
-			  TTSService : new TextToSpeechService()
-		  }
-	  },
-	  mounted() {
-		  this.text = this.title
-		  this.TTSService.textToSpeech(this.text)
-	  },
-	  methods : {
-		  nextStep(event) {
-			  event.preventDefault()
-			  router.push('/confirmAnswerPage')
-		  },
-      async allowMicro(){
-          var test = document.getElementById("response");
-          var micro = document.getElementById("mic");
-          const sdk = require("microsoft-cognitiveservices-speech-sdk");
-          const speechConfig = sdk.SpeechConfig.fromSubscription('1e006e65b78049bc83e6f795d1e3d893', 'francecentral')
-          speechConfig.speechRecognitionLanguage = "fr-FR";
-          let audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
-          let speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
-          speechRecognizer.recognizing = (s, e) => {
-            if(e.result.text.toLowerCase().includes("suivant")){
-              router.push('/confirmAnswerPage');
-            }
-            else{
-              micro.style.color = "red";
-              test.innerHTML = test.innerHTML + " " + e.result.text.toLowerCase().replace(test.innerHTML.toLowerCase()," ");
-            }
-          };
-          speechRecognizer.startContinuousRecognitionAsync();
-        }
-	  }
+      	},
+	  	data() {
+		  	return {
+			  	title : 'C\'est à vous !',
+			  	text : undefined,
+			  	TTSService : new TextToSpeechService()
+		  	}
+	  	},
+	  	mounted() {
+		  	this.text = this.title
+		  	this.TTSService.textToSpeech(this.text)
+	  	},
+	  	methods : {
+		  	nextStep(event) {
+			  	event.preventDefault()
+			  	router.push('/confirmAnswerPage')
+		  	},
+      		async allowMicro(){
+				event.preventDefault()
+          		var test = document.getElementById("response");
+          		var micro = document.getElementById("mic");
+          		const sdk = require("microsoft-cognitiveservices-speech-sdk");
+          		const speechConfig = sdk.SpeechConfig.fromSubscription('1e006e65b78049bc83e6f795d1e3d893', 'francecentral')
+          		speechConfig.speechRecognitionLanguage = "fr-FR";
+          		let audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
+          		let speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+          		speechRecognizer.recognizing = (s, e) => {
+            		if(e.result.text.toLowerCase().includes("suivant")){
+              			router.push('/confirmAnswerPage');
+            		}
+            		else{
+              			micro.style.color = "red";
+              			test.innerHTML = test.innerHTML + " " + e.result.text.toLowerCase().replace(test.innerHTML.toLowerCase()," ");
+            		}
+          		};
+          		speechRecognizer.startContinuousRecognitionAsync();
+        	}
+	 	}
     }
-    };
 </script>
