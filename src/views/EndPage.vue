@@ -7,6 +7,7 @@
 
 <script>
     import TextToSpeechService from '../services/textToSpeechService'
+    import SpeechToTextService from '../services/speechToTextService'
 
     export default {
         name : 'EndPage',
@@ -15,7 +16,8 @@
                 title : undefined,
                 subtitle : undefined,
                 text : undefined,
-                TTSService : new TextToSpeechService()
+                TTSService : new TextToSpeechService(),
+                STTService : new SpeechToTextService()
             }
         },
         mounted() {
@@ -23,6 +25,7 @@
             this.subtitle = "Vous pouvez fermer cette page"
             this.text = this.title + this.subtitle
             this.TTSService.textToSpeech(this.text)
+            this.STTService.closeSTT()
         }
     }
 </script>

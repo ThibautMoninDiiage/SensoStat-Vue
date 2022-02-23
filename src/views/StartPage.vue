@@ -19,6 +19,7 @@
     import MainButton from '../components/MainButton.vue'
     import MicrophoneText from '../components/MicrophoneText.vue'
     import TextToSpeechService from '../services/textToSpeechService'
+    import SpeechToTextService from '../services/speechToTextService'
 
     export default {
         name : 'StartPage',
@@ -32,7 +33,8 @@
                 instruction : undefined,
                 product : undefined,
                 text : undefined,
-                TTSService : new TextToSpeechService()
+                TTSService : new TextToSpeechService(),
+                STTService : new SpeechToTextService()
             }
         },
         mounted() {
@@ -40,13 +42,23 @@
             this.instruction = 'Aujourd\'hui vous allez tester :'
             this.product = 'Des chips',
             this.text = this.title + this.instruction + this.product
-            this.TTSService.textToSpeech(this.text)
+            this.TTSService.textToSpeech(this.text);
+            var result = this.STTService.speechToText();
+			this.writeReponse(result)
         },
         methods : {
             startSurvey(event) {
                 event.preventDefault()
                 router.push('/instructionPage')
-            }
+            },
+            writeReponse(speechRecognizer){
+                event.preventDefault()
+				speechRecognizer.recognizing = (s, e) => {
+            		if(e.result.text.toLowerCase().includes("commencer")){
+              			router.push('/instructionPage');
+            		}
+          		};
+			}
         }
     }
 </script>
