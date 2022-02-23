@@ -8,16 +8,11 @@
                 <div id="iconText">
                     <i class="fa-solid fa-microphone"></i>
                     <MicrophoneText class="itemCentered" message="Commencer la séance"/>
-                    <router-view/>
                 </div>
             </div>
         </form>
     </div>
 </template>
-
-<style scoped>
-    @import '../../public/styles/main.css';
-</style>
 
 <script>
     import router from '../router/index'

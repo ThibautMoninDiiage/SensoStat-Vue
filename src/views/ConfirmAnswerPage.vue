@@ -1,6 +1,6 @@
 <template>
 	<div class="mainContainer">
-    	<div id="microphoneContainerRetour">
+    	<div id="microphoneContainerGoBack">
       <MainButton @click="goBack" class="itemCentered" id="btnRetour" message="Reformuler"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
