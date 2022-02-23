@@ -1,7 +1,7 @@
 <template>
     <div>
         <form @submit="nextStep" id="mainContainer">
-            <h1>{{ instruction }} {{ product }} {{ productNumber }}</h1>
+            <h1>{{ instruction }}</h1>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" message="Étape suivante"/>
                 <div id="iconText">
@@ -25,7 +25,7 @@
     import TextToSpeechService from '../services/textToSpeechService'
 
     export default {
-        name : 'InstructionPage',
+        name : 'QuestionPage',
         components : {
             MainButton,
             MicrophoneText
@@ -33,23 +33,19 @@
         data() {
             return {
                 instruction : undefined,
-                product : undefined,
-                productNumber : undefined,
                 text : undefined,
                 TTSService : new TextToSpeechService()
             }
         },
         mounted() {
-            this.instruction = "Vous allez manger : "
-            this.product = "Chips"
-            this.productNumber = 23
-            this.text = this.instruction + this.product + this.productNumber
+            this.instruction = "Avez vous trouvé que chips 23 était salée ?"
+            this.text = this.instruction
             this.TTSService.textToSpeech(this.text)
         },
         methods : {
             nextStep(event) {
                 event.preventDefault()
-                router.push('/questionPage')
+                router.push('/answerPage')
             }
         }
     }
