@@ -19,6 +19,7 @@
     import MainButton from '../components/MainButton.vue'
     import MicrophoneText from '../components/MicrophoneText.vue'
     import TextToSpeechService from '../services/textToSpeechService'
+    import SpeechToTextService from '../services/speechToTextService'
 
     export default {
         name : 'QuestionPage',
@@ -31,7 +32,9 @@
                 instruction : undefined,
                 productNumber : undefined,
                 text : undefined,
-                TTSService : new TextToSpeechService()
+                TTSService : new TextToSpeechService(),
+                STTService : new SpeechToTextService()
+                
             }
         },
         mounted() {
@@ -39,12 +42,22 @@
             this.instruction = `Avez vous trouvé que produit ${this.productNumber} était salé ?`
             this.text = this.instruction
             this.TTSService.textToSpeech(this.text)
+            var result = this.STTService.speechToText();
+			this.writeReponse(result)
         },
         methods : {
             nextStep(event) {
                 event.preventDefault()
                 router.push('/answerPage')
-            }
+            },
+            writeReponse(speechRecognizer){
+                event.preventDefault()
+				speechRecognizer.recognizing = (s, e) => {
+            		if(e.result.text.toLowerCase().includes("suivant")){
+              			router.push('/answerPage');
+            		}
+          		};
+			}
         }
     }
 </script>
