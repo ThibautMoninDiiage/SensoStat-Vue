@@ -1,7 +1,7 @@
 <template>
     <div>
         <form @submit="nextStep" id="mainContainer">
-            <h1>{{ instruction }} {{ product }} {{ productNumber }}</h1>
+            <h1>{{ instruction }} {{ productNumber }}</h1>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" message="Suivant"/>
                 <div id="iconText">
@@ -29,23 +29,21 @@
         data() {
             return {
                 instruction : undefined,
-                product : undefined,
                 productNumber : undefined,
                 text : undefined,
                 TTSService : new TextToSpeechService()
             }
         },
         mounted() {
-            this.instruction = "Vous allez manger : "
-            this.product = "Chips"
+            this.instruction = "Vous allez tester produit : "
             this.productNumber = 23
-            this.text = this.instruction + this.product + this.productNumber
+            this.text = this.instruction + this.productNumber
             this.TTSService.textToSpeech(this.text)
         },
         methods : {
             nextStep(event) {
                 event.preventDefault()
-                router.push('/questionPage')
+                router.push({name : 'QuestionPage', params : { productNumber : this.productNumber }})
             }
         }
     }

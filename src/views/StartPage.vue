@@ -2,7 +2,6 @@
     <div>
         <form @submit="startSurvey" id="mainContainer">
             <div id="title">{{ title }}</div>
-            <div id="subtitle">{{ instruction }} {{ product }}</div>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" message="Commencer la séance"/>
                 <div id="iconText">
@@ -29,18 +28,12 @@
         data() {
             return {
                 title : undefined,
-                instruction : undefined,
-                product : undefined,
-                text : undefined,
                 TTSService : new TextToSpeechService()
             }
         },
         mounted() {
             this.title = 'Bienvenue à notre séance de tests'
-            this.instruction = 'Aujourd\'hui vous allez tester :'
-            this.product = 'Des chips',
-            this.text = this.title + this.instruction + this.product
-            this.TTSService.textToSpeech(this.text)
+            this.TTSService.textToSpeech(this.title)
         },
         methods : {
             startSurvey(event) {

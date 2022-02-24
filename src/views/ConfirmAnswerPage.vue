@@ -1,7 +1,7 @@
 <template>
-	<div class="mainContainer">
+	<div id="mainContainer">
     	<div id="microphoneContainerGoBack">
-      <MainButton @click="goBack" class="itemCentered" id="btnRetour" message="Reformuler"/>
+      		<MainButton @click="goBack" class="itemCentered" id="btnRetour" message="Reformuler"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
 				<MicrophoneText class="itemCentered" message="Reformuler"/>
@@ -19,10 +19,6 @@
 		</div>
 	</div>
 </template>
-
-<style scoped>
-    @import "../../public/styles/confirmAnswerPage.css";
-</style>
 
 <script>
     import router from "../router/index";
