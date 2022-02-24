@@ -3,10 +3,10 @@
         <form @submit="nextStep" id="mainContainer">
             <h1>{{ instruction }}</h1>
             <div id="microphoneContainer">
-                <MainButton class="itemCentered" message="Étape suivante"/>
+                <MainButton class="itemCentered" message="Suivant"/>
                 <div id="iconText">
                     <i class="fa-solid fa-microphone"></i>
-                    <MicrophoneText class="itemCentered" message="Étape suivante"/>
+                    <MicrophoneText class="itemCentered" message="Suivant"/>
                 </div>
             </div>
             <router-view/>
@@ -29,12 +29,14 @@
         data() {
             return {
                 instruction : undefined,
+                productNumber : undefined,
                 text : undefined,
                 TTSService : new TextToSpeechService()
             }
         },
         mounted() {
-            this.instruction = "Avez vous trouvé que chips 23 était salée ?"
+            this.productNumber = this.$route.params.productNumber
+            this.instruction = `Avez vous trouvé que produit ${this.productNumber} était salé ?`
             this.text = this.instruction
             this.TTSService.textToSpeech(this.text)
         },
