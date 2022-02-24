@@ -37,7 +37,8 @@
 			  	title : 'C\'est à vous !',
 			  	text : undefined,
 			  	TTSService : new TextToSpeechService(),
-				STTService : new SpeechToTextService()
+				STTService : new SpeechToTextService(),
+				response : undefined
 		  	}
 	  	},
 	  	mounted() {
@@ -49,7 +50,9 @@
 	  	methods : {
 		  	nextStep(event) {
 			  	event.preventDefault()
-			  	router.push('/confirmAnswerPage')
+				this.response = document.getElementById("response").innerHTML;
+				console.log(this.response)
+			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response}})
 		  	},
 			writeReponse(speechRecognizer){
 				event.preventDefault()
@@ -57,13 +60,13 @@
 				let micro = document.getElementById("mic")
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
-              			router.push('/confirmAnswerPage');
+              			this.response = document.getElementById("response").innerHTML;
+			  			router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response}})
             		}
-            		else{
-              			micro.style.color = "red";
-						console.log(e.result.text)
-              			test.innerHTML =  e.result.text;
-            		}
+					else{
+						micro.style.color = "red";
+						test.innerHTML = e.result.text
+					}
           		};
 			}
 	 	}

@@ -8,7 +8,7 @@
 			</div>
     	</div>
 
-    	<textarea class="areaAnswer" rows="15" cols="30"></textarea>
+    	<textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
 
 		<div id="microphoneContainer">
 			<MainButton @click="endSurvey" class="itemCentered" message="Valider"/>
@@ -38,12 +38,17 @@
     	},
 		data(){
 			return{
-				STTService : new SpeechToTextService()
+				STTService : new SpeechToTextService(),
+				response : undefined
 			}
 		},
 		mounted(){
 			var result = this.STTService.speechToText();
 			this.writeReponse(result)
+			this.response = this.$route.params.responseUser;
+			let text = document.getElementById("response")
+			text.innerHTML = this.response;
+
 		},
 		methods : {
 			goBack() {
@@ -59,6 +64,9 @@
             		if(e.result.text.toLowerCase().includes("valider")){
               			router.push('/endPage');
             		}
+					else if(e.result.text.toLowerCase().includes("reformuler")){
+						router.push('/answerPage')
+					}
           		};
 			}
 		}
