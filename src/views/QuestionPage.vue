@@ -29,12 +29,14 @@
         data() {
             return {
                 instruction : undefined,
+                productNumber : undefined,
                 text : undefined,
                 TTSService : new TextToSpeechService()
             }
         },
         mounted() {
-            this.instruction = "Avez vous trouvé que chips 23 était salée ?"
+            this.productNumber = this.$route.params.productNumber
+            this.instruction = `Avez vous trouvé que produit ${this.productNumber} était salé ?`
             this.text = this.instruction
             this.TTSService.textToSpeech(this.text)
         },

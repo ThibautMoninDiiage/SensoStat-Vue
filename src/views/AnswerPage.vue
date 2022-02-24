@@ -1,25 +1,21 @@
 <template>
-	<div class="mainContainer">
+	<div>
 		<form @submit="nextStep" id="mainContainer">
 			<div class="title">{{ title }}</div>
-    <textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
+    		<textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
 
-    <button id="playAudio" @click="allowMicro">Test</button>
+    		<button id="playAudio" @click="allowMicro">Test</button>
 
 			<div id="microphoneContainer">
 				<MainButton class="itemCentered" message="Suivant"/>
 				<div id="iconText">
-        <i id="mic" class="fa-solid fa-microphone"></i>
+        			<i id="mic" class="fa-solid fa-microphone"></i>
 					<MicrophoneText class="itemCentered" message="Suivant"/>
 				</div>
 			</div>
 		</form>
 	</div>
 </template>
-
-<style scoped>
-    @import "../../public/styles/answerPage.css";
-</style>
 
 <script>
     import router from "../router/index";
