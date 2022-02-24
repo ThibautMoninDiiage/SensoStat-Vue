@@ -18,6 +18,7 @@
     import MainButton from '../components/MainButton.vue'
     import MicrophoneText from '../components/MicrophoneText.vue'
     import TextToSpeechService from '../services/textToSpeechService'
+    import SpeechToTextService from '../services/speechToTextService'
 
     export default {
         name : 'StartPage',
@@ -28,18 +29,32 @@
         data() {
             return {
                 title : undefined,
-                TTSService : new TextToSpeechService()
+                instruction : undefined,
+                product : undefined,
+                text : undefined,
+                TTSService : new TextToSpeechService(),
+                STTService : new SpeechToTextService()
             }
         },
         mounted() {
             this.title = 'Bienvenue à notre séance de tests'
             this.TTSService.textToSpeech(this.title)
+            var result = this.STTService.speechToText();
+			this.writeReponse(result)
         },
         methods : {
             startSurvey(event) {
                 event.preventDefault()
                 router.push('/instructionPage')
-            }
+            },
+            writeReponse(speechRecognizer){
+                event.preventDefault()
+				speechRecognizer.recognizing = (s, e) => {
+            		if(e.result.text.toLowerCase().includes("commencer")){
+              			router.push('/instructionPage');
+            		}
+          		};
+			}
         }
     }
 </script>

@@ -8,7 +8,7 @@
 			</div>
     	</div>
 
-    	<textarea class="areaAnswer" rows="15" cols="30"></textarea>
+    	<textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
 
 		<div id="microphoneContainer">
 			<MainButton @click="endSurvey" class="itemCentered" message="Valider"/>
@@ -24,6 +24,7 @@
     import router from "../router/index";
     import MainButton from "../components/MainButton.vue";
     import MicrophoneText from "../components/MicrophoneText.vue";
+	import SpeechToTextService from '../services/speechToTextService'
 
     export default {
         name: "ConfirmAnswerPage",
@@ -31,6 +32,20 @@
         	MainButton,
         	MicrophoneText,
     	},
+		data(){
+			return{
+				STTService : new SpeechToTextService(),
+				response : undefined
+			}
+		},
+		mounted(){
+			var result = this.STTService.speechToText();
+			this.writeReponse(result)
+			this.response = this.$route.params.responseUser;
+			let text = document.getElementById("response")
+			text.innerHTML = this.response;
+
+		},
 		methods : {
 			goBack() {
           		router.back()
@@ -38,6 +53,17 @@
 			endSurvey(event) {
 				event.preventDefault()
 				router.push('/endPage')
+			},
+			writeReponse(speechRecognizer){
+                event.preventDefault()
+				speechRecognizer.recognizing = (s, e) => {
+            		if(e.result.text.toLowerCase().includes("valider")){
+              			router.push('/endPage');
+            		}
+					else if(e.result.text.toLowerCase().includes("reformuler")){
+						router.push('/answerPage')
+					}
+          		};
 			}
 		}
     }

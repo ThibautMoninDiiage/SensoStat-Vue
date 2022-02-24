@@ -35,7 +35,7 @@ const routes = [
     component: AnswerPage,
   },
   {
-    path: "/confirmAnswerPage",
+    path: "/confirmAnswerPage/:responseUser",
     name: "ConfirmAnswerPage",
     component: ConfirmAnswerPage,
   },

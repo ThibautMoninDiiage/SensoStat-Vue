@@ -4,8 +4,6 @@
 			<div class="title">{{ title }}</div>
     		<textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
 
-    		<button id="playAudio" @click="allowMicro">Test</button>
-
 			<div id="microphoneContainer">
 				<MainButton class="itemCentered" message="Suivant"/>
 				<div id="iconText">
@@ -22,7 +20,7 @@
     import MainButton from "../components/MainButton.vue";
     import MicrophoneText from "../components/MicrophoneText.vue";
 	import TextToSpeechService from '../services/textToSpeechService'
-    import SpeechToTextService from "../services/speechToTextService.js"
+    import SpeechToTextService from "../services/speechToTextService"
 
     export default {
       	name: "AnswerPage",
@@ -34,38 +32,38 @@
 		  	return {
 			  	title : 'C\'est à vous !',
 			  	text : undefined,
-			  	TTSService : new TextToSpeechService()
+			  	TTSService : new TextToSpeechService(),
+				STTService : new SpeechToTextService(),
+				response : undefined
 		  	}
 	  	},
 	  	mounted() {
 		  	this.text = this.title
 		  	this.TTSService.textToSpeech(this.text)
+			var result = this.STTService.speechToText();
+			this.writeReponse(result)
 	  	},
 	  	methods : {
 		  	nextStep(event) {
 			  	event.preventDefault()
-			  	router.push('/confirmAnswerPage')
+				this.response = document.getElementById("response").innerHTML;
+			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response}})
 		  	},
-      		async allowMicro(){
+			writeReponse(speechRecognizer){
 				event.preventDefault()
-          		var test = document.getElementById("response");
-          		var micro = document.getElementById("mic");
-          		const sdk = require("microsoft-cognitiveservices-speech-sdk");
-          		const speechConfig = sdk.SpeechConfig.fromSubscription('1e006e65b78049bc83e6f795d1e3d893', 'francecentral')
-          		speechConfig.speechRecognitionLanguage = "fr-FR";
-          		let audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
-          		let speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
-          		speechRecognizer.recognizing = (s, e) => {
+				let test = document.getElementById("response")
+				let micro = document.getElementById("mic")
+				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
-              			router.push('/confirmAnswerPage');
+              			this.response = document.getElementById("response").innerHTML;
+			  			router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response}})
             		}
-            		else{
-              			micro.style.color = "red";
-              			test.innerHTML = test.innerHTML + " " + e.result.text.toLowerCase().replace(test.innerHTML.toLowerCase()," ");
-            		}
+					else{
+						micro.style.color = "red";
+						test.innerHTML = e.result.text
+					}
           		};
-          		speechRecognizer.startContinuousRecognitionAsync();
-        	}
+			}
 	 	}
     }
 </script>

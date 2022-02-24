@@ -8,14 +8,25 @@
 <script>
     import router from '../router/index'
     import MainButton from '../components/MainButton.vue'
+    import STTService from '../services/speechToTextService'
 
     export default {
         name : 'AllowMicrophone',
         components : {
             MainButton
         },
+        data() {
+            return {
+                instruction : undefined,
+                product : undefined,
+                productNumber : undefined,
+                text : undefined,
+                STTService : new STTService()
+            }
+        },
         methods : {
             startPage() {
+                this.STTService.speechToText()
                 router.push('/startPage')
             }
         }
