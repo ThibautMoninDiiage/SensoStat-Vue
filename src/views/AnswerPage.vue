@@ -53,16 +53,16 @@
 		  	},
 			writeReponse(speechRecognizer){
 				event.preventDefault()
-				let test = document.getElementById("response")
+				let textarea = document.getElementById("response")
 				let micro = document.getElementById("mic")
 				speechRecognizer.recognizing = (s, e) => {
-            		if(e.result.text.toLowerCase().includes("suivant")){
+            		if(e.result.text.toLowerCase().includes("suivant")) {
               			this.response = document.getElementById("response").innerHTML;
 			  			router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response}})
             		}
-					else{
+					else {
 						micro.style.color = "red";
-						test.innerHTML = e.result.text
+						textarea.innerHTML = e.result.text
 					}
           		};
 			}
