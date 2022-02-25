@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 id="mainMessage">ou dites "{{ message }}"</h3>
+        <h3 id="mainMessage">{{ message }}</h3>
     </div>
 </template>
 
