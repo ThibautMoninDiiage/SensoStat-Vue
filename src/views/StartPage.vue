@@ -37,7 +37,7 @@
         mounted() {
             this.welcomeMessage = 'Bienvenue à notre séance de tests'
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Commencer"'
-            this.TTSService.textToSpeech(this.title + this.vocalCommand)
+            this.TTSService.textToSpeech(this.welcomeMessage + this.vocalCommand)
             var result = this.STTService.speechToText();
 			this.writeReponse(result)
         },
