@@ -4,7 +4,7 @@
       		<MainButton @click="goBack" class="itemCentered" id="btnRetour" message="Reformuler"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
-				<MicrophoneText class="itemCentered" message="Reformuler"/>
+				<MicrophoneText class="itemCentered" v-bind:message="vocalReformulate"/>
 			</div>
     	</div>
 
@@ -14,7 +14,7 @@
 			<MainButton @click="endSurvey" class="itemCentered" message="Valider"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
-				<MicrophoneText class="itemCentered" message="Valider"/>
+				<MicrophoneText class="itemCentered" v-bind:message="vocalCommand"/>
 			</div>
 		</div>
 	</div>
@@ -25,6 +25,7 @@
     import MainButton from "../components/MainButton.vue";
     import MicrophoneText from "../components/MicrophoneText.vue";
 	import SpeechToTextService from '../services/speechToTextService'
+	import TextToSpeechService from '../services/textToSpeechService'
 
     export default {
         name: "ConfirmAnswerPage",
@@ -35,16 +36,20 @@
 		data(){
 			return{
 				STTService : new SpeechToTextService(),
-				response : undefined
+				TTSService : new TextToSpeechService(),
+				response : undefined,
+				vocalReformulate : undefined
 			}
 		},
 		mounted(){
 			var result = this.STTService.speechToText();
+            this.vocalReformulate = 'Pour reformuler votre réponse, dites "Reformuler"'
+            this.vocalCommand = 'Pour confirmer votre réponse, dites "Valider"'
+			this.TTSService.textToSpeech(this.vocalReformulate + this.vocalCommand)
 			this.writeReponse(result)
 			this.response = this.$route.params.responseUser;
 			let text = document.getElementById("response")
 			text.innerHTML = this.response;
-
 		},
 		methods : {
 			goBack() {

@@ -6,7 +6,7 @@
                 <MainButton class="itemCentered" message="Suivant"/>
                 <div id="iconText">
                     <i class="fa-solid fa-microphone"></i>
-                    <MicrophoneText class="itemCentered" message="Suivant"/>
+                    <MicrophoneText class="itemCentered" v-bind:message="vocalCommand"/>
                 </div>
             </div>
             <router-view/>
@@ -30,6 +30,7 @@
         data() {
             return {
                 instruction : undefined,
+                vocalCommand : undefined,
                 productNumber : undefined,
                 text : undefined,
                 TTSService : new TextToSpeechService(),
@@ -40,8 +41,9 @@
         mounted() {
             this.productNumber = this.$route.params.productNumber
             this.instruction = `Avez vous trouvé que produit ${this.productNumber} était salé ?`
+            this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.text = this.instruction
-            this.TTSService.textToSpeech(this.text)
+            this.TTSService.textToSpeech(this.text + this.vocalCommand)
             var result = this.STTService.speechToText();
 			this.writeReponse(result)
         },

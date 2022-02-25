@@ -8,7 +8,7 @@
 				<MainButton class="itemCentered" message="Suivant"/>
 				<div id="iconText">
         			<i id="mic" class="fa-solid fa-microphone"></i>
-					<MicrophoneText class="itemCentered" message="Suivant"/>
+					<MicrophoneText class="itemCentered" v-bind:message="vocalCommand"/>
 				</div>
 			</div>
 		</form>
@@ -31,6 +31,7 @@
 	  	data() {
 		  	return {
 			  	title : 'C\'est à vous !',
+				vocalCommand : undefined,
 			  	text : undefined,
 			  	TTSService : new TextToSpeechService(),
 				STTService : new SpeechToTextService(),
@@ -39,7 +40,8 @@
 	  	},
 	  	mounted() {
 		  	this.text = this.title
-		  	this.TTSService.textToSpeech(this.text)
+            this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
+		  	this.TTSService.textToSpeech(this.text + this.vocalCommand)
 			var result = this.STTService.speechToText();
 			this.writeReponse(result)
 	  	},
