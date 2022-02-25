@@ -30,7 +30,7 @@
       	},
 	  	data() {
 		  	return {
-			  	title : 'C\'est à vous !',
+			  	title : 'Parlez pour enregistrer votre réponse !',
 				vocalCommand : undefined,
 			  	text : undefined,
 			  	TTSService : new TextToSpeechService(),
@@ -40,7 +40,7 @@
 	  	},
 	  	mounted() {
 		  	this.text = this.title
-            this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
+            this.vocalCommand = 'Pour confirmer votre réponse, dites "Suivant"'
 		  	this.TTSService.textToSpeech(this.text + this.vocalCommand)
 			var result = this.STTService.speechToText();
 			this.writeReponse(result)
