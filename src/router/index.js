@@ -25,7 +25,7 @@ const routes = [
     component: InstructionPage,
   },
   {
-    path: "/questionPage/:productNumber",
+    path: "/questionPage",
     name: "QuestionPage",
     component: QuestionPage,
   },

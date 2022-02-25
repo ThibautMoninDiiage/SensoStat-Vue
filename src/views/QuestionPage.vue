@@ -1,7 +1,7 @@
 <template>
     <div>
         <form @submit="nextStep" id="mainContainer">
-            <h1>{{ instruction }}</h1>
+            <h1>{{ question }}</h1>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" message="Suivant"/>
                 <div id="iconText">
@@ -29,7 +29,7 @@
         },
         data() {
             return {
-                instruction : undefined,
+                question : undefined,
                 vocalCommand : undefined,
                 productNumber : undefined,
                 text : undefined,
@@ -40,9 +40,9 @@
         },
         mounted() {
             this.productNumber = this.$route.params.productNumber
-            this.instruction = `Avez vous trouvé que produit ${this.productNumber} était salé ?`
+            this.question = 'Avez vous trouvé que produit 23 était salé ?'
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
-            this.text = this.instruction
+            this.text = this.question
             this.TTSService.textToSpeech(this.text + this.vocalCommand)
             var result = this.STTService.speechToText();
 			this.writeReponse(result)

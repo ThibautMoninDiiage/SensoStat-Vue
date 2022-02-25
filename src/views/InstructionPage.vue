@@ -49,13 +49,13 @@
         methods : {
             nextStep(event) {
                 event.preventDefault()
-                router.push({name : 'QuestionPage', params : { productNumber : this.productNumber }})
+                router.push('/questionPage')
             },
             writeReponse(speechRecognizer){
                 event.preventDefault()
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
-                        router.push({name : 'QuestionPage', params : { productNumber : this.productNumber }})
+                        router.push('/questionPage')
             		}
           		};
 			}
