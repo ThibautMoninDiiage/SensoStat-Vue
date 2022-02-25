@@ -43,8 +43,8 @@
 		},
 		mounted(){
 			var result = this.STTService.speechToText();
-            this.vocalReformulate = 'Pour reformuler votre réponse, dites "Reformuler"'
-            this.vocalCommand = 'Pour confirmer votre réponse, dites "Valider"'
+            this.vocalReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
+            this.vocalCommand = 'Pour confirmer votre réponse, cliquez sur le bouton ou dites "Valider"'
 			this.TTSService.textToSpeech(this.vocalReformulate + this.vocalCommand)
 			this.writeReponse(result)
 			this.response = this.$route.params.responseUser;
