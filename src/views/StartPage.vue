@@ -36,7 +36,8 @@
                 STTService : new SpeechToTextService(),
                 SurveyService : new SurveyService(),
                 ProductService : new ProductService(),
-                products : undefined
+                products : undefined,
+                position : 0,
             }
         },
         mounted() {
@@ -55,12 +56,12 @@
         methods : {
             startSurvey(event) {
                 event.preventDefault()
-                router.push({ name : 'InstructionPage', params : { position : 0 }})
+                router.push({ name : 'InstructionPage', params : { position : this.position }})
             },
             writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("commencer")){
-              			router.push({ name : 'InstructionPage', params : { position : 0 }})
+              			router.push({ name : 'InstructionPage', params : { position : this.position }})
             		}
           		};
 			}

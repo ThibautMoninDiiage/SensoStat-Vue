@@ -59,7 +59,7 @@
         	},
 			endSurvey(event) {
 				event.preventDefault()
-				router.push({ name : 'InstructionPage', params : { position : this.position + 1 }})
+				router.push({ name : 'InstructionPage', params : { position : this.position }})
 			},
 			writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
