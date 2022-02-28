@@ -60,7 +60,6 @@
 				router.push('/endPage')
 			},
 			writeReponse(speechRecognizer){
-                event.preventDefault()
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("valider")){
               			router.push('/endPage');

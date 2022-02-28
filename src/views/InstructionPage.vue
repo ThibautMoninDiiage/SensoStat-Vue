@@ -20,6 +20,7 @@
     import MicrophoneText from '../components/MicrophoneText.vue'
     import TextToSpeechService from '../services/textToSpeechService'
     import SpeechToTextService from "../services/speechToTextService"
+    import InstructionService from '../services/instructionService'
 
     export default {
         name : 'InstructionPage',
@@ -34,16 +35,18 @@
                 productNumber : undefined,
                 text : undefined,
                 TTSService : new TextToSpeechService(),
-                STTService : new SpeechToTextService()
+                STTService : new SpeechToTextService(),
+                InstructionService : new InstructionService()
             }
         },
         mounted() {
-            this.instruction = "Vous allez tester produit : "
+            this.InstructionService.getInstruction().then(instruction => {
+                this.instruction = instruction
+            })
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.productNumber = 23
-            this.text = this.instruction + this.productNumber
-            this.TTSService.textToSpeech(this.text + this.vocalCommand)
-            var result = this.STTService.speechToText();
+            this.TTSService.textToSpeech(this.instruction + this.productNumber + this.vocalCommand)
+            var result = this.STTService.speechToText()
 			this.writeReponse(result)
         },
         methods : {
@@ -52,7 +55,6 @@
                 router.push('/questionPage')
             },
             writeReponse(speechRecognizer){
-                event.preventDefault()
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
                         router.push('/questionPage')

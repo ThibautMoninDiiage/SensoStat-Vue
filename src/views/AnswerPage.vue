@@ -52,7 +52,6 @@
 			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response}})
 		  	},
 			writeReponse(speechRecognizer){
-				event.preventDefault()
 				let textarea = document.getElementById("response")
 				let micro = document.getElementById("mic")
 				speechRecognizer.recognizing = (s, e) => {

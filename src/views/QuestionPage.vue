@@ -20,6 +20,7 @@
     import MicrophoneText from '../components/MicrophoneText.vue'
     import TextToSpeechService from '../services/textToSpeechService'
     import SpeechToTextService from '../services/speechToTextService'
+    import QuestionService from '../services/questionService'
 
     export default {
         name : 'QuestionPage',
@@ -34,13 +35,15 @@
                 productNumber : undefined,
                 text : undefined,
                 TTSService : new TextToSpeechService(),
-                STTService : new SpeechToTextService()
+                STTService : new SpeechToTextService(),
+                QuestionService : new QuestionService()
                 
             }
         },
-        mounted() {
-            this.productNumber = this.$route.params.productNumber
-            this.question = 'Avez vous trouvé que produit 23 était salé ?'
+        async mounted() {
+            await this.QuestionService.getQuestion().then(question => {
+                this.question = question
+            })
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.text = this.question
             this.TTSService.textToSpeech(this.text + this.vocalCommand)
@@ -53,7 +56,6 @@
                 router.push('/answerPage')
             },
             writeReponse(speechRecognizer){
-                event.preventDefault()
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
               			router.push('/answerPage');
