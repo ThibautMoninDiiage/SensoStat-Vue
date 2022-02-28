@@ -20,6 +20,7 @@
     import TextToSpeechService from '../services/textToSpeechService'
     import SpeechToTextService from '../services/speechToTextService'
     import SurveyService from '../services/surveyService'
+    import ProductService from '../services/productService'
 
     export default {
         name : 'StartPage',
@@ -33,7 +34,9 @@
                 vocalCommand : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
-                SurveyService : new SurveyService()
+                SurveyService : new SurveyService(),
+                ProductService : new ProductService(),
+                products : undefined
             }
         },
         mounted() {
@@ -43,7 +46,10 @@
             var result = this.STTService.speechToText()
 			this.writeReponse(result)
             this.SurveyService.getSurveyByUserId().then(survey => {
-                console.log(survey[0])
+                console.log(survey)
+            })
+            this.ProductService.getUserProducts().then(products => {
+                this.products = products
             })
         },
         methods : {
