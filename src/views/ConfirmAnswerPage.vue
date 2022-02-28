@@ -35,6 +35,7 @@
     	},
 		data(){
 			return{
+				position : undefined,
 				STTService : new SpeechToTextService(),
 				TTSService : new TextToSpeechService(),
 				response : undefined,
@@ -42,6 +43,7 @@
 			}
 		},
 		mounted(){
+			this.position = this.$route.params.position
 			var result = this.STTService.speechToText();
             this.vocalReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
             this.vocalCommand = 'Pour confirmer votre réponse, cliquez sur le bouton ou dites "Valider"'
@@ -57,7 +59,7 @@
         	},
 			endSurvey(event) {
 				event.preventDefault()
-				router.push('/endPage')
+				router.push({ name : 'InstructionPage', params : { position : this.position + 1 }})
 			},
 			writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {

@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div v-if="question != null">
         <form @submit="nextStep" id="mainContainer">
-            <h1>{{ question }}</h1>
+            <h1>{{ question[position].Libelle }}</h1>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" message="Suivant"/>
                 <div id="iconText">
@@ -31,6 +31,7 @@
         data() {
             return {
                 question : undefined,
+                position : undefined,
                 vocalCommand : undefined,
                 productNumber : undefined,
                 text : undefined,
@@ -41,7 +42,8 @@
             }
         },
         async mounted() {
-            await this.QuestionService.getQuestion().then(question => {
+            this.position = this.$route.params.position
+            this.QuestionService.getQuestion().then(question => {
                 this.question = question
             })
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
@@ -53,12 +55,12 @@
         methods : {
             nextStep(event) {
                 event.preventDefault()
-                router.push('/answerPage')
+                router.push({ name : 'AnswerPage', params : { position : this.position }})
             },
             writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
-              			router.push('/answerPage');
+              			router.push({ name : 'AnswerPage', params : { position : this.position }});
             		}
           		};
 			}

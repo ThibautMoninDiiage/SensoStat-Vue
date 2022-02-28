@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div v-if="instruction != null">
         <form @submit="nextStep" id="mainContainer">
-            <h1>{{ instruction }} {{ productNumber }}</h1>
+            <h1>{{ instruction[position].Libelle }} {{ productNumber }}</h1>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" message="Suivant"/>
                 <div id="iconText">
@@ -31,6 +31,7 @@
         data() {
             return {
                 instruction : undefined,
+                position : undefined,
                 vocalCommand : undefined,
                 productNumber : undefined,
                 text : undefined,
@@ -40,6 +41,7 @@
             }
         },
         mounted() {
+            this.position = this.$route.params.position
             this.InstructionService.getInstruction().then(instruction => {
                 this.instruction = instruction
             })
@@ -52,12 +54,12 @@
         methods : {
             nextStep(event) {
                 event.preventDefault()
-                router.push('/questionPage')
+                router.push({ name : 'QuestionPage', params : { position : this.position }})
             },
             writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
-                        router.push('/questionPage')
+                        router.push({ name : 'QuestionPage', params : { position : this.position }})
             		}
           		};
 			}

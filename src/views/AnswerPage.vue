@@ -31,6 +31,7 @@
 	  	data() {
 		  	return {
 			  	title : 'Parlez pour enregistrer votre réponse !',
+				position : undefined,
 				vocalCommand : undefined,
 			  	text : undefined,
 			  	TTSService : new TextToSpeechService(),
@@ -40,6 +41,7 @@
 	  	},
 	  	mounted() {
 		  	this.text = this.title
+			this.position = this.$route.params.position
             this.vocalCommand = 'Pour confirmer votre réponse, dites "Suivant"'
 		  	this.TTSService.textToSpeech(this.text + this.vocalCommand)
 			var result = this.STTService.speechToText();
@@ -49,7 +51,7 @@
 		  	nextStep(event) {
 			  	event.preventDefault()
 				this.response = document.getElementById("response").innerHTML;
-			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response}})
+			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position }})
 		  	},
 			writeReponse(speechRecognizer){
 				let textarea = document.getElementById("response")
@@ -57,7 +59,7 @@
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")) {
               			this.response = document.getElementById("response").innerHTML;
-			  			router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response}})
+			  			router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position}})
             		}
 					else {
 						micro.style.color = "red";

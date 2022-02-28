@@ -20,22 +20,22 @@ const routes = [
     component: StartPage,
   },
   {
-    path: "/instructionPage",
+    path: "/instructionPage/:position",
     name: "InstructionPage",
     component: InstructionPage,
   },
   {
-    path: "/questionPage",
+    path: "/questionPage/:position",
     name: "QuestionPage",
     component: QuestionPage,
   },
   {
-    path: "/answerPage",
+    path: "/answerPage/:position",
     name: "AnswerPage",
     component: AnswerPage,
   },
   {
-    path: "/confirmAnswerPage/:responseUser",
+    path: "/confirmAnswerPage/:position/:responseUser",
     name: "ConfirmAnswerPage",
     component: ConfirmAnswerPage,
   },

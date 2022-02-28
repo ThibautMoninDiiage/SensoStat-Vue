@@ -46,7 +46,7 @@
             var result = this.STTService.speechToText()
 			this.writeReponse(result)
             this.SurveyService.getSurveyByUserId().then(survey => {
-                console.log(survey)
+                // console.log(survey)
             })
             this.ProductService.getUserProducts().then(products => {
                 this.products = products
@@ -55,12 +55,12 @@
         methods : {
             startSurvey(event) {
                 event.preventDefault()
-                router.push('/instructionPage')
+                router.push({ name : 'InstructionPage', params : { position : 0 }})
             },
             writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("commencer")){
-              			router.push('/instructionPage')
+              			router.push({ name : 'InstructionPage', params : { position : 0 }})
             		}
           		};
 			}
