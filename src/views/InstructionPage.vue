@@ -51,7 +51,6 @@
         methods : {
             async nextStep() {
                 await this.TTSService.stopTextToSpeech();
-                console.log("ok")
                 router.push('/questionPage')
             },
             async writeReponse(speechRecognizer){
