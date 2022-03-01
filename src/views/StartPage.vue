@@ -35,9 +35,15 @@
             }
         },
         async mounted() {
-            this.welcomeMessage = 'Bienvenue à notre séance de tests'
+            this.welcomeMessage = 'Bienvenue à notre séance de tests.'
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Commencer"'
-            await this.TTSService.textToSpeech(this.welcomeMessage + this.vocalCommand)
+
+            setTimeout(() => {
+                this.TTSService.textToSpeech(this.vocalCommand)
+            }, 3000);
+
+            await this.TTSService.textToSpeech(this.welcomeMessage)
+
 
             var result = await this.STTService.speechToText();
 			await this.writeReponse(result)
