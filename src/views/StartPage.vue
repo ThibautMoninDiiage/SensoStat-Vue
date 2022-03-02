@@ -34,23 +34,25 @@
                 STTService : new SpeechToTextService()
             }
         },
-        mounted() {
-            this.welcomeMessage = 'Bienvenue à notre séance de tests'
+        async mounted() {
+            this.welcomeMessage = 'Bienvenue à notre séance de tests.'
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Commencer"'
-            this.TTSService.textToSpeech(this.welcomeMessage + this.vocalCommand)
-            var result = this.STTService.speechToText();
-			this.writeReponse(result)
+
+            await this.TTSService.textToSpeech(this.welcomeMessage)
+            await this.TTSService.textToSpeech(this.vocalCommand)
+
+            var result = await this.STTService.speechToText();
+			await this.writeReponse(result)
         },
         methods : {
-            startSurvey(event) {
-                event.preventDefault()
+            async startSurvey() {
+                await this.TTSService.stopTextToSpeech();
                 router.push('/instructionPage')
             },
-            writeReponse(speechRecognizer){
-                event.preventDefault()
+            async writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("commencer")){
-              			router.push('/instructionPage');
+              			this.startSurvey();
             		}
           		};
 			}

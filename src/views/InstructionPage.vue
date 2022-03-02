@@ -37,25 +37,26 @@
                 STTService : new SpeechToTextService()
             }
         },
-        mounted() {
+        async mounted() {
             this.instruction = "Vous allez tester produit : "
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.productNumber = 23
-            this.text = this.instruction + this.productNumber
-            this.TTSService.textToSpeech(this.text + this.vocalCommand)
-            var result = this.STTService.speechToText();
-			this.writeReponse(result)
+
+            await this.TTSService.textToSpeech(this.instruction + this.productNumber);
+            await this.TTSService.textToSpeech(this.vocalCommand);
+
+            var result = await this.STTService.speechToText();
+			await this.writeReponse(result)
         },
         methods : {
-            nextStep(event) {
-                event.preventDefault()
+            async nextStep() {
+                await this.TTSService.stopTextToSpeech();
                 router.push('/questionPage')
             },
-            writeReponse(speechRecognizer){
-                event.preventDefault()
+            async writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
-                        router.push('/questionPage')
+                        this.nextStep();
             		}
           		};
 			}

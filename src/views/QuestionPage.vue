@@ -38,25 +38,26 @@
                 
             }
         },
-        mounted() {
+        async mounted() {
             this.productNumber = this.$route.params.productNumber
             this.question = 'Avez vous trouvé que produit 23 était salé ?'
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
-            this.text = this.question
-            this.TTSService.textToSpeech(this.text + this.vocalCommand)
-            var result = this.STTService.speechToText();
-			this.writeReponse(result)
+
+            await this.TTSService.textToSpeech(this.question);
+            await this.TTSService.textToSpeech(this.vocalCommand);
+
+            var result = await this.STTService.speechToText();
+			await this.writeReponse(result)
         },
         methods : {
-            nextStep(event) {
-                event.preventDefault()
-                router.push('/answerPage')
+            async nextStep() {
+                await this.TTSService.stopTextToSpeech();
+                router.push('/answerPage');
             },
-            writeReponse(speechRecognizer){
-                event.preventDefault()
+            async writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
-              			router.push('/answerPage');
+              			this.nextStep();
             		}
           		};
 			}
