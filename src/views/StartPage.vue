@@ -62,11 +62,9 @@
                 router.push({ name : 'InstructionPage', params : { position : this.position }})
             },
             async writeReponse(speechRecognizer){
-            writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("commencer")){
               			this.startSurvey();
-              			router.push({ name : 'InstructionPage', params : { position : this.position }})
             		}
           		};
 			}

@@ -41,7 +41,6 @@
             }
         },
         async mounted() {
-            this.instruction = "Vous allez tester produit : "
             this.position = this.$route.params.position
             this.InstructionService.getInstruction().then(instruction => {
                 this.instruction = instruction
@@ -61,11 +60,9 @@
                 router.push({ name : 'QuestionPage', params : { position : this.position }})
             },
             async writeReponse(speechRecognizer){
-            writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
                         this.nextStep();
-                        router.push({ name : 'QuestionPage', params : { position : this.position }})
             		}
           		};
 			}

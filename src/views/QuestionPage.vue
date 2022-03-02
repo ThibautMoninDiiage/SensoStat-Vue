@@ -42,7 +42,6 @@
             }
         },
         async mounted() {
-            this.question = 'Avez vous trouvé que produit 23 était salé ?'
             this.position = this.$route.params.position
             this.QuestionService.getQuestion().then(question => {
                 this.question = question
@@ -61,11 +60,9 @@
                 router.push({ name : 'AnswerPage', params : { position : this.position }})
             },
             async writeReponse(speechRecognizer){
-            writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
               			this.nextStep();
-              			router.push({ name : 'AnswerPage', params : { position : this.position }});
             		}
           		};
 			}

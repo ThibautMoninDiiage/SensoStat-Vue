@@ -33,23 +33,24 @@
 			  	title : 'Parlez pour enregistrer votre réponse !',
 				position : undefined,
 				vocalCommand : undefined,
-			  	text : undefined,
 			  	TTSService : new TextToSpeechService(),
 				STTService : new SpeechToTextService(),
 				response : undefined
 		  	}
 	  	},
-	  	mounted() {
-		  	this.text = this.title
+	  	async mounted() {
 			this.position = this.$route.params.position
             this.vocalCommand = 'Pour confirmer votre réponse, dites "Suivant"'
-		  	this.TTSService.textToSpeech(this.text + this.vocalCommand)
-			var result = this.STTService.speechToText();
-			this.writeReponse(result)
+
+		  	await this.TTSService.textToSpeech(this.title)
+		  	await this.TTSService.textToSpeech(this.vocalCommand)
+			
+			var result = await this.STTService.speechToText();
+			await this.writeReponse(result)
 	  	},
 	  	methods : {
-		  	nextStep(event) {
-			  	event.preventDefault()
+		  	async nextStep() {
+                await this.TTSService.stopTextToSpeech();
 				this.response = document.getElementById("response").innerHTML;
 			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position }})
 		  	},
@@ -59,7 +60,7 @@
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")) {
               			this.response = document.getElementById("response").innerHTML;
-			  			router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position}})
+						  this.nextStep()
             		}
 					else {
 						micro.style.color = "red";

@@ -20,12 +20,14 @@
                 STTService : new SpeechToTextService()
             }
         },
-        mounted() {
-            this.title = "Merci de votre participation à cette séance"
-            this.subtitle = "Vous pouvez fermer cette page"
-            this.text = this.title + this.subtitle
-            this.TTSService.textToSpeech(this.text)
-            this.STTService.closeSTT()
+        async mounted() {
+            this.title = "Merci de votre participation à cette séance."
+            this.subtitle = "Vous pouvez fermer cette page."
+
+            await this.TTSService.textToSpeech(this.title)
+            await this.TTSService.textToSpeech(this.subtitle)
+
+            await this.STTService.closeSTT()
         }
     }
 </script>
