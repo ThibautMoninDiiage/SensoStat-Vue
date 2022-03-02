@@ -19,6 +19,8 @@
     import MicrophoneText from '../components/MicrophoneText.vue'
     import TextToSpeechService from '../services/textToSpeechService'
     import SpeechToTextService from '../services/speechToTextService'
+    import SurveyService from '../services/surveyService'
+    import ProductService from '../services/productService'
 
     export default {
         name : 'StartPage',
@@ -31,7 +33,11 @@
                 welcomeMessage : undefined,
                 vocalCommand : undefined,
                 TTSService : new TextToSpeechService(),
-                STTService : new SpeechToTextService()
+                STTService : new SpeechToTextService(),
+                SurveyService : new SurveyService(),
+                ProductService : new ProductService(),
+                products : undefined,
+                position : 0,
             }
         },
         async mounted() {
@@ -43,16 +49,24 @@
 
             var result = await this.STTService.speechToText();
 			await this.writeReponse(result)
+            this.SurveyService.getSurveyByUserId().then(survey => {
+                // console.log(survey)
+            })
+            this.ProductService.getUserProducts().then(products => {
+                this.products = products
+            })
         },
         methods : {
             async startSurvey() {
                 await this.TTSService.stopTextToSpeech();
-                router.push('/instructionPage')
+                router.push({ name : 'InstructionPage', params : { position : this.position }})
             },
             async writeReponse(speechRecognizer){
+            writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("commencer")){
               			this.startSurvey();
+              			router.push({ name : 'InstructionPage', params : { position : this.position }})
             		}
           		};
 			}

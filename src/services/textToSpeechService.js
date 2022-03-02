@@ -31,9 +31,8 @@ export default class TextToSpeechService {
             console.log(error)
             this.synthetizer.close()
         }
-    )
+        )
     }
-
     async stopTextToSpeech(){
         this.player.pause();
     }
