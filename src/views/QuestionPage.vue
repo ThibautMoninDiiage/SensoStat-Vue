@@ -48,7 +48,8 @@
             })
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
 
-            await this.TTSService.textToSpeech(this.question);
+            // await this.TTSService.textToSpeech(this.question);
+            await this.TTSService.textToSpeech("Avez-vous trouvé le produit bon ?");
             await this.TTSService.textToSpeech(this.vocalCommand);
 
             var result = await this.STTService.speechToText();

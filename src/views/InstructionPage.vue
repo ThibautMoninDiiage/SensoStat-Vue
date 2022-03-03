@@ -48,7 +48,8 @@
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.productNumber = 23
 
-            await this.TTSService.textToSpeech(this.instruction + this.productNumber);
+            // await this.TTSService.textToSpeech(this.instruction + this.productNumber);
+            await this.TTSService.textToSpeech("Mangez le produit" + this.productNumber);
             await this.TTSService.textToSpeech(this.vocalCommand);
 
             var result = await this.STTService.speechToText();

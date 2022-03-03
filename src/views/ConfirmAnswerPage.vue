@@ -64,7 +64,8 @@
         	},
 			async endSurvey() {
                 await this.TTSService.stopTextToSpeech();
-				router.push({ name : 'InstructionPage', params : { position : this.position }})
+				// router.push({ name : 'InstructionPage', params : { position : this.position }})
+				router.push('/endPage')
 			},
 			writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
