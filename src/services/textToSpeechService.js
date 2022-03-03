@@ -3,25 +3,38 @@ import { SpeechSynthesizer } from 'microsoft-cognitiveservices-speech-sdk';
 
 export default class TextToSpeechService {
 
-    textToSpeech(productText) {
-        const speechConfig = sdk.SpeechConfig.fromSubscription('1e006e65b78049bc83e6f795d1e3d893', 'francecentral')
-        const audioConfig = sdk.AudioConfig.fromDefaultSpeakerOutput()
+    speechConfig;
+    audioConfig;
+    synthetizer;
+    player;
 
-        speechConfig.speechSynthesisLanguage = 'fr-FR'
-        speechConfig.speechSynthesisVoiceName = 'fr-BE-CharlineNeural'
+    constructor(){
+        this.speechConfig = sdk.SpeechConfig.fromSubscription('1e006e65b78049bc83e6f795d1e3d893', 'francecentral');
+        this.player = new sdk.SpeakerAudioDestination();
+        this.audioConfig = sdk.AudioConfig.fromSpeakerOutput(this.player)
+        this.speechConfig.speechSynthesisLanguage = 'fr-FR'
+        this.speechConfig.speechSynthesisVoiceName = 'fr-BE-CharlineNeural'
+
+        this.synthetizer = new SpeechSynthesizer(this.speechConfig, this.audioConfig)
+    }
+
+
+    async textToSpeech(productText) {
+        
     
-        const synthetizer = new SpeechSynthesizer(speechConfig, audioConfig)
-        synthetizer.speakTextAsync(productText, result => {
-                if (result) {
-                    synthetizer.close()
-                    return result.audioData
-                }
-            },
-            error => {
-                console.log(error)
-                synthetizer.close()
+        await this.synthetizer.speakTextAsync(productText, result => {
+            if (result) {
+                return result.audioData
             }
+        },
+        error => {
+            console.log(error)
+            this.synthetizer.close()
+        }
         )
+    }
+    async stopTextToSpeech(){
+        this.player.pause();
     }
     
 }

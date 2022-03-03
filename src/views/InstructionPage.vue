@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div v-if="instruction != null">
         <form @submit="nextStep" id="mainContainer">
-            <h1>{{ instruction }} {{ productNumber }}</h1>
+            <h1>{{ instruction[position].Libelle }} {{ productNumber }}</h1>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" message="Suivant"/>
                 <div id="iconText">
@@ -20,6 +20,7 @@
     import MicrophoneText from '../components/MicrophoneText.vue'
     import TextToSpeechService from '../services/textToSpeechService'
     import SpeechToTextService from "../services/speechToTextService"
+    import InstructionService from '../services/instructionService'
 
     export default {
         name : 'InstructionPage',
@@ -30,32 +31,39 @@
         data() {
             return {
                 instruction : undefined,
+                position : undefined,
                 vocalCommand : undefined,
                 productNumber : undefined,
                 text : undefined,
                 TTSService : new TextToSpeechService(),
-                STTService : new SpeechToTextService()
+                STTService : new SpeechToTextService(),
+                InstructionService : new InstructionService()
             }
         },
-        mounted() {
-            this.instruction = "Vous allez tester produit : "
+        async mounted() {
+            this.position = this.$route.params.position
+            this.InstructionService.getInstruction().then(instruction => {
+                this.instruction = instruction
+            })
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.productNumber = 23
-            this.text = this.instruction + this.productNumber
-            this.TTSService.textToSpeech(this.text + this.vocalCommand)
-            var result = this.STTService.speechToText();
-			this.writeReponse(result)
+
+            // await this.TTSService.textToSpeech(this.instruction + this.productNumber);
+            await this.TTSService.textToSpeech("Mangez le produit" + this.productNumber);
+            await this.TTSService.textToSpeech(this.vocalCommand);
+
+            var result = await this.STTService.speechToText();
+			await this.writeReponse(result)
         },
         methods : {
-            nextStep(event) {
-                event.preventDefault()
-                router.push('/questionPage')
+            async nextStep() {
+                await this.TTSService.stopTextToSpeech();
+                router.push({ name : 'QuestionPage', params : { position : this.position }})
             },
-            writeReponse(speechRecognizer){
-                event.preventDefault()
+            async writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")){
-                        router.push('/questionPage')
+                        this.nextStep();
             		}
           		};
 			}

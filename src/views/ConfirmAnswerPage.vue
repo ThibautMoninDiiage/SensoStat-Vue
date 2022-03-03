@@ -35,38 +35,45 @@
     	},
 		data(){
 			return{
+				position : undefined,
 				STTService : new SpeechToTextService(),
 				TTSService : new TextToSpeechService(),
 				response : undefined,
 				vocalReformulate : undefined
 			}
 		},
-		mounted(){
-			var result = this.STTService.speechToText();
+		async mounted(){
+			this.position = this.$route.params.position
             this.vocalReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
             this.vocalCommand = 'Pour confirmer votre réponse, cliquez sur le bouton ou dites "Valider"'
-			this.TTSService.textToSpeech(this.vocalReformulate + this.vocalCommand)
-			this.writeReponse(result)
+
+			await this.TTSService.textToSpeech(this.vocalReformulate)
+			await this.TTSService.textToSpeech(this.vocalCommand)
+
+			var result = await this.STTService.speechToText();
+			await this.writeReponse(result)
+
 			this.response = this.$route.params.responseUser;
 			let text = document.getElementById("response")
 			text.innerHTML = this.response;
 		},
 		methods : {
-			goBack() {
+			async goBack() {
+                await this.TTSService.stopTextToSpeech();
           		router.back()
         	},
-			endSurvey(event) {
-				event.preventDefault()
+			async endSurvey() {
+                await this.TTSService.stopTextToSpeech();
+				// router.push({ name : 'InstructionPage', params : { position : this.position }})
 				router.push('/endPage')
 			},
 			writeReponse(speechRecognizer){
-                event.preventDefault()
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("valider")){
-              			router.push('/endPage');
+						this.endSurvey()
             		}
 					else if(e.result.text.toLowerCase().includes("reformuler")){
-						router.push('/answerPage')
+						this.goBack()
 					}
           		};
 			}
