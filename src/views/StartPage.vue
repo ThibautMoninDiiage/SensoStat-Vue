@@ -49,15 +49,13 @@
 
             var result = await this.STTService.speechToText();
 			await this.writeReponse(result)
-            this.SurveyService.getSurveyByUserId().then(survey => {
-                // console.log(survey)
-            })
             this.ProductService.getUserProducts().then(products => {
                 this.products = products
             })
         },
         methods : {
-            async startSurvey() {
+            async startSurvey(event) {
+                event.preventDefault()
                 await this.TTSService.stopTextToSpeech();
                 router.push({ name : 'InstructionPage', params : { position : this.position }})
             },

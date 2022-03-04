@@ -17,10 +17,6 @@
         },
         data() {
             return {
-                instruction : undefined,
-                product : undefined,
-                productNumber : undefined,
-                text : undefined,
                 STTService : new STTService()
             }
         },
