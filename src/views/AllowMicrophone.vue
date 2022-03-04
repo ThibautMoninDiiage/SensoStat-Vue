@@ -21,7 +21,8 @@
             }
         },
         methods : {
-            startPage() {
+            startPage(event) {
+                event.preventDefault()
                 this.STTService.speechToText()
                 router.push('/startPage')
             }

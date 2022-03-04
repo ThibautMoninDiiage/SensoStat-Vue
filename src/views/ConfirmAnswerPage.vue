@@ -58,11 +58,13 @@
 			text.innerHTML = this.response;
 		},
 		methods : {
-			async goBack() {
+			async goBack(event) {
+				event.preventDefault()
                 await this.TTSService.stopTextToSpeech();
           		router.back()
         	},
-			async endSurvey() {
+			async endSurvey(event) {
+				event.preventDefault()
                 await this.TTSService.stopTextToSpeech();
 				// router.push({ name : 'InstructionPage', params : { position : this.position }})
 				router.push('/endPage')
