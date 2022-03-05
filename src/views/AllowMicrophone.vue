@@ -17,15 +17,12 @@
         },
         data() {
             return {
-                instruction : undefined,
-                product : undefined,
-                productNumber : undefined,
-                text : undefined,
                 STTService : new STTService()
             }
         },
         methods : {
-            startPage() {
+            startPage(event) {
+                event.preventDefault()
                 this.STTService.speechToText()
                 router.push('/startPage')
             }

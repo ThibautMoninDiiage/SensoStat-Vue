@@ -56,7 +56,8 @@
 			await this.writeReponse(result)
         },
         methods : {
-            async nextStep() {
+            async nextStep(event) {
+                event.preventDefault()
                 await this.TTSService.stopTextToSpeech();
                 router.push({ name : 'QuestionPage', params : { position : this.position }})
             },

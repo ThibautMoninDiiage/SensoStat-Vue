@@ -49,7 +49,8 @@
 			await this.writeReponse(result)
 	  	},
 	  	methods : {
-		  	async nextStep() {
+		  	async nextStep(event) {
+				  event.preventDefault()
                 await this.TTSService.stopTextToSpeech();
 				this.response = document.getElementById("response").innerHTML;
 			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position }})
