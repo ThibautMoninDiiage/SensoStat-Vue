@@ -37,15 +37,15 @@
                 text : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
-                QuestionService : new QuestionService()
-                
+                questionService : undefined,
+                questions: []
             }
         },
         async mounted() {
-            this.position = this.$route.params.position
-            this.QuestionService.getQuestion().then(question => {
-                this.question = question
-            })
+            this.position = this.$route.params.position;
+            this.questionService = new QuestionService();
+            var result = await this.QuestionService.getQuestion();
+            this.questions = result;
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
 
             // await this.TTSService.textToSpeech(this.question);
