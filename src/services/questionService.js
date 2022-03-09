@@ -1,24 +1,18 @@
-import axios from 'axios'
+import axios from "axios";
 
 export default class QuestionService {
-
-    async getQuestion() {
-        // const question = await axios.get('https://appsensostatapi.azurewebsites.net/Question')
-
-        var questionss = [
-            {
-                Id : 1,
-                Libelle : "Avez vous trouvé le produit bon ?",
-                Position : 1
-            },
-            {
-                Id : 2,
-                Libelle : "Avez vous trouvé que le produit sentait bon ?",
-                Position : 2
-            }
-        ]
-
-        return questionss 
-    }
-
+  async getQuestions() {
+    return new Promise((resolve) => {
+      axios
+        .get("https://appsensostatapi.azurewebsites.net/Question", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJmYW1pbHlfbmFtZSI6InBsb3AiLCJqdGkiOiI5ZDNkZjEwYy1iZDFkLTQ1ZTMtYjM3ZC02OGZkZjc3ZDhjZTYiLCJuYmYiOjE2NDY4MjM2OTQsImV4cCI6MTY0NzQyODQ5MywiaWF0IjoxNjQ2ODIzNjk0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDE5IiwiYXVkIjoiU2Vuc29TdGF0V2ViLkFwaSJ9.hrHWntXxISmKFsgBzB6pJ96rVBw_vlpbuQ4jOVITvIs`,
+          },
+        })
+        .then((response) => {
+          resolve(response.data);
+        });
+    });
+  }
 }
