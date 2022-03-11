@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default class SurveyService {
-  async getSurveys() {
+  async getSurvey() {
     return new Promise((resolve) => {
       axios
         .get("https://appsensostatapi.azurewebsites.net/Survey?surveyId=54", {
