@@ -21,9 +21,9 @@
 </template>
 
 <script>
-    import router from "../router/index";
-    import MainButton from "../components/MainButton.vue";
-    import MicrophoneText from "../components/MicrophoneText.vue";
+    import router from "../router/index"
+    import MainButton from "../components/MainButton.vue"
+    import MicrophoneText from "../components/MicrophoneText.vue"
 	import SpeechToTextService from '../services/speechToTextService'
 	import TextToSpeechService from '../services/textToSpeechService'
 
@@ -58,12 +58,12 @@
 			text.innerHTML = this.response;
 		},
 		methods : {
-			async goBack(event) {
+			async goBack() {
 				event.preventDefault()
                 await this.TTSService.stopTextToSpeech();
           		router.back()
         	},
-			async endSurvey(event) {
+			async endSurvey() {
 				event.preventDefault()
                 await this.TTSService.stopTextToSpeech();
 				// router.push({ name : 'InstructionPage', params : { position : this.position }})
@@ -77,7 +77,7 @@
 					else if(e.result.text.toLowerCase().includes("reformuler")){
 						this.goBack()
 					}
-          		};
+          		}
 			}
 		}
     }
