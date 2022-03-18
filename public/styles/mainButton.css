@@ -9,5 +9,4 @@
 
 .orangeRoundedButton:hover {
     cursor: pointer;
-    background-color: var(--orange);
 }
