@@ -1,7 +1,7 @@
 <template>
-  <div v-if="instruction !== undefined">
+  <div v-if="welcomeMessages !== undefined">
     <form @submit="startSurvey" id="mainContainer">
-      <div id="title">{{ instruction.libelle }}</div>
+      <div id="title">{{ welcomeMessages[position] }}</div>
       <div id="microphoneContainer">
         <MainButton class="itemCentered" message="Commencer la séance" />
         <div id="iconText">
@@ -23,39 +23,48 @@
     import AuthService from '../services/authService'
 
     export default {
-        name: "StartPage",
+        name: "WelcomePage",
         components: {
             MainButton,
             MicrophoneText,
         },
         data() {
             return {
-                welcomeMessage : undefined,
                 vocalCommand : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
                 SurveyService : new SurveyService(),
                 AuthService : new AuthService(),
-                position : 1,
+                position : undefined,
                 token : undefined,
                 surveys : [],
                 instructions : [],
-                instruction : undefined
+                welcomeMessages : [],
+                welcomeMessage : undefined
             }
         },
         async mounted() {
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Commencer"'
+            this.position = this.$route.params.position
 
             this.token = this.AuthService.getTokenFromLocalStorage()
             this.surveys = await this.SurveyService.getSurvey(this.token)
-            console.log(this.surveys);
             
             this.instructions = this.surveys.instructions
+
             this.instructions.forEach(instruction => {
-                if (instruction.position == this.position) {
-                    this.instruction = instruction
+                if (instruction.status == 0) {
+                    this.welcomeMessages.push(instruction)
                 }
             })
+
+            this.welcomeMessages.forEach(welcomeMessage => {
+                if (welcomeMessage.position == this.position) {
+                    this.welcomeMessage = welcomeMessage
+                }
+            })
+
+            console.log(this.welcomeMessages);
 
             await this.TTSService.textToSpeech(this.instruction)
             await this.TTSService.textToSpeech(this.vocalCommand)
@@ -67,10 +76,19 @@
             async startSurvey() {
                 event.preventDefault()
                 await this.TTSService.stopTextToSpeech()
-                router.push({
-                    name: "InstructionPage",
-                    params: { position: this.position },
-                })
+                this.position ++
+                String(this.position)
+                if (this.welcomeMessages.length !== this.position) {
+                    router.push({
+                        name: "WelcomePage",
+                        params: { position: this.position },
+                    })
+                } else {
+                    router.push({
+                        name: "InstructionPage",
+                        params: { position: this.position },
+                    })
+                }
             },
             async writeReponse(speechRecognizer) {
                 speechRecognizer.recognizing = (s, e) => {

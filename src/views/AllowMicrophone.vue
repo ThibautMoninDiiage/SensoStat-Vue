@@ -20,7 +20,8 @@
             return {
                 STTService : new STTService(),
                 AuthService : new AuthService(),
-                token : undefined
+                token : undefined,
+                position : 0
             }
         },
         mounted() {
@@ -31,7 +32,7 @@
             startPage() {
                 event.preventDefault()
                 this.STTService.speechToText()
-                router.push('/startPage')
+                router.push({ name: "WelcomePage", params: { position: this.position }})
             }
         }
     }
