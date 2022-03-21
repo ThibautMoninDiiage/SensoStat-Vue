@@ -8,7 +8,7 @@
 				<MainButton class="itemCentered" message="Suivant"/>
 				<div id="iconText">
         			<i id="mic" class="fa-solid fa-microphone"></i>
-					<MicrophoneText class="itemCentered" v-bind:message="vocalCommand"/>
+					<MicrophoneText class="itemCentered" :message="vocalCommand"/>
 				</div>
 			</div>
 		</form>

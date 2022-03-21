@@ -6,7 +6,7 @@
         <MainButton class="itemCentered" message="Suivant" />
         <div id="iconText">
           <i class="fa-solid fa-microphone"></i>
-          <MicrophoneText class="itemCentered" v-bind:message="vocalCommand" />
+          <MicrophoneText class="itemCentered" :message="vocalCommand" />
         </div>
       </div>
       <router-view />
@@ -44,6 +44,7 @@
             }
         },
         async mounted() {
+            this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.position = this.$route.params.position
 
             this.surveyService = new SurveyService()
@@ -52,13 +53,10 @@
             this.instructions = this.surveys.instructions
             this.questions = this.surveys.questions
             this.surveyState = this.surveys.surveyState.libelle
-            this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.productNumber = this.surveys.id
 
             // await this.TTSService.textToSpeech(this.instruction + this.productNumber);
-            await this.TTSService.textToSpeech(
-                "Mangez le produit" + this.productNumber
-            )
+            await this.TTSService.textToSpeech("Mangez le produit" + this.productNumber)
             await this.TTSService.textToSpeech(this.vocalCommand)
 
             var result = await this.STTService.speechToText()

@@ -6,7 +6,7 @@
         <MainButton class="itemCentered" message="Suivant" />
         <div id="iconText">
           <i class="fa-solid fa-microphone"></i>
-          <MicrophoneText class="itemCentered" v-bind:message="vocalCommand" />
+          <MicrophoneText class="itemCentered" :message="vocalCommand" />
         </div>
       </div>
       <router-view />
