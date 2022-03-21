@@ -71,10 +71,7 @@
             async nextStep() {
                 event.preventDefault()
                 await this.TTSService.stopTextToSpeech()
-                router.push({
-                    name: "QuestionPage",
-                    params: { position: this.position },
-                })
+                router.push({ name: "AnswerPage", params: { position: this.position }})
             },
             async writeReponse(speechRecognizer) {
                 speechRecognizer.recognizing = (s, e) => {
