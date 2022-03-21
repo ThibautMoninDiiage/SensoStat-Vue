@@ -1,11 +1,12 @@
-import axios from 'axios'
+import axios from "axios";
 
 export default class SurveyService {
-
-    async getSurveyByUserId() {
-        const survey = await axios.get('https://appsensostatapi.azurewebsites.net/Survey')
-
-        return survey.data
-    }
-
+	async getSurvey(token) {
+		return new Promise((resolve) => {
+		axios.get("https://appsensostatapi.azurewebsites.net/Survey/Token?token=" + token)
+			.then((response) => {
+				resolve(response.data)
+			})
+		})
+	}
 }

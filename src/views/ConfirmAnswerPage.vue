@@ -4,7 +4,7 @@
       		<MainButton @click="goBack" class="itemCentered" id="btnRetour" message="Reformuler"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
-				<MicrophoneText class="itemCentered" v-bind:message="vocalReformulate"/>
+				<MicrophoneText class="itemCentered" :message="vocalReformulate"/>
 			</div>
     	</div>
 
@@ -14,16 +14,16 @@
 			<MainButton @click="endSurvey" class="itemCentered" message="Valider"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
-				<MicrophoneText class="itemCentered" v-bind:message="vocalCommand"/>
+				<MicrophoneText class="itemCentered" :message="vocalCommand"/>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-    import router from "../router/index";
-    import MainButton from "../components/MainButton.vue";
-    import MicrophoneText from "../components/MicrophoneText.vue";
+    import router from "../router/index"
+    import MainButton from "../components/MainButton.vue"
+    import MicrophoneText from "../components/MicrophoneText.vue"
 	import SpeechToTextService from '../services/speechToTextService'
 	import TextToSpeechService from '../services/textToSpeechService'
 
@@ -59,10 +59,12 @@
 		},
 		methods : {
 			async goBack() {
+				event.preventDefault()
                 await this.TTSService.stopTextToSpeech();
           		router.back()
         	},
 			async endSurvey() {
+				event.preventDefault()
                 await this.TTSService.stopTextToSpeech();
 				// router.push({ name : 'InstructionPage', params : { position : this.position }})
 				router.push('/endPage')
@@ -75,7 +77,7 @@
 					else if(e.result.text.toLowerCase().includes("reformuler")){
 						this.goBack()
 					}
-          		};
+          		}
 			}
 		}
     }
