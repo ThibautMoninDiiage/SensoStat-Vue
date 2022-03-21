@@ -45,19 +45,15 @@
         },
         async mounted() {
             this.position = this.$route.params.position
-            // CALL SURVEY SERVICE
+
             this.surveyService = new SurveyService()
-            var result = await this.surveyService.getSurvey()
-            // GET SURVEYS
-            this.surveys = result
-            // GET INSTRUCTIONS
-            this.instructions = result.instructions
-            // GET QUESTIONS
-            this.questions = result.questions
-            // GET SURVEY STATE
-            this.surveyState = result.surveyState.libelle
+            this.surveys = await this.surveyService.getSurvey()
+            
+            this.instructions = this.surveys.instructions
+            this.questions = this.surveys.questions
+            this.surveyState = this.surveys.surveyState.libelle
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
-            this.productNumber = result.id
+            this.productNumber = this.surveys.id
 
             // await this.TTSService.textToSpeech(this.instruction + this.productNumber);
             await this.TTSService.textToSpeech(
