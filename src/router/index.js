@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 import AllowMicrophone from '../views/AllowMicrophone.vue'
-import StartPage from "../views/StartPage.vue"
+import WelcomePage from "../views/WelcomePage.vue"
 import InstructionPage from "../views/InstructionPage.vue"
-import QuestionPage from '../views/QuestionPage.vue'
 import AnswerPage from "../views/AnswerPage.vue"
 import ConfirmAnswerPage from '../views/ConfirmAnswerPage.vue'
 import EndPage from '../views/EndPage.vue'
@@ -11,24 +10,19 @@ import NotAllowed from '../components/NotAllowed.vue'
 
 const routes = [
     {
-        path: "/",
+        path: "/:token",
         name: "AllowMicrophone",
         component: AllowMicrophone
     },
     {
-        path: "/startPage",
-        name: "StartPage",
-        component: StartPage
+        path: "/welcomePage/:position",
+        name: "WelcomePage",
+        component: WelcomePage
     },
     {
         path: "/instructionPage/:position",
         name: "InstructionPage",
         component: InstructionPage
-    },
-    {
-        path: "/questionPage/:position",
-        name: "QuestionPage",
-        component: QuestionPage
     },
     {
         path: "/answerPage/:position",

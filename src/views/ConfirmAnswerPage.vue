@@ -4,7 +4,7 @@
       		<MainButton @click="goBack" class="itemCentered" id="btnRetour" message="Reformuler"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
-				<MicrophoneText class="itemCentered" v-bind:message="vocalReformulate"/>
+				<MicrophoneText class="itemCentered" :message="vocalReformulate"/>
 			</div>
     	</div>
 
@@ -14,7 +14,7 @@
 			<MainButton @click="endSurvey" class="itemCentered" message="Valider"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
-				<MicrophoneText class="itemCentered" v-bind:message="vocalCommand"/>
+				<MicrophoneText class="itemCentered" :message="vocalCommand"/>
 			</div>
 		</div>
 	</div>
