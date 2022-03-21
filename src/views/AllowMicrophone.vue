@@ -28,7 +28,7 @@
             this.AuthService.setTokenToLocalStorage(this.token)
         },
         methods : {
-            startPage(event) {
+            startPage() {
                 event.preventDefault()
                 this.STTService.speechToText()
                 router.push('/startPage')

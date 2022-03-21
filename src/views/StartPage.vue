@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="instruction !== undefined">
     <form @submit="startSurvey" id="mainContainer">
-      <div id="title">{{ welcomeMessage }}</div>
+      <div id="title">{{ instruction.libelle }}</div>
       <div id="microphoneContainer">
         <MainButton class="itemCentered" message="Commencer la séance" />
         <div id="iconText">
@@ -20,6 +20,7 @@
     import TextToSpeechService from "../services/textToSpeechService"
     import SpeechToTextService from "../services/speechToTextService"
     import SurveyService from "../services/surveyService"
+    import AuthService from '../services/authService'
 
     export default {
         name: "StartPage",
@@ -34,15 +35,29 @@
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
                 SurveyService : new SurveyService(),
-                products : undefined,
-                position : 0,
+                AuthService : new AuthService(),
+                position : 1,
+                token : undefined,
+                surveys : [],
+                instructions : [],
+                instruction : undefined
             }
         },
         async mounted() {
-            this.welcomeMessage = "Bienvenue à notre séance de tests."
             this.vocalCommand = 'Cliquez sur le bouton, ou dites "Commencer"'
 
-            await this.TTSService.textToSpeech(this.welcomeMessage)
+            this.token = this.AuthService.getTokenFromLocalStorage()
+            this.surveys = await this.SurveyService.getSurvey(this.token)
+            console.log(this.surveys);
+            
+            this.instructions = this.surveys.instructions
+            this.instructions.forEach(instruction => {
+                if (instruction.position == this.position) {
+                    this.instruction = instruction
+                }
+            })
+
+            await this.TTSService.textToSpeech(this.instruction)
             await this.TTSService.textToSpeech(this.vocalCommand)
 
             var result = await this.STTService.speechToText()
