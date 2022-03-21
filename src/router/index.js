@@ -11,7 +11,7 @@ import NotAllowed from '../components/NotAllowed.vue'
 
 const routes = [
     {
-        path: "/",
+        path: "/:token",
         name: "AllowMicrophone",
         component: AllowMicrophone
     },

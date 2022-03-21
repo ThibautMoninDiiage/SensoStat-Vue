@@ -9,6 +9,7 @@
     import router from '../router/index'
     import MainButton from '../components/MainButton.vue'
     import STTService from '../services/speechToTextService'
+    import AuthService from '../services/authService'
 
     export default {
         name : 'AllowMicrophone',
@@ -17,8 +18,14 @@
         },
         data() {
             return {
-                STTService : new STTService()
+                STTService : new STTService(),
+                AuthService : new AuthService(),
+                token : undefined
             }
+        },
+        mounted() {
+            this.token = this.$route.params.token
+            this.AuthService.setTokenToLocalStorage(this.token)
         },
         methods : {
             startPage(event) {

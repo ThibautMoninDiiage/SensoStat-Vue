@@ -20,6 +20,7 @@
     import TextToSpeechService from "../services/textToSpeechService"
     import SpeechToTextService from "../services/speechToTextService"
     import SurveyService from "../services/surveyService"
+    import AuthService from '../services/authService'
 
     export default {
         name: "StartPage",
@@ -29,13 +30,14 @@
         },
         data() {
             return {
-                welcomeMessage: undefined,
-                vocalCommand: undefined,
-                TTSService: new TextToSpeechService(),
-                STTService: new SpeechToTextService(),
-                SurveyService: new SurveyService(),
-                products: undefined,
-                position: 0,
+                welcomeMessage : undefined,
+                vocalCommand : undefined,
+                TTSService : new TextToSpeechService(),
+                STTService : new SpeechToTextService(),
+                SurveyService : new SurveyService(),
+                AuthService : new AuthService(),
+                products : undefined,
+                position : 0,
             }
         },
         async mounted() {
@@ -47,6 +49,8 @@
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
+            var token = this.AuthService.getTokenFromLocalStorage()
+            console.log(token)
         },
         methods: {
             async startSurvey() {
