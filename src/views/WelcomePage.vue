@@ -64,8 +64,6 @@
                 }
             })
 
-            console.log(this.welcomeMessages);
-
             await this.TTSService.textToSpeech(this.instruction)
             await this.TTSService.textToSpeech(this.vocalCommand)
 
