@@ -1,7 +1,7 @@
 <template>
-  <div v-if="welcomeMessages !== undefined">
+  <div v-if="welcomeMessage !== undefined">
     <form @submit="startSurvey" id="mainContainer">
-      <div id="title">{{ welcomeMessages[position] }}</div>
+      <div id="title">{{ welcomeMessage }}</div>
       <div id="microphoneContainer">
         <MainButton class="itemCentered" message="Commencer la séance" />
         <div id="iconText">
