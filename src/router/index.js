@@ -12,32 +12,38 @@ const routes = [
     {
         path: "/:token",
         name: "AllowMicrophone",
-        component: AllowMicrophone
+        component: AllowMicrophone,
+        meta : { routeName : "allowMicrophone" }
     },
     {
         path: "/welcomePage/:position",
         name: "WelcomePage",
-        component: WelcomePage
+        component: WelcomePage,
+        meta : { routeName : "welcomePage" }
     },
     {
         path: "/instructionPage/:position",
         name: "InstructionPage",
-        component: InstructionPage
+        component: InstructionPage,
+        meta : { routeName : "instructionPage" }
     },
     {
         path: "/answerPage/:position",
         name: "AnswerPage",
-        component: AnswerPage
+        component: AnswerPage,
+        meta : { routeName : "answerPage" }
     },
     {
         path: "/confirmAnswerPage/:position/:responseUser",
         name: "ConfirmAnswerPage",
-        component: ConfirmAnswerPage
+        component: ConfirmAnswerPage,
+        meta : { routeName : "confirmAnswerPage" }
     },
     {
         path: '/endPage',
         name: 'EndPage',
-        component: EndPage
+        component: EndPage,
+        meta : { routeName : "endPage" }
     },
     {
         path: '/:pathMatch(.*)',
@@ -56,6 +62,7 @@ const router = createRouter({
     routes,
 })
 
+// Logic path : AllowMicrophone -> WelcomePage -> InstructionPage -> AnswerPage -> ConfirmAnswerPage -> EndPage
 router.beforeEach(async (to, from, next) => {
     if (to.name == 'EndPage' && from.name !== 'ConfirmAnswerPage') {
         next({name : 'NotAllowed'})
