@@ -1,16 +1,16 @@
 <template>
-  <div v-if="welcomeMessage !== undefined">
-    <form @submit="startSurvey" id="mainContainer">
-      <div id="title">{{ welcomeMessage }}</div>
-      <div id="microphoneContainer">
-        <MainButton class="itemCentered" message="Commencer la séance" />
-        <div id="iconText">
-          <i class="fa-solid fa-microphone"></i>
-          <MicrophoneText class="itemCentered" :message="vocalCommand" />
-        </div>
-      </div>
-    </form>
-  </div>
+    <div v-if="welcomeMessage !== undefined">
+        <form @submit="startSurvey" id="mainContainer">
+            <div id="title">{{ welcomeMessage.libelle }}</div>
+            <div id="microphoneContainer">
+                <MainButton class="itemCentered" message="Commencer la séance" />
+                <div id="iconText">
+                    <i class="fa-solid fa-microphone"></i>
+                    <MicrophoneText class="itemCentered" :message="vocalCommand" />
+                </div>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -58,12 +58,6 @@
                 }
             })
 
-            this.welcomeMessages.forEach(welcomeMessage => {
-                if (welcomeMessage.position == this.position) {
-                    this.welcomeMessage = welcomeMessage
-                }
-            })
-
             await this.TTSService.textToSpeech(this.instruction)
             await this.TTSService.textToSpeech(this.vocalCommand)
 
@@ -95,6 +89,15 @@
                     }
                 }
             }
-        }
+        },
+        watch : {
+            position() {
+                this.welcomeMessages.forEach(welcomeMessage => {
+                    if (welcomeMessage.position == this.position) {
+                        this.welcomeMessage = welcomeMessage
+                    }
+                })
+            }
+        } 
     }
 </script>
