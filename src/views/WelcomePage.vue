@@ -51,7 +51,6 @@
             this.surveys = await this.SurveyService.getSurvey(this.token)
             
             this.instructions = this.surveys.instructions
-            console.log(this.instructions);
 
             this.instructions.forEach(instruction => {
                 if (instruction.status == 0) {
