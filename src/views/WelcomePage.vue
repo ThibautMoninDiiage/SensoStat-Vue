@@ -2,6 +2,9 @@
     <div v-if="welcomeMessage !== undefined">
         <form @submit="startSurvey" id="mainContainer">
             <div id="title">{{ welcomeMessage.libelle }}</div>
+            <!-- <h1 v-for="message in welcomeMessages" :key="message.id">
+                {{ message.libelle }}
+            </h1> -->
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" message="Commencer la séance" />
                 <div id="iconText">
@@ -63,8 +66,8 @@
                     this.welcomeMessage = welcomeMessage
                 }
             })
-
-            await this.TTSService.textToSpeech(this.instruction)
+            
+            await this.TTSService.textToSpeech(this.welcomeMessage.libelle)
             await this.TTSService.textToSpeech(this.vocalCommand)
 
             var result = await this.STTService.speechToText()
