@@ -54,7 +54,6 @@
 
             this.surveyService = new SurveyService()
             this.surveys = await this.surveyService.getSurvey(this.token)
-            console.log(this.surveys);
             this.instructions = this.surveys.instructions
             this.questions = this.surveys.questions
             this.surveyState = this.surveys.surveyState.libelle
@@ -70,7 +69,6 @@
         methods: {
             async nextStep() {
                 event.preventDefault()
-                await this.TTSService.stopTextToSpeech()
                 router.push({ name: "AnswerPage", params: { position: this.position }})
             },
             async writeReponse(speechRecognizer) {

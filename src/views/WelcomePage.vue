@@ -88,7 +88,7 @@
             },
             async writeReponse(speechRecognizer) {
                 speechRecognizer.recognizing = (s, e) => {
-                    if (e.result.text.toLowerCase().includes("commencer")) {
+                    if (e.result.text.toLowerCase().includes("suivant") || e.result.text.toLowerCase().includes("commencer")) {
                         this.startSurvey()
                     }
                 }

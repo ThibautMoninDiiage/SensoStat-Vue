@@ -23,7 +23,7 @@ export default class TextToSpeechService {
         if (isPlayerPaused) {
             this.player.pause()
         } else {
-            await this.synthetizer.speakTextAsync(productText, result => {
+            this.synthetizer.speakTextAsync(productText, result => {
                 if (result) {
                     return result.audioData
                 }
