@@ -3,10 +3,10 @@
         <form @submit="startSurvey" id="mainContainer">
             <div id="title">{{ welcomeMessage.libelle }}</div>
             <div id="microphoneContainer">
-                <MainButton class="itemCentered" message="Commencer la séance" />
+                <MainButton class="itemCentered" :message="mainButtonText"/>
                 <div id="iconText">
                     <i class="fa-solid fa-microphone"></i>
-                    <MicrophoneText class="itemCentered" :message="vocalCommand" />
+                    <MicrophoneText class="itemCentered" :message="audioHelper"/>
                 </div>
             </div>
         </form>
@@ -30,7 +30,7 @@
         },
         data() {
             return {
-                vocalCommand : undefined,
+                audioHelper : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
                 SurveyService : new SurveyService(),
@@ -40,11 +40,12 @@
                 surveys : [],
                 instructions : [],
                 welcomeMessages : [],
-                welcomeMessage : undefined
+                welcomeMessage : undefined,
+                mainButtonText : undefined,
+                isPlayerPaused : false
             }
         },
         async mounted() {
-            this.vocalCommand = 'Cliquez sur le bouton, ou dites "Commencer"'
             this.position = this.$route.params.position
 
             this.token = this.AuthService.getTokenFromLocalStorage()
@@ -63,17 +64,14 @@
                     this.welcomeMessage = welcomeMessage
                 }
             })
-            
-            await this.TTSService.textToSpeech(this.welcomeMessage.libelle)
-            await this.TTSService.textToSpeech(this.vocalCommand)
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
+            this.changeMessage()
         },
         methods: {
             async startSurvey() {
                 event.preventDefault()
-                await this.TTSService.stopTextToSpeech()
                 this.position ++
                 String(this.position)
                 if (this.welcomeMessages.length !== this.position) {
@@ -94,13 +92,28 @@
                         this.startSurvey()
                     }
                 }
+            },
+            async changeMessage() {
+                if (this.welcomeMessages.length - 1 !== this.position) {
+                    this.mainButtonText = "Suivant"
+                    this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
+                } else {
+                    this.mainButtonText = "Commencer"
+                    this.audioHelper = 'Cliquez sur le bouton, ou dites "Commencer"'
+                }
+                this.speech()
+            },
+            async speech() {
+                await this.TTSService.textToSpeech(this.welcomeMessage.libelle, this.isPlayerPaused)
+                await this.TTSService.textToSpeech(this.audioHelper, this.isPlayerPaused)
             }
         },
         watch : {
             position() {
-                this.welcomeMessages.forEach(welcomeMessage => {
+                this.welcomeMessages.forEach(async (welcomeMessage) => {
                     if (welcomeMessage.position == this.position) {
                         this.welcomeMessage = welcomeMessage
+                        this.speech()
                     }
                 })
             }

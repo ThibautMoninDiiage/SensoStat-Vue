@@ -7,6 +7,7 @@ export default class TextToSpeechService {
     audioConfig
     synthetizer
     player
+    isPlayerPause
 
     constructor(){
         this.speechConfig = sdk.SpeechConfig.fromSubscription('1e006e65b78049bc83e6f795d1e3d893', 'francecentral')
@@ -15,23 +16,23 @@ export default class TextToSpeechService {
         this.speechConfig.speechSynthesisLanguage = 'fr-FR'
         this.speechConfig.speechSynthesisVoiceName = 'fr-BE-CharlineNeural'
         this.synthetizer = new SpeechSynthesizer(this.speechConfig, this.audioConfig)
+        this.isPlayerPause = false
     }
 
-    async textToSpeech(productText) {
-        await this.synthetizer.speakTextAsync(productText, result => {
-            if (result) {
-                return result.audioData
-            }
-        },
-        error => {
-            console.log(error)
-            this.synthetizer.close()
+    async textToSpeech(productText, isPlayerPaused) {
+        if (isPlayerPaused) {
+            this.player.pause()
+        } else {
+            await this.synthetizer.speakTextAsync(productText, result => {
+                if (result) {
+                    return result.audioData
+                }
+                },
+                error => {
+                    console.log(error)
+                    this.synthetizer.close()
+                }
+            )
         }
-        )
     }
-
-    async stopTextToSpeech(){
-        this.player.pause()
-    }
-
 }
