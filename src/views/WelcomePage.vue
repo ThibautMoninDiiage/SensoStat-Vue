@@ -72,8 +72,7 @@
         methods: {
             async startSurvey() {
                 event.preventDefault()
-                this.position ++
-                String(this.position)
+                this.incrementPosition()
                 if (this.welcomeMessages.length !== this.position) {
                     router.push({
                         name: "WelcomePage",
@@ -94,7 +93,9 @@
                 }
             },
             async changeMessage() {
-                if (this.welcomeMessages.length - 1 !== this.position) {
+                console.log(this.welcomeMessages.length);
+                console.log(this.position);
+                if (this.welcomeMessages.length !== this.position) {
                     this.mainButtonText = "Suivant"
                     this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
                 } else {
@@ -106,6 +107,10 @@
             async speech() {
                 await this.TTSService.textToSpeech(this.welcomeMessage.libelle, this.isPlayerPaused)
                 await this.TTSService.textToSpeech(this.audioHelper, this.isPlayerPaused)
+            },
+            async incrementPosition() {
+                this.position ++
+                String(this.position)
             }
         },
         watch : {
