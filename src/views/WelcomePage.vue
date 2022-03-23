@@ -68,6 +68,7 @@
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
             this.changeMessage()
+            this.speech()
         },
         methods: {
             async startSurvey() {
@@ -93,8 +94,6 @@
                 }
             },
             async changeMessage() {
-                console.log(this.welcomeMessages.length);
-                console.log(this.position);
                 if (this.welcomeMessages.length - 1 !== this.position) {
                     this.mainButtonText = "Suivant"
                     this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
@@ -102,7 +101,6 @@
                     this.mainButtonText = "Commencer"
                     this.audioHelper = 'Cliquez sur le bouton, ou dites "Commencer"'
                 }
-                this.speech()
             },
             async speech() {
                 await this.TTSService.textToSpeech(this.welcomeMessage.libelle, this.isPlayerPaused)
@@ -119,6 +117,7 @@
                     if (welcomeMessage.position == this.position) {
                         this.welcomeMessage = welcomeMessage
                         this.speech()
+                        this.changeMessage()
                     }
                 })
             }
