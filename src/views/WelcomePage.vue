@@ -1,16 +1,16 @@
 <template>
-  <div v-if="welcomeMessages !== undefined">
-    <form @submit="startSurvey" id="mainContainer">
-      <div id="title">{{ welcomeMessages[position] }}</div>
-      <div id="microphoneContainer">
-        <MainButton class="itemCentered" message="Commencer la séance" />
-        <div id="iconText">
-          <i class="fa-solid fa-microphone"></i>
-          <MicrophoneText class="itemCentered" :message="vocalCommand" />
-        </div>
-      </div>
-    </form>
-  </div>
+    <div v-if="welcomeMessage !== undefined">
+        <form @submit="startSurvey" id="mainContainer">
+            <div id="title">{{ welcomeMessage.libelle }}</div>
+            <div id="microphoneContainer">
+                <MainButton class="itemCentered" :message="mainButtonText"/>
+                <div id="iconText">
+                    <i class="fa-solid fa-microphone"></i>
+                    <MicrophoneText class="itemCentered" :message="audioHelper"/>
+                </div>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -30,7 +30,7 @@
         },
         data() {
             return {
-                vocalCommand : undefined,
+                audioHelper : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
                 SurveyService : new SurveyService(),
@@ -40,11 +40,12 @@
                 surveys : [],
                 instructions : [],
                 welcomeMessages : [],
-                welcomeMessage : undefined
+                welcomeMessage : undefined,
+                mainButtonText : undefined,
+                isPlayerPaused : false
             }
         },
         async mounted() {
-            this.vocalCommand = 'Cliquez sur le bouton, ou dites "Commencer"'
             this.position = this.$route.params.position
 
             this.token = this.AuthService.getTokenFromLocalStorage()
@@ -64,20 +65,15 @@
                 }
             })
 
-            console.log(this.welcomeMessages);
-
-            await this.TTSService.textToSpeech(this.instruction)
-            await this.TTSService.textToSpeech(this.vocalCommand)
-
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
+            this.changeMessage()
+            this.speech()
         },
         methods: {
             async startSurvey() {
                 event.preventDefault()
-                await this.TTSService.stopTextToSpeech()
-                this.position ++
-                String(this.position)
+                this.incrementPosition()
                 if (this.welcomeMessages.length !== this.position) {
                     router.push({
                         name: "WelcomePage",
@@ -92,11 +88,39 @@
             },
             async writeReponse(speechRecognizer) {
                 speechRecognizer.recognizing = (s, e) => {
-                    if (e.result.text.toLowerCase().includes("commencer")) {
+                    if (e.result.text.toLowerCase().includes("suivant") || e.result.text.toLowerCase().includes("commencer")) {
                         this.startSurvey()
                     }
                 }
+            },
+            async changeMessage() {
+                if (this.welcomeMessages.length - 1 !== this.position) {
+                    this.mainButtonText = "Suivant"
+                    this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
+                } else {
+                    this.mainButtonText = "Commencer"
+                    this.audioHelper = 'Cliquez sur le bouton, ou dites "Commencer"'
+                }
+            },
+            async speech() {
+                await this.TTSService.textToSpeech(this.welcomeMessage.libelle, this.isPlayerPaused)
+                await this.TTSService.textToSpeech(this.audioHelper, this.isPlayerPaused)
+            },
+            async incrementPosition() {
+                this.position ++
+                String(this.position)
             }
-        }
+        },
+        watch : {
+            position() {
+                this.welcomeMessages.forEach(async (welcomeMessage) => {
+                    if (welcomeMessage.position == this.position) {
+                        this.welcomeMessage = welcomeMessage
+                        this.speech()
+                        this.changeMessage()
+                    }
+                })
+            }
+        } 
     }
 </script>

@@ -1,12 +1,12 @@
 <template>
-    <div v-if="instructions != null">
+    <div v-if="instructions !== undefined">
         <form @submit="nextStep" id="mainContainer">
-        <h1>{{ instructions[position] }} {{ productNumber }}</h1>
+        <h1>{{ instructions[position] }}</h1>
         <div id="microphoneContainer">
-            <MainButton class="itemCentered" message="Suivant" />
+            <MainButton class="itemCentered" :message="mainButtonText" />
             <div id="iconText">
             <i class="fa-solid fa-microphone"></i>
-            <MicrophoneText class="itemCentered" :message="vocalCommand" />
+            <MicrophoneText class="itemCentered" :message="audioHelper" />
             </div>
         </div>
         <router-view />
@@ -32,8 +32,8 @@
         data() {
             return {
                 position : undefined,
-                vocalCommand : undefined,
-                productNumber : undefined,
+                audioHelper : undefined,
+                mainButtonText : undefined,
                 text : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
@@ -47,7 +47,8 @@
             }
         },
         async mounted() {
-            this.vocalCommand = 'Cliquez sur le bouton, ou dites "Suivant"'
+            this.mainButtonText = "Suivant"
+            this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.position = this.$route.params.position
 
             this.token = this.AuthService.getTokenFromLocalStorage()
@@ -58,11 +59,9 @@
             this.instructions = this.surveys.instructions
             this.questions = this.surveys.questions
             this.surveyState = this.surveys.surveyState.libelle
-            this.productNumber = this.surveys.id
 
-            // await this.TTSService.textToSpeech(this.instruction + this.productNumber);
             await this.TTSService.textToSpeech("Mangez le produit" + this.productNumber)
-            await this.TTSService.textToSpeech(this.vocalCommand)
+            await this.TTSService.textToSpeech(this.audioHelper)
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
@@ -70,7 +69,6 @@
         methods: {
             async nextStep() {
                 event.preventDefault()
-                await this.TTSService.stopTextToSpeech()
                 router.push({ name: "AnswerPage", params: { position: this.position }})
             },
             async writeReponse(speechRecognizer) {
