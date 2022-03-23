@@ -60,12 +60,10 @@
 		methods : {
 			async goBack() {
 				event.preventDefault()
-                await this.TTSService.stopTextToSpeech();
           		router.back()
         	},
 			async endSurvey() {
 				event.preventDefault()
-                await this.TTSService.stopTextToSpeech();
 				// router.push({ name : 'InstructionPage', params : { position : this.position }})
 				router.push('/endPage')
 			},
