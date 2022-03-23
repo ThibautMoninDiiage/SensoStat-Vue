@@ -95,7 +95,7 @@
             async changeMessage() {
                 console.log(this.welcomeMessages.length);
                 console.log(this.position);
-                if (this.welcomeMessages.length !== this.position) {
+                if (this.welcomeMessages.length - 1 !== this.position) {
                     this.mainButtonText = "Suivant"
                     this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
                 } else {
