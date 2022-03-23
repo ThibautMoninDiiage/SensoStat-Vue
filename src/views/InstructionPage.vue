@@ -59,7 +59,6 @@
             this.surveyState = this.surveys.surveyState.libelle
             this.productNumber = this.surveys.id
 
-            // await this.TTSService.textToSpeech(this.instruction + this.productNumber);
             await this.TTSService.textToSpeech("Mangez le produit" + this.productNumber)
             await this.TTSService.textToSpeech(this.vocalCommand)
 
