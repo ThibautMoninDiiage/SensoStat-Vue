@@ -8,7 +8,7 @@
 			</div>
     	</div>
 
-    	<textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
+    	<textarea class="areaAnswer" id="userAnswer" rows="15" cols="30"></textarea>
 
 		<div id="microphoneContainer">
 			<MainButton @click="endSurvey" class="itemCentered" :message="confirmButtonText"/>
@@ -26,6 +26,8 @@
     import MicrophoneText from "../components/MicrophoneText.vue"
 	import SpeechToTextService from '../services/speechToTextService'
 	import TextToSpeechService from '../services/textToSpeechService'
+	import AnswerService from '../services/answerService'
+	import AuthService from '../services/authService'
 
     export default {
         name: "ConfirmAnswerPage",
@@ -42,13 +44,25 @@
 				audioHelper : undefined,
 				STTService : new SpeechToTextService(),
 				TTSService : new TextToSpeechService(),
-				response : undefined,
-				totalInstructionsQuestions : undefined
+				AnswerService : new AnswerService(),
+				AuthService : new AuthService(),
+				userAnswer : undefined,
+				totalInstructionsQuestions : undefined,
+				totalProducts : undefined,
+				token : undefined,
+				questionId : undefined,
+				productId : undefined,
+				productPosition : undefined,
 			}
 		},
 		async mounted(){
 			this.position = this.$route.params.position
+			this.productPosition = this.$route.params.productPosition
 			this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
+            this.token = this.AuthService.getTokenFromLocalStorage()
+			this.questionId = this.$route.params.questionId
+			this.productId = this.$route.params.productId
+			this.totalProducts = this.$route.params.totalProducts
 			this.reformulateButtonText = "Reformuler"
 			this.confirmButtonText = "Valider"
             this.audioHelperReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
@@ -60,9 +74,9 @@
 			var result = await this.STTService.speechToText();
 			await this.writeReponse(result)
 
-			this.response = this.$route.params.responseUser;
-			let text = document.getElementById("response")
-			text.innerHTML = this.response;
+			this.userAnswer = this.$route.params.responseUser;
+			let text = document.getElementById("userAnswer")
+			text.innerHTML = this.userAnswer;
 		},
 		methods : {
 			async goBack() {
@@ -71,11 +85,29 @@
         	},
 			async endSurvey() {
 				event.preventDefault()
-				if (this.totalInstructionsQuestions !== this.position) {
-					this.incrementPosition()
-					router.push({ name : 'InstructionPage', params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
-				} else {
+				this.AnswerService.saveUserAnswer(this.userAnswer, this.questionId, this.token, this.productId)
+				if (this.totalInstructionsQuestions == this.position && this.totalProducts == this.productPosition) {
 					router.push('/endPage')
+				} else if (this.totalInstructionsQuestions == this.position && this.totalProducts !== this.productPosition) {
+					this.incrementProductPosition()
+					router.push({
+						name : 'InstructionPage',
+						params: {
+							position: this.position,
+							totalInstructionsQuestions : this.totalInstructionsQuestions,
+							productPosition : this.productPosition
+						}
+					})
+				} else if (this.totalInstructionsQuestions !== this.position && this.totalProducts !== this.productPosition) {
+					this.incrementPosition()
+					router.push({
+						name : 'InstructionPage',
+						params: {
+							position: this.position,
+							totalInstructionsQuestions : this.totalInstructionsQuestions,
+							productPosition : this.productPosition
+						}
+					})
 				}
 			},
 			writeReponse(speechRecognizer){
@@ -91,6 +123,10 @@
             async incrementPosition() {
                 this.position ++
                 String(this.position)
+            },
+            async incrementProductPosition() {
+                this.productPosition ++
+                String(this.productPosition)
             },
 		}
     }

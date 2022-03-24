@@ -2,7 +2,7 @@
 	<div>
 		<form @submit="nextStep" id="mainContainer">
 			<div class="title">{{ title }}</div>
-    		<textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
+    		<textarea class="areaAnswer" id="userAnswer" rows="15" cols="30"></textarea>
 
 			<div id="microphoneContainer">
 				<MainButton class="itemCentered" :message="mainButtonText"/>
@@ -35,14 +35,22 @@
 				audioHelper : undefined,
 			  	TTSService : new TextToSpeechService(),
 				STTService : new SpeechToTextService(),
-				response : undefined,
+				userAnswer : undefined,
 				mainButtonText : undefined,
-				totalInstructionsQuestions : undefined
+				totalInstructionsQuestions : undefined,
+				questionId : undefined,
+				productId : undefined,
+				productPosition : undefined,
+				totalProducts : undefined
 		  	}
 	  	},
 	  	async mounted() {
 			this.mainButtonText = "Suivant"
 			this.position = this.$route.params.position
+			this.totalProducts = this.$route.params.totalProducts
+			this.productPosition = this.$route.params.productPosition
+			this.questionId = this.$route.params.questionId
+			this.productId = this.$route.params.productId
             this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
             this.audioHelper = 'Pour confirmer votre réponse, dites "Suivant"'
 
@@ -55,15 +63,27 @@
 	  	methods : {
 		  	async nextStep() {
 				event.preventDefault()
-				this.response = document.getElementById("response").innerHTML;
-			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
+				this.userAnswer = document.getElementById("userAnswer").innerHTML;
+			  	router.push({
+					name : 'ConfirmAnswerPage',
+					params : {
+						responseUser : this.userAnswer,
+						position : this.position,
+						totalInstructionsQuestions : this.totalInstructionsQuestions,
+						questionId : this.questionId,
+						productId : this.productId,
+						productPosition : this.productPosition,
+						totalProducts : this.totalProducts
+					}
+				})
 		  	},
 			writeReponse(speechRecognizer){
-				let textarea = document.getElementById("response")
+				let textarea = document.getElementById("userAnswer")
 				let micro = document.getElementById("mic")
+				textarea.textContent = ""
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")) {
-              			this.response = document.getElementById("response").innerHTML;
+              			this.userAnswer = document.getElementById("userAnswer").innerHTML;
 						  this.nextStep()
             		}
 					else {
