@@ -1,7 +1,7 @@
 <template>
-    <div v-if="welcomeMessage !== undefined">
+    <div v-if="introduction !== undefined">
         <form @submit="startSurvey" id="mainContainer">
-            <div id="title">{{ welcomeMessage.libelle }}</div>
+            <div id="title">{{ introduction.libelle }}</div>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" :message="mainButtonText"/>
                 <div id="iconText">
@@ -39,10 +39,12 @@
                 token : undefined,
                 surveys : [],
                 instructions : [],
-                welcomeMessages : [],
-                welcomeMessage : undefined,
+                introductions : [],
+                instructionsUnique : [],
+                introduction : undefined,
                 mainButtonText : undefined,
-                isPlayerPaused : false
+                isPlayerPaused : false,
+                totalInstructionsQuestions : undefined
             }
         },
         async mounted() {
@@ -50,20 +52,28 @@
 
             this.token = this.AuthService.getTokenFromLocalStorage()
             this.surveys = await this.SurveyService.getSurvey(this.token)
-            
+
             this.instructions = this.surveys.instructions
 
             this.instructions.forEach(instruction => {
                 if (instruction.status == 0) {
-                    this.welcomeMessages.push(instruction)
+                    this.introductions.push(instruction)
+                }
+            })
+            
+            this.instructions.forEach(instruction => {
+                if (instruction.status == 1) {
+                    this.instructionsUnique.push(instruction)
+                }
+            })
+            
+            this.introductions.forEach(introduction => {
+                if (introduction.position == this.position) {
+                    this.introduction = introduction
                 }
             })
 
-            this.welcomeMessages.forEach(welcomeMessage => {
-                if (welcomeMessage.position == this.position) {
-                    this.welcomeMessage = welcomeMessage
-                }
-            })
+            this.totalInstructionsQuestions = this.introductions.length + this.surveys.questions.length + this.instructionsUnique.length - 1
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
@@ -74,15 +84,15 @@
             async startSurvey() {
                 event.preventDefault()
                 this.incrementPosition()
-                if (this.welcomeMessages.length !== this.position) {
+                if (this.introductions.length !== this.position) {
                     router.push({
                         name: "WelcomePage",
-                        params: { position: this.position },
+                        params: { position: this.position }
                     })
                 } else {
                     router.push({
                         name: "InstructionPage",
-                        params: { position: this.position },
+                        params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }
                     })
                 }
             },
@@ -94,7 +104,7 @@
                 }
             },
             async changeMessage() {
-                if (this.welcomeMessages.length - 1 !== this.position) {
+                if (this.introductions.length - 1 !== this.position) {
                     this.mainButtonText = "Suivant"
                     this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
                 } else {
@@ -103,7 +113,7 @@
                 }
             },
             async speech() {
-                await this.TTSService.textToSpeech(this.welcomeMessage.libelle, this.isPlayerPaused)
+                await this.TTSService.textToSpeech(this.introduction.libelle, this.isPlayerPaused)
                 await this.TTSService.textToSpeech(this.audioHelper, this.isPlayerPaused)
             },
             async incrementPosition() {
@@ -113,9 +123,9 @@
         },
         watch : {
             position() {
-                this.welcomeMessages.forEach(async (welcomeMessage) => {
-                    if (welcomeMessage.position == this.position) {
-                        this.welcomeMessage = welcomeMessage
+                this.introductions.forEach(async (introduction) => {
+                    if (introduction.position == this.position) {
+                        this.introduction = introduction
                         this.speech()
                         this.changeMessage()
                     }
