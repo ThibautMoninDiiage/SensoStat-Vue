@@ -61,6 +61,7 @@
 			writeReponse(speechRecognizer){
 				let textarea = document.getElementById("response")
 				let micro = document.getElementById("mic")
+				textarea.textContent = ""
 				speechRecognizer.recognizing = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")) {
               			this.response = document.getElementById("response").innerHTML;
