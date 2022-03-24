@@ -44,13 +44,15 @@
                 instructionsQuestions : [],
                 token : undefined,
                 message : undefined,
-                type : undefined
+                type : undefined,
+                totalInstructionsQuestions : undefined
             }
         },
         async mounted() {
             this.mainButtonText = "Suivant"
             this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.position = this.$route.params.position
+            this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
 
             this.token = this.AuthService.getTokenFromLocalStorage()
 
@@ -84,9 +86,9 @@
                 event.preventDefault()
                 if (this.type === "Instruction") {
                     this.incrementPosition()
-                    router.push({ name : "InstructionPage", params : { position : this.position }})
+                    router.push({ name : "InstructionPage", params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
                 } else {
-                    router.push({ name: "AnswerPage", params: { position: this.position }})
+                    router.push({ name: "AnswerPage", params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
                 }
             },
             async writeReponse(speechRecognizer) {

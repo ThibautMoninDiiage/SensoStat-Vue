@@ -36,12 +36,14 @@
 			  	TTSService : new TextToSpeechService(),
 				STTService : new SpeechToTextService(),
 				response : undefined,
-				mainButtonText : undefined
+				mainButtonText : undefined,
+				totalInstructionsQuestions : undefined
 		  	}
 	  	},
 	  	async mounted() {
 			this.mainButtonText = "Suivant"
 			this.position = this.$route.params.position
+            this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
             this.audioHelper = 'Pour confirmer votre réponse, dites "Suivant"'
 
 		  	await this.TTSService.textToSpeech(this.title)
@@ -54,7 +56,7 @@
 		  	async nextStep() {
 				event.preventDefault()
 				this.response = document.getElementById("response").innerHTML;
-			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position }})
+			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
 		  	},
 			writeReponse(speechRecognizer){
 				let textarea = document.getElementById("response")

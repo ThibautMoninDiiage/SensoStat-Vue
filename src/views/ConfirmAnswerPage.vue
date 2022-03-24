@@ -47,6 +47,7 @@
 		},
 		async mounted(){
 			this.position = this.$route.params.position
+			this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
 			this.reformulateButtonText = "Reformuler"
 			this.confirmButtonText = "Valider"
             this.audioHelperReforumulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
@@ -69,9 +70,9 @@
         	},
 			async endSurvey() {
 				event.preventDefault()
-				if (this.totalInstructionsQuestions !== this.position) {
+				if (this.totalInstructionsQuestions !== this.position + 1) {
 					this.incrementPosition()
-					router.push({ name : 'InstructionPage', params : { position : this.position }})
+					router.push({ name : 'InstructionPage', params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
 				} else {
 					router.push('/endPage')
 				}
