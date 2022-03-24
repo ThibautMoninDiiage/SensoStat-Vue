@@ -49,7 +49,7 @@
                 totalInstructionsQuestions : undefined,
                 questionId : undefined,
                 products : [],
-                productPosition : 0,
+                productPosition : undefined,
                 productId : undefined
             }
         },
@@ -57,6 +57,7 @@
             this.mainButtonText = "Suivant"
             this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.position = this.$route.params.position
+            this.productPosition = this.$route.params.productPosition
             this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
 
             this.token = this.AuthService.getTokenFromLocalStorage()
@@ -85,6 +86,7 @@
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
+            console.log(this.position);
             this.verifyType()
             this.speech()
         },
@@ -97,7 +99,8 @@
                         name : "InstructionPage",
                         params: {
                             position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions
+                            totalInstructionsQuestions : this.totalInstructionsQuestions,
+                            productPosition : this.productPosition
                         }
                     })
                 } else {
@@ -107,7 +110,8 @@
                             position: this.position,
                             totalInstructionsQuestions : this.totalInstructionsQuestions,
                             questionId : this.questionId,
-                            productId : this.productId
+                            productId : this.productId,
+                            productPosition : this.productPosition
                         }
                     })
                 }
@@ -138,6 +142,7 @@
         },
         watch : {
             position() {
+                console.log(this.position);
                 this.instructionsQuestions.forEach(async (message) => {
                     if (message.position == this.position) {
                         this.message = message

@@ -39,12 +39,14 @@
 				mainButtonText : undefined,
 				totalInstructionsQuestions : undefined,
 				questionId : undefined,
-				productId : undefined
+				productId : undefined,
+				productPosition : undefined
 		  	}
 	  	},
 	  	async mounted() {
 			this.mainButtonText = "Suivant"
 			this.position = this.$route.params.position
+			this.productPosition = this.$route.params.productPosition
 			this.questionId = this.$route.params.questionId
 			this.productId = this.$route.params.productId
             this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
@@ -67,7 +69,8 @@
 						position : this.position,
 						totalInstructionsQuestions : this.totalInstructionsQuestions,
 						questionId : this.questionId,
-						productId : this.productId
+						productId : this.productId,
+						productPosition : this.productPosition
 					}
 				})
 		  	},

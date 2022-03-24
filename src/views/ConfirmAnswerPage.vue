@@ -48,17 +48,21 @@
 				AuthService : new AuthService(),
 				userAnswer : undefined,
 				totalInstructionsQuestions : undefined,
+				totalProducts : undefined,
 				token : undefined,
 				questionId : undefined,
-				productId : undefined
+				productId : undefined,
+				productPosition : undefined
 			}
 		},
 		async mounted(){
 			this.position = this.$route.params.position
+			this.productPosition = this.$route.params.productPosition
 			this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
             this.token = this.AuthService.getTokenFromLocalStorage()
 			this.questionId = this.$route.params.questionId
 			this.productId = this.$route.params.productId
+			this.totalProducts = 4
 			this.reformulateButtonText = "Reformuler"
 			this.confirmButtonText = "Valider"
             this.audioHelperReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
@@ -82,17 +86,30 @@
 			async endSurvey() {
 				event.preventDefault()
 				this.AnswerService.saveUserAnswer(this.userAnswer, this.questionId, this.token, this.productId)
-				if (this.totalInstructionsQuestions !== this.position) {
+				if (this.totalInstructionsQuestions == this.position && this.totalProducts == this.productPosition) {
+					router.push('/endPage')
+				} else if (this.totalInstructionsQuestions == this.position && this.totalProducts !== this.productPosition) {
+					this.incrementProductPosition()
+					this.position = 0
+					String(this.position)
+					router.push({
+						name : 'InstructionPage',
+						params: {
+							position: this.position,
+							totalInstructionsQuestions : this.totalInstructionsQuestions,
+							productPosition : this.productPosition
+						}
+					})
+				} else if (this.totalInstructionsQuestions !== this.position && this.totalProducts !== this.productPosition) {
 					this.incrementPosition()
 					router.push({
 						name : 'InstructionPage',
 						params: {
 							position: this.position,
-							totalInstructionsQuestions : this.totalInstructionsQuestions
+							totalInstructionsQuestions : this.totalInstructionsQuestions,
+							productPosition : this.productPosition
 						}
 					})
-				} else {
-					router.push('/endPage')
 				}
 			},
 			writeReponse(speechRecognizer){
@@ -108,6 +125,10 @@
             async incrementPosition() {
                 this.position ++
                 String(this.position)
+            },
+            async incrementProductPosition() {
+                this.productPosition ++
+                String(this.productPosition)
             },
 		}
     }

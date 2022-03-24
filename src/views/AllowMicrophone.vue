@@ -21,7 +21,8 @@
                 STTService : new STTService(),
                 AuthService : new AuthService(),
                 token : undefined,
-                position : 0
+                position : 0,
+                productPosition : 0
             }
         },
         mounted() {
@@ -34,7 +35,10 @@
                 this.STTService.speechToText()
                 router.push({
                     name: "WelcomePage",
-                    params: { position: this.position }
+                    params: {
+                        position: this.position,
+                        productPosition : this.productPosition
+                    }
                 })
             }
         }

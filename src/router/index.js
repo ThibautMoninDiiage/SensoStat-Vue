@@ -16,25 +16,25 @@ const routes = [
         meta : { routeName : "allowMicrophone" }
     },
     {
-        path: "/welcomePage/:position",
+        path: "/welcomePage/:position/:productPosition",
         name: "WelcomePage",
         component: WelcomePage,
         meta : { routeName : "welcomePage" }
     },
     {
-        path: "/instructionPage/:position/:totalInstructionsQuestions",
+        path: "/instructionPage/:position/:totalInstructionsQuestions/:productPosition",
         name: "InstructionPage",
         component: InstructionPage,
         meta : { routeName : "instructionPage" }
     },
     {
-        path: "/answerPage/:position/:totalInstructionsQuestions/:questionId/:productId",
+        path: "/answerPage/:position/:totalInstructionsQuestions/:questionId/:productId/:productPosition",
         name: "AnswerPage",
         component: AnswerPage,
         meta : { routeName : "answerPage" }
     },
     {
-        path: "/confirmAnswerPage/:position/:responseUser/:totalInstructionsQuestions/:questionId/:productId",
+        path: "/confirmAnswerPage/:position/:responseUser/:totalInstructionsQuestions/:questionId/:productId/:productPosition",
         name: "ConfirmAnswerPage",
         component: ConfirmAnswerPage,
         meta : { routeName : "confirmAnswerPage" }
