@@ -1,6 +1,7 @@
 <template>
     <div v-if="message !== undefined">
         <form @submit="nextStep" id="mainContainer">
+            <h1>Produit {{ products[productPosition].code }}</h1>
             <h1>{{ message.libelle }}</h1>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" :message="mainButtonText"/>
@@ -45,13 +46,20 @@
                 token : undefined,
                 message : undefined,
                 type : undefined,
-                totalInstructionsQuestions : undefined
+                totalInstructionsQuestions : undefined,
+                questionId : undefined,
+                products : [],
+                productPosition : undefined,
+                productId : undefined,
+                totalProducts : undefined
             }
         },
         async mounted() {
             this.mainButtonText = "Suivant"
             this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.position = this.$route.params.position
+            this.totalProducts = this.$route.params.totalProducts
+            this.productPosition = this.$route.params.productPosition
             this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
 
             this.token = this.AuthService.getTokenFromLocalStorage()
@@ -59,6 +67,8 @@
             this.surveys = await this.surveyService.getSurvey(this.token)
             this.instructions = this.surveys.instructions
             this.questions = this.surveys.questions
+            this.products = this.surveys.products
+            this.productId = this.products[this.productPosition].id
 
             this.instructions.forEach(instruction => {
                 if (instruction.status == 1) {
@@ -86,9 +96,27 @@
                 event.preventDefault()
                 if (this.type === "Instruction") {
                     this.incrementPosition()
-                    router.push({ name : "InstructionPage", params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
+                    router.push({
+                        name : "InstructionPage",
+                        params: {
+                            position: this.position,
+                            totalInstructionsQuestions : this.totalInstructionsQuestions,
+                            productPosition : this.productPosition,
+                            totalProducts : this.totalProducts
+                        }
+                    })
                 } else {
-                    router.push({ name: "AnswerPage", params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
+                    router.push({
+                        name: "AnswerPage",
+                        params: {
+                            position: this.position,
+                            totalInstructionsQuestions : this.totalInstructionsQuestions,
+                            questionId : this.questionId,
+                            productId : this.productId,
+                            productPosition : this.productPosition,
+                            totalProducts : this.totalProducts
+                        }
+                    })
                 }
             },
             async writeReponse(speechRecognizer) {
@@ -111,6 +139,7 @@
                     this.type = "Instruction"
                 } else {
                     this.type = "Question"
+                    this.questionId = this.message.id
                 }
             }
         },
