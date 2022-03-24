@@ -3,10 +3,10 @@
         <form @submit="nextStep" id="mainContainer">
             <h1>{{ message.libelle }}</h1>
             <div id="microphoneContainer">
-                <MainButton class="itemCentered" :message="mainButtonText" />
+                <MainButton class="itemCentered" :message="mainButtonText"/>
                 <div id="iconText">
                     <i class="fa-solid fa-microphone"></i>
-                    <MicrophoneText class="itemCentered" :message="audioHelper" />
+                    <MicrophoneText class="itemCentered" :message="audioHelper"/>
                 </div>
             </div>
             <router-view />
@@ -43,7 +43,8 @@
                 questions : [],
                 instructionsQuestions : [],
                 token : undefined,
-                message : undefined
+                message : undefined,
+                type : undefined
             }
         },
         async mounted() {
@@ -54,15 +55,9 @@
             this.token = this.AuthService.getTokenFromLocalStorage()
 
             this.surveys = await this.surveyService.getSurvey(this.token)
-            console.log("Surveys");
-            console.log(this.surveys);
             this.instructions = this.surveys.instructions
             this.questions = this.surveys.questions
 
-            console.log("Instructions");
-            console.log(this.instructions);
-            console.log("Questions");
-            console.log(this.questions);
             this.instructions.forEach(instruction => {
                 if (instruction.status == 1) {
                     this.instructionsQuestions.push(instruction)
@@ -73,9 +68,6 @@
                 this.instructionsQuestions.push(question)
             })
 
-            console.log("InstructionsQuestions");
-            console.log(this.instructionsQuestions);
-
             this.instructionsQuestions.forEach(message => {
                 if (message.position == this.position) {
                     this.message = message
@@ -84,12 +76,18 @@
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
+            this.verifyType()
             this.speech()
         },
         methods: {
             async nextStep() {
                 event.preventDefault()
-                router.push({ name: "AnswerPage", params: { position: this.position }})
+                if (this.type === "Instruction") {
+                    this.incrementPosition()
+                    router.push({ name : "InstructionPage", params : { position : this.position }})
+                } else {
+                    router.push({ name: "AnswerPage", params: { position: this.position }})
+                }
             },
             async writeReponse(speechRecognizer) {
                 speechRecognizer.recognizing = (s, e) => {  
@@ -99,9 +97,31 @@
                 }
             },
             async speech() {
-                await this.TTSService.textToSpeech("Mangez le produit" + this.productNumber)
+                await this.TTSService.textToSpeech(this.message.libelle)
                 await this.TTSService.textToSpeech(this.audioHelper)
+            },
+            async incrementPosition() {
+                this.position ++
+                String(this.position)
+            },
+            async verifyType() {
+                if (this.message.status) {
+                    this.type = "Instruction"
+                } else {
+                    this.type = "Question"
+                }
             }
-        }
+        },
+        watch : {
+            position() {
+                this.instructionsQuestions.forEach(async (message) => {
+                    if (message.position == this.position) {
+                        this.message = message
+                        this.verifyType()
+                        this.speech()
+                    }
+                })
+            }
+        } 
     }
 </script>
