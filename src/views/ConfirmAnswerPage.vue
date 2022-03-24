@@ -1,20 +1,20 @@
 <template>
 	<div id="mainContainer">
     	<div id="microphoneContainerGoBack">
-      		<MainButton @click="goBack" class="itemCentered" id="btnRetour" message="Reformuler"/>
+      		<MainButton @click="goBack" class="itemCentered" id="btnRetour" :message="reformulateButtonText"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
-				<MicrophoneText class="itemCentered" :message="vocalReformulate"/>
+				<MicrophoneText class="itemCentered" :message="audioHelperReforumulate"/>
 			</div>
     	</div>
 
     	<textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
 
 		<div id="microphoneContainer">
-			<MainButton @click="endSurvey" class="itemCentered" message="Valider"/>
+			<MainButton @click="endSurvey" class="itemCentered" :message="confirmButtonText"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
-				<MicrophoneText class="itemCentered" :message="vocalCommand"/>
+				<MicrophoneText class="itemCentered" :message="audioHelper"/>
 			</div>
 		</div>
 	</div>
@@ -36,19 +36,24 @@
 		data(){
 			return{
 				position : undefined,
+				reformulateButtonText : undefined,
+				confirmButtonText : undefined,
 				STTService : new SpeechToTextService(),
 				TTSService : new TextToSpeechService(),
 				response : undefined,
-				vocalReformulate : undefined
+				vocalReformulate : undefined,
+				totalInstructionsQuestions : undefined
 			}
 		},
 		async mounted(){
 			this.position = this.$route.params.position
-            this.vocalReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
-            this.vocalCommand = 'Pour confirmer votre réponse, cliquez sur le bouton ou dites "Valider"'
+			this.reformulateButtonText = "Reformuler"
+			this.confirmButtonText = "Valider"
+            this.audioHelperReforumulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
+            this.audioHelper = 'Pour confirmer votre réponse, cliquez sur le bouton ou dites "Valider"'
 
 			await this.TTSService.textToSpeech(this.vocalReformulate)
-			await this.TTSService.textToSpeech(this.vocalCommand)
+			await this.TTSService.textToSpeech(this.audioHelper)
 
 			var result = await this.STTService.speechToText();
 			await this.writeReponse(result)
@@ -64,8 +69,12 @@
         	},
 			async endSurvey() {
 				event.preventDefault()
-				// router.push({ name : 'InstructionPage', params : { position : this.position }})
-				router.push('/endPage')
+				if (this.totalInstructionsQuestions !== this.position) {
+					this.incrementPosition()
+					router.push({ name : 'InstructionPage', params : { position : this.position }})
+				} else {
+					router.push('/endPage')
+				}
 			},
 			writeReponse(speechRecognizer){
 				speechRecognizer.recognizing = (s, e) => {
@@ -76,7 +85,11 @@
 						this.goBack()
 					}
           		}
-			}
+			},
+            async incrementPosition() {
+                this.position ++
+                String(this.position)
+            },
 		}
     }
 </script>

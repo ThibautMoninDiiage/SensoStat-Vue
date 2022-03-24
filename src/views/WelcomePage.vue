@@ -50,7 +50,7 @@
 
             this.token = this.AuthService.getTokenFromLocalStorage()
             this.surveys = await this.SurveyService.getSurvey(this.token)
-            
+
             this.instructions = this.surveys.instructions
 
             this.instructions.forEach(instruction => {
