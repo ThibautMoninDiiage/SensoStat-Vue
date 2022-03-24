@@ -28,13 +28,13 @@ const routes = [
         meta : { routeName : "instructionPage" }
     },
     {
-        path: "/answerPage/:position/:totalInstructionsQuestions",
+        path: "/answerPage/:position/:totalInstructionsQuestions/:questionId",
         name: "AnswerPage",
         component: AnswerPage,
         meta : { routeName : "answerPage" }
     },
     {
-        path: "/confirmAnswerPage/:position/:responseUser/:totalInstructionsQuestions",
+        path: "/confirmAnswerPage/:position/:responseUser/:totalInstructionsQuestions/:questionId",
         name: "ConfirmAnswerPage",
         component: ConfirmAnswerPage,
         meta : { routeName : "confirmAnswerPage" }

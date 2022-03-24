@@ -91,7 +91,8 @@
                         name : "InstructionPage",
                         params: {
                             position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions
+                            totalInstructionsQuestions : this.totalInstructionsQuestions,
+                            questionId : this.questionId
                         }
                     })
                 } else {
@@ -99,7 +100,8 @@
                         name: "AnswerPage",
                         params: {
                             position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions
+                            totalInstructionsQuestions : this.totalInstructionsQuestions,
+                            questionId : this.questionId
                         }
                     })
                 }

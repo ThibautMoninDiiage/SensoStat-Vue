@@ -37,12 +37,14 @@
 				STTService : new SpeechToTextService(),
 				userAnswer : undefined,
 				mainButtonText : undefined,
-				totalInstructionsQuestions : undefined
+				totalInstructionsQuestions : undefined,
+				questionId : undefined
 		  	}
 	  	},
 	  	async mounted() {
 			this.mainButtonText = "Suivant"
 			this.position = this.$route.params.position
+			this.questionId = this.$route.params.questionId
             this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
             this.audioHelper = 'Pour confirmer votre réponse, dites "Suivant"'
 
@@ -61,7 +63,8 @@
 					params : {
 						responseUser : this.userAnswer,
 						position : this.position,
-						totalInstructionsQuestions : this.totalInstructionsQuestions
+						totalInstructionsQuestions : this.totalInstructionsQuestions,
+						questionId : this.questionId
 					}
 				})
 		  	},

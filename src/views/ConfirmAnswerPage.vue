@@ -57,7 +57,7 @@
 			this.position = this.$route.params.position
 			this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
             this.token = this.AuthService.getTokenFromLocalStorage()
-			this.questionId = 10
+			this.questionId = this.$route.params.questionId
 			this.productId = 64
 			this.reformulateButtonText = "Reformuler"
 			this.confirmButtonText = "Valider"
