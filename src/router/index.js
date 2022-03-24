@@ -22,19 +22,19 @@ const routes = [
         meta : { routeName : "welcomePage" }
     },
     {
-        path: "/instructionPage/:position",
+        path: "/instructionPage/:position/:totalInstructionsQuestions",
         name: "InstructionPage",
         component: InstructionPage,
         meta : { routeName : "instructionPage" }
     },
     {
-        path: "/answerPage/:position",
+        path: "/answerPage/:position/:totalInstructionsQuestions",
         name: "AnswerPage",
         component: AnswerPage,
         meta : { routeName : "answerPage" }
     },
     {
-        path: "/confirmAnswerPage/:position/:responseUser",
+        path: "/confirmAnswerPage/:position/:responseUser/:totalInstructionsQuestions",
         name: "ConfirmAnswerPage",
         component: ConfirmAnswerPage,
         meta : { routeName : "confirmAnswerPage" }

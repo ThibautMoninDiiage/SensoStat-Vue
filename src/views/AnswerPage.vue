@@ -5,10 +5,10 @@
     		<textarea class="areaAnswer" id="response" rows="15" cols="30"></textarea>
 
 			<div id="microphoneContainer">
-				<MainButton class="itemCentered" message="Suivant"/>
+				<MainButton class="itemCentered" :message="mainButtonText"/>
 				<div id="iconText">
         			<i id="mic" class="fa-solid fa-microphone"></i>
-					<MicrophoneText class="itemCentered" :message="vocalCommand"/>
+					<MicrophoneText class="itemCentered" :message="audioHelper"/>
 				</div>
 			</div>
 		</form>
@@ -32,18 +32,22 @@
 		  	return {
 			  	title : 'Parlez pour enregistrer votre réponse !',
 				position : undefined,
-				vocalCommand : undefined,
+				audioHelper : undefined,
 			  	TTSService : new TextToSpeechService(),
 				STTService : new SpeechToTextService(),
-				response : undefined
+				response : undefined,
+				mainButtonText : undefined,
+				totalInstructionsQuestions : undefined
 		  	}
 	  	},
 	  	async mounted() {
+			this.mainButtonText = "Suivant"
 			this.position = this.$route.params.position
-            this.vocalCommand = 'Pour confirmer votre réponse, dites "Suivant"'
+            this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
+            this.audioHelper = 'Pour confirmer votre réponse, dites "Suivant"'
 
 		  	await this.TTSService.textToSpeech(this.title)
-		  	await this.TTSService.textToSpeech(this.vocalCommand)
+		  	await this.TTSService.textToSpeech(this.audioHelper)
 			
 			var result = await this.STTService.speechToText();
 			await this.writeReponse(result)
@@ -52,7 +56,7 @@
 		  	async nextStep() {
 				event.preventDefault()
 				this.response = document.getElementById("response").innerHTML;
-			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position }})
+			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.response, position : this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
 		  	},
 			writeReponse(speechRecognizer){
 				let textarea = document.getElementById("response")
