@@ -4,7 +4,7 @@
       		<MainButton @click="goBack" class="itemCentered" id="btnRetour" :message="reformulateButtonText"/>
 			<div id="iconText">
 				<i class="fa-solid fa-microphone"></i>
-				<MicrophoneText class="itemCentered" :message="audioHelperReforumulate"/>
+				<MicrophoneText class="itemCentered" :message="audioHelperReformulate"/>
 			</div>
     	</div>
 
@@ -36,12 +36,13 @@
 		data(){
 			return{
 				position : undefined,
+				audioHelperReformulate : undefined,
 				reformulateButtonText : undefined,
 				confirmButtonText : undefined,
+				audioHelper : undefined,
 				STTService : new SpeechToTextService(),
 				TTSService : new TextToSpeechService(),
 				response : undefined,
-				vocalReformulate : undefined,
 				totalInstructionsQuestions : undefined
 			}
 		},
@@ -50,10 +51,10 @@
 			this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
 			this.reformulateButtonText = "Reformuler"
 			this.confirmButtonText = "Valider"
-            this.audioHelperReforumulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
+            this.audioHelperReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
             this.audioHelper = 'Pour confirmer votre réponse, cliquez sur le bouton ou dites "Valider"'
 
-			await this.TTSService.textToSpeech(this.vocalReformulate)
+			await this.TTSService.textToSpeech(this.audioHelperReformulate)
 			await this.TTSService.textToSpeech(this.audioHelper)
 
 			var result = await this.STTService.speechToText();
@@ -70,7 +71,7 @@
         	},
 			async endSurvey() {
 				event.preventDefault()
-				if (this.totalInstructionsQuestions !== this.position + 1) {
+				if (this.totalInstructionsQuestions !== this.position) {
 					this.incrementPosition()
 					router.push({ name : 'InstructionPage', params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
 				} else {

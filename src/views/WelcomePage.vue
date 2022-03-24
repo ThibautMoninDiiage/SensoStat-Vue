@@ -73,7 +73,7 @@
                 }
             })
 
-            this.totalInstructionsQuestions = this.introductions.length + this.surveys.questions.length + this.instructionsUnique.length
+            this.totalInstructionsQuestions = this.introductions.length + this.surveys.questions.length + this.instructionsUnique.length - 1
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
