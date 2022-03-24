@@ -1,15 +1,15 @@
 <template>
-    <div v-if="instructions !== undefined">
+    <div v-if="message !== undefined">
         <form @submit="nextStep" id="mainContainer">
-        <h1>{{ instructions[position] }}</h1>
-        <div id="microphoneContainer">
-            <MainButton class="itemCentered" :message="mainButtonText" />
-            <div id="iconText">
-            <i class="fa-solid fa-microphone"></i>
-            <MicrophoneText class="itemCentered" :message="audioHelper" />
+            <h1>{{ message.libelle }}</h1>
+            <div id="microphoneContainer">
+                <MainButton class="itemCentered" :message="mainButtonText" />
+                <div id="iconText">
+                    <i class="fa-solid fa-microphone"></i>
+                    <MicrophoneText class="itemCentered" :message="audioHelper" />
+                </div>
             </div>
-        </div>
-        <router-view />
+            <router-view />
         </form>
     </div>
 </template>
@@ -34,16 +34,16 @@
                 position : undefined,
                 audioHelper : undefined,
                 mainButtonText : undefined,
-                text : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
                 AuthService : new AuthService(),
-                surveyService : undefined,
+                surveyService : new SurveyService(),
                 surveys : [],
                 instructions : [],
                 questions : [],
-                surveyState : undefined,
-                token : undefined
+                instructionsQuestions : [],
+                token : undefined,
+                message : undefined
             }
         },
         async mounted() {
@@ -53,18 +53,38 @@
 
             this.token = this.AuthService.getTokenFromLocalStorage()
 
-            this.surveyService = new SurveyService()
             this.surveys = await this.surveyService.getSurvey(this.token)
+            console.log("Surveys");
             console.log(this.surveys);
             this.instructions = this.surveys.instructions
             this.questions = this.surveys.questions
-            this.surveyState = this.surveys.surveyState.libelle
 
-            await this.TTSService.textToSpeech("Mangez le produit" + this.productNumber)
-            await this.TTSService.textToSpeech(this.audioHelper)
+            console.log("Instructions");
+            console.log(this.instructions);
+            console.log("Questions");
+            console.log(this.questions);
+            this.instructions.forEach(instruction => {
+                if (instruction.status == 1) {
+                    this.instructionsQuestions.push(instruction)
+                }
+            })
+
+            this.questions.forEach(question => {
+                this.instructionsQuestions.push(question)
+            })
+
+            console.log("InstructionsQuestions");
+            console.log(this.instructionsQuestions);
+
+            this.instructionsQuestions.forEach(message => {
+                if (message.position == this.position) {
+                    this.message = message
+                }
+            })
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
+            this.speech()
         },
         methods: {
             async nextStep() {
@@ -72,11 +92,15 @@
                 router.push({ name: "AnswerPage", params: { position: this.position }})
             },
             async writeReponse(speechRecognizer) {
-                speechRecognizer.recognizing = (s, e) => {
+                speechRecognizer.recognizing = (s, e) => {  
                     if (e.result.text.toLowerCase().includes("suivant")) {
                         this.nextStep();
                     }
                 }
+            },
+            async speech() {
+                await this.TTSService.textToSpeech("Mangez le produit" + this.productNumber)
+                await this.TTSService.textToSpeech(this.audioHelper)
             }
         }
     }
