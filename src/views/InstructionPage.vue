@@ -1,6 +1,7 @@
 <template>
     <div v-if="message !== undefined">
         <form @submit="nextStep" id="mainContainer">
+            <h1>Produit {{ products[productPosition].code }}</h1>
             <h1>{{ message.libelle }}</h1>
             <div id="microphoneContainer">
                 <MainButton class="itemCentered" :message="mainButtonText"/>
@@ -46,7 +47,10 @@
                 message : undefined,
                 type : undefined,
                 totalInstructionsQuestions : undefined,
-                questionId : undefined
+                questionId : undefined,
+                products : [],
+                productPosition : 0,
+                productId : undefined
             }
         },
         async mounted() {
@@ -60,6 +64,8 @@
             this.surveys = await this.surveyService.getSurvey(this.token)
             this.instructions = this.surveys.instructions
             this.questions = this.surveys.questions
+            this.products = this.surveys.products
+            this.productId = this.products[this.productPosition].id
 
             this.instructions.forEach(instruction => {
                 if (instruction.status == 1) {
@@ -91,8 +97,7 @@
                         name : "InstructionPage",
                         params: {
                             position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions,
-                            questionId : this.questionId
+                            totalInstructionsQuestions : this.totalInstructionsQuestions
                         }
                     })
                 } else {
@@ -101,7 +106,8 @@
                         params: {
                             position: this.position,
                             totalInstructionsQuestions : this.totalInstructionsQuestions,
-                            questionId : this.questionId
+                            questionId : this.questionId,
+                            productId : this.productId
                         }
                     })
                 }

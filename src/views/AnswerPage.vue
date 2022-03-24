@@ -38,13 +38,15 @@
 				userAnswer : undefined,
 				mainButtonText : undefined,
 				totalInstructionsQuestions : undefined,
-				questionId : undefined
+				questionId : undefined,
+				productId : undefined
 		  	}
 	  	},
 	  	async mounted() {
 			this.mainButtonText = "Suivant"
 			this.position = this.$route.params.position
 			this.questionId = this.$route.params.questionId
+			this.productId = this.$route.params.productId
             this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
             this.audioHelper = 'Pour confirmer votre réponse, dites "Suivant"'
 
@@ -64,7 +66,8 @@
 						responseUser : this.userAnswer,
 						position : this.position,
 						totalInstructionsQuestions : this.totalInstructionsQuestions,
-						questionId : this.questionId
+						questionId : this.questionId,
+						productId : this.productId
 					}
 				})
 		  	},

@@ -58,7 +58,7 @@
 			this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
             this.token = this.AuthService.getTokenFromLocalStorage()
 			this.questionId = this.$route.params.questionId
-			this.productId = 64
+			this.productId = this.$route.params.productId
 			this.reformulateButtonText = "Reformuler"
 			this.confirmButtonText = "Valider"
             this.audioHelperReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
