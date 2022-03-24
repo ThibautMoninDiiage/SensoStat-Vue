@@ -44,7 +44,8 @@
                 introduction : undefined,
                 mainButtonText : undefined,
                 isPlayerPaused : false,
-                totalInstructionsQuestions : undefined
+                totalInstructionsQuestions : undefined,
+                totalProducts : undefined
             }
         },
         async mounted() {
@@ -52,6 +53,7 @@
 
             this.token = this.AuthService.getTokenFromLocalStorage()
             this.surveys = await this.SurveyService.getSurvey(this.token)
+            this.totalProducts = this.surveys.products.length - 1
 
             this.instructions = this.surveys.instructions
 
@@ -96,7 +98,8 @@
                         name: "InstructionPage",
                         params: {
                             position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions
+                            totalInstructionsQuestions : this.totalInstructionsQuestions,
+                            totalProducts : this.totalProducts
                         }
                     })
                 }

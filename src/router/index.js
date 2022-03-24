@@ -22,19 +22,19 @@ const routes = [
         meta : { routeName : "welcomePage" }
     },
     {
-        path: "/instructionPage/:position/:totalInstructionsQuestions/:productPosition",
+        path: "/instructionPage/:position/:totalInstructionsQuestions/:productPosition/:totalProducts",
         name: "InstructionPage",
         component: InstructionPage,
         meta : { routeName : "instructionPage" }
     },
     {
-        path: "/answerPage/:position/:totalInstructionsQuestions/:questionId/:productId/:productPosition",
+        path: "/answerPage/:position/:totalInstructionsQuestions/:questionId/:productId/:productPosition/:totalProducts",
         name: "AnswerPage",
         component: AnswerPage,
         meta : { routeName : "answerPage" }
     },
     {
-        path: "/confirmAnswerPage/:position/:responseUser/:totalInstructionsQuestions/:questionId/:productId/:productPosition",
+        path: "/confirmAnswerPage/:position/:responseUser/:totalInstructionsQuestions/:questionId/:productId/:productPosition/:totalProducts",
         name: "ConfirmAnswerPage",
         component: ConfirmAnswerPage,
         meta : { routeName : "confirmAnswerPage" }

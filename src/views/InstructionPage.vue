@@ -50,13 +50,15 @@
                 questionId : undefined,
                 products : [],
                 productPosition : undefined,
-                productId : undefined
+                productId : undefined,
+                totalProducts : undefined
             }
         },
         async mounted() {
             this.mainButtonText = "Suivant"
             this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
             this.position = this.$route.params.position
+            this.totalProducts = this.$route.params.totalProducts
             this.productPosition = this.$route.params.productPosition
             this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
 
@@ -86,7 +88,6 @@
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
-            console.log(this.position);
             this.verifyType()
             this.speech()
         },
@@ -100,7 +101,8 @@
                         params: {
                             position: this.position,
                             totalInstructionsQuestions : this.totalInstructionsQuestions,
-                            productPosition : this.productPosition
+                            productPosition : this.productPosition,
+                            totalProducts : this.totalProducts
                         }
                     })
                 } else {
@@ -111,7 +113,8 @@
                             totalInstructionsQuestions : this.totalInstructionsQuestions,
                             questionId : this.questionId,
                             productId : this.productId,
-                            productPosition : this.productPosition
+                            productPosition : this.productPosition,
+                            totalProducts : this.totalProducts
                         }
                     })
                 }

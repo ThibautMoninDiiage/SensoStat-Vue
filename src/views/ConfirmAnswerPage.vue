@@ -52,7 +52,7 @@
 				token : undefined,
 				questionId : undefined,
 				productId : undefined,
-				productPosition : undefined
+				productPosition : undefined,
 			}
 		},
 		async mounted(){
@@ -62,7 +62,7 @@
             this.token = this.AuthService.getTokenFromLocalStorage()
 			this.questionId = this.$route.params.questionId
 			this.productId = this.$route.params.productId
-			this.totalProducts = 4
+			this.totalProducts = this.$route.params.totalProducts
 			this.reformulateButtonText = "Reformuler"
 			this.confirmButtonText = "Valider"
             this.audioHelperReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
@@ -85,13 +85,15 @@
         	},
 			async endSurvey() {
 				event.preventDefault()
+				console.log(this.position);
+				console.log(this.totalInstructionsQuestions);
+				console.log(this.totalProducts);
+				console.log(this.productPosition);
 				this.AnswerService.saveUserAnswer(this.userAnswer, this.questionId, this.token, this.productId)
 				if (this.totalInstructionsQuestions == this.position && this.totalProducts == this.productPosition) {
 					router.push('/endPage')
 				} else if (this.totalInstructionsQuestions == this.position && this.totalProducts !== this.productPosition) {
 					this.incrementProductPosition()
-					this.position = 0
-					String(this.position)
 					router.push({
 						name : 'InstructionPage',
 						params: {
