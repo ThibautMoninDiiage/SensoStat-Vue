@@ -145,7 +145,6 @@
         },
         watch : {
             position() {
-                console.log(this.position);
                 this.instructionsQuestions.forEach(async (message) => {
                     if (message.position == this.position) {
                         this.message = message

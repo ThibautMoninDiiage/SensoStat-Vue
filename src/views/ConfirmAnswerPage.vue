@@ -85,10 +85,6 @@
         	},
 			async endSurvey() {
 				event.preventDefault()
-				console.log(this.position);
-				console.log(this.totalInstructionsQuestions);
-				console.log(this.totalProducts);
-				console.log(this.productPosition);
 				this.AnswerService.saveUserAnswer(this.userAnswer, this.questionId, this.token, this.productId)
 				if (this.totalInstructionsQuestions == this.position && this.totalProducts == this.productPosition) {
 					router.push('/endPage')
