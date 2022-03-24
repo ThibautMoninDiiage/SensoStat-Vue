@@ -87,12 +87,17 @@
                 if (this.introductions.length !== this.position) {
                     router.push({
                         name: "WelcomePage",
-                        params: { position: this.position }
+                        params: {
+                            position: this.position
+                        }
                     })
                 } else {
                     router.push({
                         name: "InstructionPage",
-                        params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }
+                        params: {
+                            position: this.position,
+                            totalInstructionsQuestions : this.totalInstructionsQuestions
+                        }
                     })
                 }
             },

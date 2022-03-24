@@ -84,7 +84,13 @@
 				this.AnswerService.saveUserAnswer(this.userAnswer, this.questionId, this.token, this.productId)
 				if (this.totalInstructionsQuestions !== this.position) {
 					this.incrementPosition()
-					router.push({ name : 'InstructionPage', params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
+					router.push({
+						name : 'InstructionPage',
+						params: {
+							position: this.position,
+							totalInstructionsQuestions : this.totalInstructionsQuestions
+						}
+					})
 				} else {
 					router.push('/endPage')
 				}

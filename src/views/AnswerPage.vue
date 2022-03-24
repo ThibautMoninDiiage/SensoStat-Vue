@@ -56,7 +56,14 @@
 		  	async nextStep() {
 				event.preventDefault()
 				this.userAnswer = document.getElementById("userAnswer").innerHTML;
-			  	router.push({name : 'ConfirmAnswerPage', params : { responseUser : this.userAnswer, position : this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
+			  	router.push({
+					name : 'ConfirmAnswerPage',
+					params : {
+						responseUser : this.userAnswer,
+						position : this.position,
+						totalInstructionsQuestions : this.totalInstructionsQuestions
+					}
+				})
 		  	},
 			writeReponse(speechRecognizer){
 				let textarea = document.getElementById("userAnswer")

@@ -45,7 +45,8 @@
                 token : undefined,
                 message : undefined,
                 type : undefined,
-                totalInstructionsQuestions : undefined
+                totalInstructionsQuestions : undefined,
+                questionId : undefined
             }
         },
         async mounted() {
@@ -86,9 +87,21 @@
                 event.preventDefault()
                 if (this.type === "Instruction") {
                     this.incrementPosition()
-                    router.push({ name : "InstructionPage", params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
+                    router.push({
+                        name : "InstructionPage",
+                        params: {
+                            position: this.position,
+                            totalInstructionsQuestions : this.totalInstructionsQuestions
+                        }
+                    })
                 } else {
-                    router.push({ name: "AnswerPage", params: { position: this.position, totalInstructionsQuestions : this.totalInstructionsQuestions }})
+                    router.push({
+                        name: "AnswerPage",
+                        params: {
+                            position: this.position,
+                            totalInstructionsQuestions : this.totalInstructionsQuestions
+                        }
+                    })
                 }
             },
             async writeReponse(speechRecognizer) {
@@ -111,6 +124,7 @@
                     this.type = "Instruction"
                 } else {
                     this.type = "Question"
+                    this.questionId = this.message.id
                 }
             }
         },

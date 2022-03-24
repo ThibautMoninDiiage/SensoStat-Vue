@@ -32,7 +32,10 @@
             startPage() {
                 event.preventDefault()
                 this.STTService.speechToText()
-                router.push({ name: "WelcomePage", params: { position: this.position }})
+                router.push({
+                    name: "WelcomePage",
+                    params: { position: this.position }
+                })
             }
         }
     }
