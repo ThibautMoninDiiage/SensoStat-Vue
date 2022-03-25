@@ -1,7 +1,7 @@
 <template>
     <div id="mainContainer">
-        <h1>Pour le bon fonctionnement de l'application, nous avons besoin d'utiliser votre microphone et votre sortie audio.</h1>
-        <MainButton @click="startPage" message="Autoriser"/>
+        <h1>{{ message }}</h1>
+        <MainButton @click="welcomePage" :message="mainButtonText"/>
     </div>
 </template>
 
@@ -22,15 +22,18 @@
                 AuthService : new AuthService(),
                 token : undefined,
                 position : 0,
-                productPosition : 0
+                productPosition : 0,
+                mainButtonText : undefined,
+                message : undefined
             }
         },
         mounted() {
-            this.token = this.$route.params.token
+            this.getUrlParams()
+            this.setHelperMessage()
             this.AuthService.setTokenToLocalStorage(this.token)
         },
         methods : {
-            startPage() {
+            welcomePage() {
                 event.preventDefault()
                 this.STTService.speechToText()
                 router.push({
@@ -40,6 +43,13 @@
                         productPosition : this.productPosition
                     }
                 })
+            },
+            getUrlParams() {
+                this.token = this.$route.params.token
+            },
+            setHelperMessage() {
+                this.message = "Pour le bon fonctionnement de l'application, nous avons besoin d'utiliser votre microphone et votre sortie audio."
+                this.mainButtonText = "Autoriser"
             }
         }
     }

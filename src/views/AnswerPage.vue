@@ -30,7 +30,7 @@
       	},
 	  	data() {
 		  	return {
-			  	title : 'Parlez pour enregistrer votre réponse !',
+			  	title : undefined,
 				position : undefined,
 				audioHelper : undefined,
 			  	TTSService : new TextToSpeechService(),
@@ -45,19 +45,11 @@
 		  	}
 	  	},
 	  	async mounted() {
-			this.mainButtonText = "Suivant"
-			this.position = this.$route.params.position
-			this.totalProducts = this.$route.params.totalProducts
-			this.productPosition = this.$route.params.productPosition
-			this.questionId = this.$route.params.questionId
-			this.productId = this.$route.params.productId
-            this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
-            this.audioHelper = 'Pour confirmer votre réponse, dites "Suivant"'
-
-		  	await this.TTSService.textToSpeech(this.title)
-		  	await this.TTSService.textToSpeech(this.audioHelper)
+			this.getUrlParams()
+			this.setHelperMessage()
+			this.speech()
 			
-			var result = await this.STTService.speechToText();
+			var result = await this.STTService.speechToText()
 			await this.writeReponse(result)
 	  	},
 	  	methods : {
@@ -91,6 +83,23 @@
 						textarea.innerHTML = e.result.text
 					}
           		};
+			},
+			async speech() {
+		  		await this.TTSService.textToSpeech(this.title)
+		  		await this.TTSService.textToSpeech(this.audioHelper)
+			},
+			getUrlParams() {
+				this.position = this.$route.params.position
+				this.totalProducts = this.$route.params.totalProducts
+				this.productPosition = this.$route.params.productPosition
+				this.questionId = this.$route.params.questionId
+				this.productId = this.$route.params.productId
+				this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
+			},
+			setHelperMessage() {
+				this.title = 'Parlez pour enregistrer votre réponse !'
+				this.mainButtonText = 'Suivant'
+            	this.audioHelper = 'Pour confirmer votre réponse, dites "Suivant"'
 			}
 	 	}
     }

@@ -55,12 +55,8 @@
             }
         },
         async mounted() {
-            this.mainButtonText = "Suivant"
-            this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
-            this.position = this.$route.params.position
-            this.totalProducts = this.$route.params.totalProducts
-            this.productPosition = this.$route.params.productPosition
-            this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
+            this.getUrlParams()
+            this.setHelperMessage()
 
             this.token = this.AuthService.getTokenFromLocalStorage()
 
@@ -141,6 +137,16 @@
                     this.type = "Question"
                     this.questionId = this.message.id
                 }
+            },
+            getUrlParams() {
+                this.position = this.$route.params.position
+                this.totalProducts = this.$route.params.totalProducts
+                this.productPosition = this.$route.params.productPosition
+                this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
+            },
+            setHelperMessage() {
+                this.mainButtonText = "Suivant"
+                this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
             }
         },
         watch : {

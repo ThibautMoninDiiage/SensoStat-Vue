@@ -43,13 +43,12 @@
                 instructionsUnique : [],
                 introduction : undefined,
                 mainButtonText : undefined,
-                isPlayerPaused : false,
                 totalInstructionsQuestions : undefined,
                 totalProducts : undefined
             }
         },
         async mounted() {
-            this.position = this.$route.params.position
+            this.getUrlParams()
 
             this.token = this.AuthService.getTokenFromLocalStorage()
             this.surveys = await this.SurveyService.getSurvey(this.token)
@@ -85,6 +84,8 @@
         methods: {
             async startSurvey() {
                 event.preventDefault()
+                // this.TTSService.stopTextToSpeech()
+                this.TTSService.finalize()
                 this.incrementPosition()
                 if (this.introductions.length !== this.position) {
                     router.push({
@@ -121,12 +122,15 @@
                 }
             },
             async speech() {
-                await this.TTSService.textToSpeech(this.introduction.libelle, this.isPlayerPaused)
-                await this.TTSService.textToSpeech(this.audioHelper, this.isPlayerPaused)
+                await this.TTSService.initialize(this.introduction.libelle)
+                await this.TTSService.initialize(this.audioHelper)
             },
             async incrementPosition() {
                 this.position ++
                 String(this.position)
+            },
+            getUrlParams() {
+                this.position = this.$route.params.position
             }
         },
         watch : {
