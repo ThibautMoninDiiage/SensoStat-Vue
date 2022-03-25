@@ -30,8 +30,7 @@ export default class TextToSpeechService {
     }
 
     async finalize() {
-        this.player.close()
-        this.synthetizer.close()
+        this.player.pause()
     }
 
 }
