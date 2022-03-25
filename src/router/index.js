@@ -16,13 +16,13 @@ const routes = [
         meta : { routeName : "allowMicrophone" }
     },
     {
-        path: "/welcomePage/:position/:productPosition",
+        path: "/welcomePage",
         name: "WelcomePage",
         component: WelcomePage,
         meta : { routeName : "welcomePage" }
     },
     {
-        path: "/instructionPage/:position/:totalInstructionsQuestions/:productPosition/:totalProducts",
+        path: "/instructionPage",
         name: "InstructionPage",
         component: InstructionPage,
         meta : { routeName : "instructionPage" }

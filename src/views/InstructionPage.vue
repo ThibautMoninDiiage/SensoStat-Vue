@@ -55,7 +55,7 @@
             }
         },
         async mounted() {
-            this.getUrlParams()
+            this.getParamsFromLocalStorage()
             this.setHelperMessage()
 
             this.token = this.AuthService.getTokenFromLocalStorage()
@@ -84,6 +84,7 @@
 
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
+            this.setParamsToLocalStorage()
             this.verifyType()
             this.speech()
         },
@@ -93,25 +94,11 @@
                 if (this.type === "Instruction") {
                     this.incrementPosition()
                     router.push({
-                        name : "InstructionPage",
-                        params: {
-                            position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions,
-                            productPosition : this.productPosition,
-                            totalProducts : this.totalProducts
-                        }
+                        name : "InstructionPage"
                     })
                 } else {
                     router.push({
-                        name: "AnswerPage",
-                        params: {
-                            position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions,
-                            questionId : this.questionId,
-                            productId : this.productId,
-                            productPosition : this.productPosition,
-                            totalProducts : this.totalProducts
-                        }
+                        name: "AnswerPage"
                     })
                 }
             },
@@ -123,8 +110,8 @@
                 }
             },
             async speech() {
-                await this.TTSService.textToSpeech(this.message.libelle)
-                await this.TTSService.textToSpeech(this.audioHelper)
+                await this.TTSService.initialize(this.message.libelle)
+                await this.TTSService.initialize(this.audioHelper)
             },
             async incrementPosition() {
                 this.position ++
@@ -138,15 +125,19 @@
                     this.questionId = this.message.id
                 }
             },
-            getUrlParams() {
-                this.position = this.$route.params.position
-                this.totalProducts = this.$route.params.totalProducts
-                this.productPosition = this.$route.params.productPosition
-                this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
-            },
             setHelperMessage() {
                 this.mainButtonText = "Suivant"
                 this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
+            },
+            getParamsFromLocalStorage() {
+                this.position = localStorage.getItem('position')
+                this.totalProducts = localStorage.getItem('totalProducts')
+                this.totalInstructionsQuestions = localStorage.getItem('totalInstructionsQuestions')
+                this.productPosition = localStorage.getItem('productPosition')
+            },
+            setParamsToLocalStorage() {
+                localStorage.setItem('questionId', this.questionId)
+                localStorage.setItem('productId', this.productId)
             }
         },
         watch : {

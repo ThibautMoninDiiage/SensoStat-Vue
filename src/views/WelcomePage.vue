@@ -48,11 +48,10 @@
             }
         },
         async mounted() {
-            this.getUrlParams()
+            this.getParamsFromLocalStorage()
 
             this.token = this.AuthService.getTokenFromLocalStorage()
             this.surveys = await this.SurveyService.getSurvey(this.token)
-            this.totalProducts = this.surveys.products.length - 1
 
             this.instructions = this.surveys.instructions
 
@@ -74,17 +73,15 @@
                 }
             })
 
-            this.totalInstructionsQuestions = this.introductions.length + this.surveys.questions.length + this.instructionsUnique.length - 1
-
             var result = await this.STTService.speechToText()
             await this.writeReponse(result)
+            this.setParamsToLocalStorage()
             this.changeMessage()
             this.speech()
         },
         methods: {
             async startSurvey() {
                 event.preventDefault()
-                // this.TTSService.stopTextToSpeech()
                 this.TTSService.finalize()
                 this.incrementPosition()
                 if (this.introductions.length !== this.position) {
@@ -96,12 +93,7 @@
                     })
                 } else {
                     router.push({
-                        name: "InstructionPage",
-                        params: {
-                            position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions,
-                            totalProducts : this.totalProducts
-                        }
+                        name: "InstructionPage"
                     })
                 }
             },
@@ -129,8 +121,12 @@
                 this.position ++
                 String(this.position)
             },
-            getUrlParams() {
-                this.position = this.$route.params.position
+            getParamsFromLocalStorage() {
+                this.position = localStorage.getItem('position')
+            },
+            setParamsToLocalStorage() {
+                localStorage.setItem('totalProducts' , this.totalProducts = this.surveys.products.length - 1)
+                localStorage.setItem('totalInstructionsQuestions', this.totalInstructionsQuestions = this.introductions.length + this.surveys.questions.length + this.instructionsUnique.length - 1)
             }
         },
         watch : {
