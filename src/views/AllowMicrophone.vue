@@ -30,6 +30,7 @@
         mounted() {
             this.getUrlParams()
             this.setHelperMessage()
+            this.setParamsToLocalStorage()
             this.AuthService.setTokenToLocalStorage(this.token)
         },
         methods : {
@@ -37,11 +38,7 @@
                 event.preventDefault()
                 this.STTService.speechToText()
                 router.push({
-                    name: "WelcomePage",
-                    params: {
-                        position: this.position,
-                        productPosition : this.productPosition
-                    }
+                    name: "WelcomePage"
                 })
             },
             getUrlParams() {
@@ -50,6 +47,10 @@
             setHelperMessage() {
                 this.message = "Pour le bon fonctionnement de l'application, nous avons besoin d'utiliser votre microphone et votre sortie audio."
                 this.mainButtonText = "Autoriser"
+            },
+            setParamsToLocalStorage() {
+                localStorage.setItem('position', this.position)
+                localStorage.setItem('productPosition', this.productPosition)
             }
         }
     }
