@@ -1,32 +1,39 @@
 <template>
     <div id="mainContainer">
-        <h1>{{ title }}</h1>
-        <h1>{{ subtitle }}</h1>
+        <h1>{{ endMessage }}</h1>
     </div>
 </template>
 
 <script>
     import TextToSpeechService from '../services/textToSpeechService'
     import SpeechToTextService from '../services/speechToTextService'
+    import SurveyService from '../services/surveyService'
+    import AuthService from '../services/authService'
 
     export default {
         name : 'EndPage',
         data() {
             return {
-                title : undefined,
-                subtitle : undefined,
-                text : undefined,
                 TTSService : new TextToSpeechService(),
-                STTService : new SpeechToTextService()
+                STTService : new SpeechToTextService(),
+                SurveyService : new SurveyService(),
+                AuthService : new AuthService(),
+                endMessage : undefined,
+                token : undefined,
+                surveys : undefined
             }
         },
         async mounted() {
-            this.title = "Merci de votre participation à cette séance."
-            this.subtitle = "Vous pouvez fermer cette page."
+            this.token = this.AuthService.getTokenFromLocalStorage()
 
-            await this.TTSService.textToSpeech(this.title)
-            await this.TTSService.textToSpeech(this.subtitle)
+            this.surveys = await this.SurveyService.getSurvey(this.token)
+            this.surveys.instructions.forEach(instruction => {
+                if (instruction.status == 2) {
+                    this.endMessage = instruction.libelle
+                }
+            })
 
+            await this.TTSService.textToSpeech(this.endMessage)
             await this.STTService.closeSTT()
         }
     }
