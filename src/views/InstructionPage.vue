@@ -95,6 +95,7 @@
                         name : "InstructionPage"
                     })
                 } else {
+                    this.setParamsToLocalStorage()
                     router.push({
                         name: "AnswerPage"
                     })
@@ -114,7 +115,7 @@
             async incrementPosition() {
                 this.position ++
             },
-            async verifyType() {
+            verifyType() {
                 if (this.message.status) {
                     this.type = "Instruction"
                 } else {
