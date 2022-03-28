@@ -30,11 +30,11 @@
       	},
 	  	data() {
 		  	return {
+			  	TTSService : new TextToSpeechService(),
+				STTService : new SpeechToTextService(),
 			  	title : undefined,
 				position : undefined,
 				audioHelper : undefined,
-			  	TTSService : new TextToSpeechService(),
-				STTService : new SpeechToTextService(),
 				userAnswer : undefined,
 				mainButtonText : undefined,
 				totalInstructionsQuestions : undefined,
@@ -45,35 +45,26 @@
 		  	}
 	  	},
 	  	async mounted() {
-			this.getUrlParams()
+			this.getParamsFromLocalStorage()
 			this.setHelperMessage()
 			this.speech()
 			
-			var result = await this.STTService.speechToText()
-			await this.writeReponse(result)
+			await this.writeReponse(await this.STTService.speechToText())
 	  	},
 	  	methods : {
 		  	async nextStep() {
 				event.preventDefault()
-				this.userAnswer = document.getElementById("userAnswer").innerHTML;
+				this.userAnswer = document.getElementById("userAnswer").innerHTML
+				this.setParamsToLocalStorage()
 			  	router.push({
-					name : 'ConfirmAnswerPage',
-					params : {
-						responseUser : this.userAnswer,
-						position : this.position,
-						totalInstructionsQuestions : this.totalInstructionsQuestions,
-						questionId : this.questionId,
-						productId : this.productId,
-						productPosition : this.productPosition,
-						totalProducts : this.totalProducts
-					}
+					name : 'ConfirmAnswerPage'
 				})
 		  	},
-			writeReponse(speechRecognizer){
+			async writeReponse(speechRecognizer){
 				let textarea = document.getElementById("userAnswer")
 				let micro = document.getElementById("mic")
 				textarea.textContent = ""
-				speechRecognizer.recognizing = (s, e) => {
+				speechRecognizer.recognized = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")) {
               			this.userAnswer = document.getElementById("userAnswer").innerHTML;
 						  this.nextStep()
@@ -82,25 +73,28 @@
 						micro.style.color = "red";
 						textarea.innerHTML = e.result.text
 					}
-          		};
+          		}
 			},
 			async speech() {
-		  		await this.TTSService.textToSpeech(this.title)
-		  		await this.TTSService.textToSpeech(this.audioHelper)
-			},
-			getUrlParams() {
-				this.position = this.$route.params.position
-				this.totalProducts = this.$route.params.totalProducts
-				this.productPosition = this.$route.params.productPosition
-				this.questionId = this.$route.params.questionId
-				this.productId = this.$route.params.productId
-				this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
+		  		await this.TTSService.initialize(this.title)
+		  		await this.TTSService.initialize(this.audioHelper)
 			},
 			setHelperMessage() {
 				this.title = 'Parlez pour enregistrer votre réponse !'
 				this.mainButtonText = 'Suivant'
             	this.audioHelper = 'Pour confirmer votre réponse, dites "Suivant"'
-			}
+			},
+            getParamsFromLocalStorage() {
+                this.position = localStorage.getItem('position')
+                this.totalProducts = localStorage.getItem('totalProducts')
+                this.totalInstructionsQuestions = localStorage.getItem('totalInstructionsQuestions')
+                this.productPosition = localStorage.getItem('productPosition')
+				this.questionId = localStorage.getItem('questionId')
+				this.productId = localStorage.getItem('productId')
+            },
+			setParamsToLocalStorage() {
+                localStorage.setItem('userAnswer', this.userAnswer)
+            }
 	 	}
     }
 </script>

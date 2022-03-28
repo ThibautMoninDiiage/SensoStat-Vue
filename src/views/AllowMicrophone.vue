@@ -20,9 +20,9 @@
             return {
                 STTService : new STTService(),
                 AuthService : new AuthService(),
-                token : undefined,
                 position : 0,
                 productPosition : 0,
+                token : undefined,
                 mainButtonText : undefined,
                 message : undefined
             }

@@ -30,17 +30,17 @@
         },
         data() {
             return {
-                audioHelper : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
                 SurveyService : new SurveyService(),
                 AuthService : new AuthService(),
-                position : undefined,
-                token : undefined,
                 surveys : [],
                 instructions : [],
                 introductions : [],
                 instructionsUnique : [],
+                audioHelper : undefined,
+                position : undefined,
+                token : undefined,
                 introduction : undefined,
                 mainButtonText : undefined,
                 totalInstructionsQuestions : undefined,
@@ -50,9 +50,7 @@
         async mounted() {
             this.getParamsFromLocalStorage()
 
-            this.token = this.AuthService.getTokenFromLocalStorage()
             this.surveys = await this.SurveyService.getSurvey(this.token)
-
             this.instructions = this.surveys.instructions
 
             this.instructions.forEach(instruction => {
@@ -66,18 +64,17 @@
                     this.instructionsUnique.push(instruction)
                 }
             })
-            
+
             this.introductions.forEach(introduction => {
                 if (introduction.position == this.position) {
                     this.introduction = introduction
                 }
             })
 
-            var result = await this.STTService.speechToText()
-            await this.writeReponse(result)
             this.setParamsToLocalStorage()
-            this.changeMessage()
+            this.setHelperMessage()
             this.speech()
+            await this.writeReponse(await this.STTService.speechToText())
         },
         methods: {
             async startSurvey() {
@@ -86,12 +83,10 @@
                 this.incrementPosition()
                 if (this.introductions.length !== this.position) {
                     router.push({
-                        name: "WelcomePage",
-                        params: {
-                            position: this.position
-                        }
+                        name: "WelcomePage"
                     })
                 } else {
+                    this.setParamsToLocalStorage()
                     router.push({
                         name: "InstructionPage"
                     })
@@ -104,7 +99,14 @@
                     }
                 }
             },
-            async changeMessage() {
+            async speech() {
+                await this.TTSService.initialize(this.introduction.libelle)
+                await this.TTSService.initialize(this.audioHelper)
+            },
+            async incrementPosition() {
+                this.position ++
+            },
+            setHelperMessage() {
                 if (this.introductions.length - 1 !== this.position) {
                     this.mainButtonText = "Suivant"
                     this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
@@ -113,20 +115,14 @@
                     this.audioHelper = 'Cliquez sur le bouton, ou dites "Commencer"'
                 }
             },
-            async speech() {
-                await this.TTSService.initialize(this.introduction.libelle)
-                await this.TTSService.initialize(this.audioHelper)
-            },
-            async incrementPosition() {
-                this.position ++
-                String(this.position)
-            },
             getParamsFromLocalStorage() {
+                this.token = this.AuthService.getTokenFromLocalStorage()
                 this.position = localStorage.getItem('position')
             },
             setParamsToLocalStorage() {
                 localStorage.setItem('totalProducts' , this.totalProducts = this.surveys.products.length - 1)
                 localStorage.setItem('totalInstructionsQuestions', this.totalInstructionsQuestions = this.introductions.length + this.surveys.questions.length + this.instructionsUnique.length - 1)
+                localStorage.setItem('position', this.position)
             }
         },
         watch : {
@@ -135,7 +131,7 @@
                     if (introduction.position == this.position) {
                         this.introduction = introduction
                         this.speech()
-                        this.changeMessage()
+                        this.setHelperMessage()
                     }
                 })
             }

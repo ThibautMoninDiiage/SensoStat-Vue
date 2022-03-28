@@ -10,7 +10,7 @@
                     <MicrophoneText class="itemCentered" :message="audioHelper"/>
                 </div>
             </div>
-            <router-view />
+            <router-view/>
         </form>
     </div>
 </template>
@@ -32,9 +32,6 @@
         },
         data() {
             return {
-                position : undefined,
-                audioHelper : undefined,
-                mainButtonText : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
                 AuthService : new AuthService(),
@@ -43,12 +40,15 @@
                 instructions : [],
                 questions : [],
                 instructionsQuestions : [],
+                products : [],
+                position : undefined,
+                audioHelper : undefined,
+                mainButtonText : undefined,
                 token : undefined,
                 message : undefined,
                 type : undefined,
                 totalInstructionsQuestions : undefined,
                 questionId : undefined,
-                products : [],
                 productPosition : undefined,
                 productId : undefined,
                 totalProducts : undefined
@@ -57,8 +57,6 @@
         async mounted() {
             this.getParamsFromLocalStorage()
             this.setHelperMessage()
-
-            this.token = this.AuthService.getTokenFromLocalStorage()
 
             this.surveys = await this.surveyService.getSurvey(this.token)
             this.instructions = this.surveys.instructions
@@ -82,11 +80,10 @@
                 }
             })
 
-            var result = await this.STTService.speechToText()
-            await this.writeReponse(result)
             this.setParamsToLocalStorage()
             this.verifyType()
             this.speech()
+            await this.writeReponse(await this.STTService.speechToText())
         },
         methods: {
             async nextStep() {
@@ -115,7 +112,6 @@
             },
             async incrementPosition() {
                 this.position ++
-                String(this.position)
             },
             async verifyType() {
                 if (this.message.status) {
@@ -130,6 +126,7 @@
                 this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
             },
             getParamsFromLocalStorage() {
+                this.token = this.AuthService.getTokenFromLocalStorage()
                 this.position = localStorage.getItem('position')
                 this.totalProducts = localStorage.getItem('totalProducts')
                 this.totalInstructionsQuestions = localStorage.getItem('totalInstructionsQuestions')

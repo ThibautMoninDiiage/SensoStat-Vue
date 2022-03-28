@@ -28,13 +28,13 @@ const routes = [
         meta : { routeName : "instructionPage" }
     },
     {
-        path: "/answerPage/:position/:totalInstructionsQuestions/:questionId/:productId/:productPosition/:totalProducts",
+        path: "/answerPage",
         name: "AnswerPage",
         component: AnswerPage,
         meta : { routeName : "answerPage" }
     },
     {
-        path: "/confirmAnswerPage/:position/:responseUser/:totalInstructionsQuestions/:questionId/:productId/:productPosition/:totalProducts",
+        path: "/confirmAnswerPage",
         name: "ConfirmAnswerPage",
         component: ConfirmAnswerPage,
         meta : { routeName : "confirmAnswerPage" }
@@ -64,7 +64,7 @@ const router = createRouter({
 
 // Logic path : AllowMicrophone -> WelcomePage -> InstructionPage -> AnswerPage -> ConfirmAnswerPage -> EndPage
 router.beforeEach(async (to, from, next) => {
-    if (to.name == 'EndPage' && from.name !== 'ConfirmAnswerPage') {
+    if (to.name == 'EndPage' && from.name !== 'ConfirmAnswerPage' || to.name == 'EndPage' && from.name !== 'EndPage') {
         next({name : 'NotAllowed'})
     } else {
         next()
