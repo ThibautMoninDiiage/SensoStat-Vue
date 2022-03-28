@@ -80,8 +80,8 @@
                 }
             })
 
-            this.setParamsToLocalStorage()
             this.verifyType()
+            this.setParamsToLocalStorage()
             this.speech()
             await this.writeReponse(await this.STTService.speechToText())
         },
