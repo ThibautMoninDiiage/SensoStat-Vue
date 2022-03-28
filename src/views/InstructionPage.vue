@@ -90,6 +90,7 @@
                 event.preventDefault()
                 if (this.type === "Instruction") {
                     this.incrementPosition()
+                    this.setParamsToLocalStorage()
                     router.push({
                         name : "InstructionPage"
                     })
@@ -133,6 +134,8 @@
                 this.productPosition = localStorage.getItem('productPosition')
             },
             setParamsToLocalStorage() {
+                localStorage.setItem('position', this.position)
+                localStorage.setItem('productPosition', this.productPosition)
                 localStorage.setItem('questionId', this.questionId)
                 localStorage.setItem('productId', this.productId)
             }

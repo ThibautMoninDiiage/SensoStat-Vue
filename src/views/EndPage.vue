@@ -33,8 +33,8 @@
                 }
             })
 
-            await this.TTSService.textToSpeech(this.endMessage)
-            await this.STTService.closeSTT()
+            await this.TTSService.initialize(this.endMessage)
+            this.STTService.closeSTT()
         }
     }
 </script>

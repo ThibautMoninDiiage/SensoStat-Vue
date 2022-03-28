@@ -94,6 +94,8 @@
             },
 			setParamsToLocalStorage() {
                 localStorage.setItem('userAnswer', this.userAnswer)
+				localStorage.setItem('position', this.position)
+				localStorage.setItem('productPosition', this.productPosition)
             }
 	 	}
     }

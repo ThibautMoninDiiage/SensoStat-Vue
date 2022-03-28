@@ -64,7 +64,7 @@ const router = createRouter({
 
 // Logic path : AllowMicrophone -> WelcomePage -> InstructionPage -> AnswerPage -> ConfirmAnswerPage -> EndPage
 router.beforeEach(async (to, from, next) => {
-    if (to.name == 'EndPage' && from.name !== 'ConfirmAnswerPage' || to.name == 'EndPage' && from.name !== 'EndPage') {
+    if (to.name == 'EndPage' && from.name !== 'ConfirmAnswerPage') {
         next({name : 'NotAllowed'})
     } else {
         next()

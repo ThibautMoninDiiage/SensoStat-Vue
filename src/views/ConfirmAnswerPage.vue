@@ -68,18 +68,18 @@
         	},
 			async endSurvey() {
 				event.preventDefault()
-				this.setParamsToLocalStorage()
-				console.log(this.productPosition)
 				this.AnswerService.saveUserAnswer(this.userAnswer, this.questionId, this.token, this.productId)
 				if (this.totalInstructionsQuestions == this.position && this.totalProducts == this.productPosition) {
 					router.push('/endPage')
 				} else if (this.totalInstructionsQuestions == this.position && this.totalProducts !== this.productPosition) {
 					this.incrementProductPosition()
+					this.setParamsToLocalStorage()
 					router.push({
 						name : 'InstructionPage'
 					})
 				} else if (this.totalInstructionsQuestions !== this.position && this.totalProducts !== this.productPosition) {
 					this.incrementPosition()
+					this.setParamsToLocalStorage()
 					router.push({
 						name : 'InstructionPage'
 					})
