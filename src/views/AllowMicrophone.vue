@@ -1,7 +1,7 @@
 <template>
     <div id="mainContainer">
-        <h1>Pour le bon fonctionnement de l'application, nous avons besoin d'utiliser votre microphone et votre sortie audio.</h1>
-        <MainButton @click="startPage" message="Autoriser"/>
+        <h1>{{ message }}</h1>
+        <MainButton @click="welcomePage" :message="mainButtonText"/>
     </div>
 </template>
 
@@ -20,26 +20,37 @@
             return {
                 STTService : new STTService(),
                 AuthService : new AuthService(),
-                token : undefined,
                 position : 0,
-                productPosition : 0
+                productPosition : 0,
+                token : undefined,
+                mainButtonText : undefined,
+                message : undefined
             }
         },
         mounted() {
-            this.token = this.$route.params.token
+            this.getUrlParams()
+            this.setHelperMessage()
+            this.setParamsToLocalStorage()
             this.AuthService.setTokenToLocalStorage(this.token)
         },
         methods : {
-            startPage() {
+            welcomePage() {
                 event.preventDefault()
                 this.STTService.speechToText()
                 router.push({
-                    name: "WelcomePage",
-                    params: {
-                        position: this.position,
-                        productPosition : this.productPosition
-                    }
+                    name: "WelcomePage"
                 })
+            },
+            getUrlParams() {
+                this.token = this.$route.params.token
+            },
+            setHelperMessage() {
+                this.message = "Pour le bon fonctionnement de l'application, nous avons besoin d'utiliser votre microphone et votre sortie audio."
+                this.mainButtonText = "Autoriser"
+            },
+            setParamsToLocalStorage() {
+                localStorage.setItem('position', this.position)
+                localStorage.setItem('productPosition', this.productPosition)
             }
         }
     }

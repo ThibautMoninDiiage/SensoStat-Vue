@@ -30,31 +30,27 @@
         },
         data() {
             return {
-                audioHelper : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
                 SurveyService : new SurveyService(),
                 AuthService : new AuthService(),
-                position : undefined,
-                token : undefined,
                 surveys : [],
                 instructions : [],
                 introductions : [],
                 instructionsUnique : [],
+                audioHelper : undefined,
+                position : undefined,
+                token : undefined,
                 introduction : undefined,
                 mainButtonText : undefined,
-                isPlayerPaused : false,
                 totalInstructionsQuestions : undefined,
                 totalProducts : undefined
             }
         },
         async mounted() {
-            this.position = this.$route.params.position
+            this.getParamsFromLocalStorage()
 
-            this.token = this.AuthService.getTokenFromLocalStorage()
             this.surveys = await this.SurveyService.getSurvey(this.token)
-            this.totalProducts = this.surveys.products.length - 1
-
             this.instructions = this.surveys.instructions
 
             this.instructions.forEach(instruction => {
@@ -68,39 +64,31 @@
                     this.instructionsUnique.push(instruction)
                 }
             })
-            
+
             this.introductions.forEach(introduction => {
                 if (introduction.position == this.position) {
                     this.introduction = introduction
                 }
             })
 
-            this.totalInstructionsQuestions = this.introductions.length + this.surveys.questions.length + this.instructionsUnique.length - 1
-
-            var result = await this.STTService.speechToText()
-            await this.writeReponse(result)
-            this.changeMessage()
+            this.setParamsToLocalStorage()
+            this.setHelperMessage()
             this.speech()
+            await this.writeReponse(await this.STTService.speechToText())
         },
         methods: {
             async startSurvey() {
                 event.preventDefault()
+                this.TTSService.finalize()
                 this.incrementPosition()
                 if (this.introductions.length !== this.position) {
                     router.push({
-                        name: "WelcomePage",
-                        params: {
-                            position: this.position
-                        }
+                        name: "WelcomePage"
                     })
                 } else {
+                    this.setParamsToLocalStorage()
                     router.push({
-                        name: "InstructionPage",
-                        params: {
-                            position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions,
-                            totalProducts : this.totalProducts
-                        }
+                        name: "InstructionPage"
                     })
                 }
             },
@@ -111,7 +99,14 @@
                     }
                 }
             },
-            async changeMessage() {
+            async speech() {
+                await this.TTSService.initialize(this.introduction.libelle)
+                await this.TTSService.initialize(this.audioHelper)
+            },
+            async incrementPosition() {
+                this.position ++
+            },
+            setHelperMessage() {
                 if (this.introductions.length - 1 !== this.position) {
                     this.mainButtonText = "Suivant"
                     this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
@@ -120,13 +115,15 @@
                     this.audioHelper = 'Cliquez sur le bouton, ou dites "Commencer"'
                 }
             },
-            async speech() {
-                await this.TTSService.textToSpeech(this.introduction.libelle, this.isPlayerPaused)
-                await this.TTSService.textToSpeech(this.audioHelper, this.isPlayerPaused)
+            getParamsFromLocalStorage() {
+                this.token = this.AuthService.getTokenFromLocalStorage()
+                this.position = localStorage.getItem('position')
             },
-            async incrementPosition() {
-                this.position ++
-                String(this.position)
+            setParamsToLocalStorage() {
+                localStorage.setItem('totalProducts' , this.totalProducts = this.surveys.products.length - 1)
+                localStorage.setItem('totalInstructionsQuestions', this.totalInstructionsQuestions = this.introductions.length + this.surveys.questions.length + this.instructionsUnique.length - 1)
+                localStorage.setItem('position', this.position)
+                localStorage.setItem('startInstructionsQuestions', this.introductions.length)
             }
         },
         watch : {
@@ -135,7 +132,7 @@
                     if (introduction.position == this.position) {
                         this.introduction = introduction
                         this.speech()
-                        this.changeMessage()
+                        this.setHelperMessage()
                     }
                 })
             }
