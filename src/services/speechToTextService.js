@@ -6,7 +6,7 @@ const speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig)
 
 export default class speechToTextService{
     async speechToText() {
-        await speechRecognizer.startContinuousRecognitionAsync();
+        speechRecognizer.startContinuousRecognitionAsync();
         return speechRecognizer
     }
 

@@ -10,7 +10,7 @@
                     <MicrophoneText class="itemCentered" :message="audioHelper"/>
                 </div>
             </div>
-            <router-view />
+            <router-view/>
         </form>
     </div>
 </template>
@@ -32,9 +32,6 @@
         },
         data() {
             return {
-                position : undefined,
-                audioHelper : undefined,
-                mainButtonText : undefined,
                 TTSService : new TextToSpeechService(),
                 STTService : new SpeechToTextService(),
                 AuthService : new AuthService(),
@@ -43,26 +40,23 @@
                 instructions : [],
                 questions : [],
                 instructionsQuestions : [],
+                products : [],
+                position : undefined,
+                audioHelper : undefined,
+                mainButtonText : undefined,
                 token : undefined,
                 message : undefined,
                 type : undefined,
                 totalInstructionsQuestions : undefined,
                 questionId : undefined,
-                products : [],
                 productPosition : undefined,
                 productId : undefined,
                 totalProducts : undefined
             }
         },
         async mounted() {
-            this.mainButtonText = "Suivant"
-            this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
-            this.position = this.$route.params.position
-            this.totalProducts = this.$route.params.totalProducts
-            this.productPosition = this.$route.params.productPosition
-            this.totalInstructionsQuestions = this.$route.params.totalInstructionsQuestions
-
-            this.token = this.AuthService.getTokenFromLocalStorage()
+            this.getParamsFromLocalStorage()
+            this.setHelperMessage()
 
             this.surveys = await this.surveyService.getSurvey(this.token)
             this.instructions = this.surveys.instructions
@@ -86,36 +80,24 @@
                 }
             })
 
-            var result = await this.STTService.speechToText()
-            await this.writeReponse(result)
             this.verifyType()
+            this.setParamsToLocalStorage()
             this.speech()
+            await this.writeReponse(await this.STTService.speechToText())
         },
         methods: {
             async nextStep() {
                 event.preventDefault()
                 if (this.type === "Instruction") {
                     this.incrementPosition()
+                    this.setParamsToLocalStorage()
                     router.push({
-                        name : "InstructionPage",
-                        params: {
-                            position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions,
-                            productPosition : this.productPosition,
-                            totalProducts : this.totalProducts
-                        }
+                        name : "InstructionPage"
                     })
                 } else {
+                    this.setParamsToLocalStorage()
                     router.push({
-                        name: "AnswerPage",
-                        params: {
-                            position: this.position,
-                            totalInstructionsQuestions : this.totalInstructionsQuestions,
-                            questionId : this.questionId,
-                            productId : this.productId,
-                            productPosition : this.productPosition,
-                            totalProducts : this.totalProducts
-                        }
+                        name: "AnswerPage"
                     })
                 }
             },
@@ -127,20 +109,36 @@
                 }
             },
             async speech() {
-                await this.TTSService.textToSpeech(this.message.libelle)
-                await this.TTSService.textToSpeech(this.audioHelper)
+                await this.TTSService.initialize(this.message.libelle)
+                await this.TTSService.initialize(this.audioHelper)
             },
             async incrementPosition() {
                 this.position ++
-                String(this.position)
             },
-            async verifyType() {
+            verifyType() {
                 if (this.message.status) {
                     this.type = "Instruction"
                 } else {
                     this.type = "Question"
                     this.questionId = this.message.id
                 }
+            },
+            setHelperMessage() {
+                this.mainButtonText = "Suivant"
+                this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
+            },
+            getParamsFromLocalStorage() {
+                this.token = this.AuthService.getTokenFromLocalStorage()
+                this.position = localStorage.getItem('position')
+                this.totalProducts = localStorage.getItem('totalProducts')
+                this.totalInstructionsQuestions = localStorage.getItem('totalInstructionsQuestions')
+                this.productPosition = localStorage.getItem('productPosition')
+            },
+            setParamsToLocalStorage() {
+                localStorage.setItem('position', this.position)
+                localStorage.setItem('productPosition', this.productPosition)
+                localStorage.setItem('questionId', this.questionId)
+                localStorage.setItem('productId', this.productId)
             }
         },
         watch : {
