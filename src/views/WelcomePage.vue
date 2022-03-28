@@ -123,6 +123,7 @@
                 localStorage.setItem('totalProducts' , this.totalProducts = this.surveys.products.length - 1)
                 localStorage.setItem('totalInstructionsQuestions', this.totalInstructionsQuestions = this.introductions.length + this.surveys.questions.length + this.instructionsUnique.length - 1)
                 localStorage.setItem('position', this.position)
+                localStorage.setItem('startInstructionsQuestions', this.introductions.length)
             }
         },
         watch : {
