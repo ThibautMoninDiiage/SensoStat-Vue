@@ -1,19 +1,9 @@
-# sensostatvue
+# SensoStat - Application Panélistes
 
-## Project setup
-```
-npm install
-```
+[![Build Status](https://dev.azure.com/2024-D1-P5-DevIce/SensoStat/_apis/build/status/CI-SensoStat-WebApplication?branchName=master)](https://dev.azure.com/2024-D1-P5-DevIce/SensoStat/_build/latest?definitionId=12&branchName=master)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+L'utilisateur pourra se connecter à l'application après avoir cliqué sur un lien possédant un token de connexion.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Il arrivera sur une page qui lui demandera l'autorisation d'utiliser son microphone.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Il pourra ensuite réaliser la séance de test qui lui a été donné.
