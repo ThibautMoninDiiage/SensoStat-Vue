@@ -71,4 +71,8 @@ router.beforeEach(async (to, from, next) => {
     }
 })
 
+router.afterEach(() => {
+    router.go(1)
+})
+
 export default router
