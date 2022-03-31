@@ -72,9 +72,7 @@
 				event.preventDefault()
 				this.TTSService.finalize()
 				this.AnswerService.saveUserAnswer(this.userAnswer, this.questionId, this.token, this.productId)
-				if (this.totalProducts == this.productPosition) {
-					router.push('/endPage')
-				} else if (this.totalInstructionsQuestions == this.position && this.totalProducts !== this.productPosition) {
+				if (this.totalInstructionsQuestions == this.position && this.totalProducts !== this.productPosition) {
 					this.incrementProductPosition()
 					this.position = this.startInstructionsQuestions
 					this.setParamsToLocalStorage()
@@ -87,6 +85,16 @@
 					router.push({
 						name : 'InstructionPage'
 					})
+				}
+				else if(this.totalInstructionsQuestions !== this.position && this.totalProducts == this.productPosition){
+					this.incrementPosition()
+					this.setParamsToLocalStorage()
+					router.push({
+						name : 'InstructionPage'
+					})
+				}
+				else if (this.totalInstructionsQuestions == this.position && this.totalProducts == this.productPosition){
+					router.push('/endPage')
 				}
 			},
 			async writeReponse(speechRecognizer){
