@@ -2,7 +2,7 @@
 	<div>
 		<form @submit="nextStep" id="mainContainer">
 			<div class="title">{{ title }}</div>
-    		<textarea class="areaAnswer" id="userAnswer" rows="15" cols="30"></textarea>
+    		<textarea class="areaAnswer" id="userAnswer" rows="15" cols="30"/>
 
 			<div id="microphoneContainer">
 				<MainButton class="itemCentered" :message="mainButtonText"/>
@@ -64,14 +64,12 @@
 			async writeReponse(speechRecognizer){
 				let textarea = document.getElementById("userAnswer")
 				let micro = document.getElementById("mic")
-				textarea.textContent = ""
 				speechRecognizer.recognized = (s, e) => {
             		if(e.result.text.toLowerCase().includes("suivant")) {
-              			this.userAnswer = document.getElementById("userAnswer").innerHTML;
-						  this.nextStep()
+						this.nextStep()
             		}
 					else {
-						micro.style.color = "red";
+						micro.style.color = "red"
 						textarea.innerHTML = e.result.text
 					}
           		}
