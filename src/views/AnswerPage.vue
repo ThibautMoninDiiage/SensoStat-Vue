@@ -2,7 +2,7 @@
 	<div>
 		<form @submit="nextStep" id="mainContainer">
 			<div class="title">{{ title }}</div>
-    		<textarea class="areaAnswer" id="userAnswer" rows="15" cols="30"></textarea>
+    		<textarea class="areaAnswer" id="userAnswer" rows="15" cols="30"/>
 
 			<div id="microphoneContainer">
 				<MainButton class="itemCentered" :message="mainButtonText"/>
