@@ -54,6 +54,7 @@
 	  	methods : {
 		  	async nextStep() {
 				event.preventDefault()
+				this.TTSService.finalize()
 				this.userAnswer = document.getElementById("userAnswer").innerHTML
 				this.setParamsToLocalStorage()
 			  	router.push({

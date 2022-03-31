@@ -65,10 +65,12 @@
 		methods : {
 			async goBack() {
 				event.preventDefault()
+				this.TTSService.finalize()
           		router.back()
         	},
 			async endSurvey() {
 				event.preventDefault()
+				this.TTSService.finalize()
 				this.AnswerService.saveUserAnswer(this.userAnswer, this.questionId, this.token, this.productId)
 				if (this.totalProducts == this.productPosition) {
 					router.push('/endPage')

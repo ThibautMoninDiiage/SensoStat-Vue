@@ -88,6 +88,7 @@
         methods: {
             async nextStep() {
                 event.preventDefault()
+                this.TTSService.finalize()
                 if (this.type === "Instruction") {
                     this.incrementPosition()
                     this.setParamsToLocalStorage()
