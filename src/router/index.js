@@ -71,8 +71,10 @@ router.beforeEach(async (to, from, next) => {
     }
 })
 
-router.afterEach(() => {
-    router.go(1)
+router.afterEach((to, from) => {
+    if (from.path !== '/confirmAnswerPage') {
+        router.go(1)
+    }
 })
 
 export default router
