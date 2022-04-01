@@ -1,5 +1,6 @@
-import * as sdk from "microsoft-cognitiveservices-speech-sdk";
-import { SpeechSynthesizer } from 'microsoft-cognitiveservices-speech-sdk';
+//import * as sdk from "microsoft-cognitiveservices-speech-sdk";
+//import { SpeechSynthesizer } from 'microsoft-cognitiveservices-speech-sdk';
+const sdk = require("microsoft-cognitiveservices-speech-sdk");
 
 export default class TextToSpeechService {
 
@@ -14,7 +15,7 @@ export default class TextToSpeechService {
         this.audioConfig = sdk.AudioConfig.fromSpeakerOutput(this.player)
         this.speechConfig.speechSynthesisLanguage = 'fr-FR'
         this.speechConfig.speechSynthesisVoiceName = 'fr-BE-CharlineNeural'
-        this.synthetizer = new SpeechSynthesizer(this.speechConfig, this.audioConfig)
+        this.synthetizer = new sdk.SpeechSynthesizer(this.speechConfig, this.audioConfig)
     }
 
     async initialize(text) {
