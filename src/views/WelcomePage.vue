@@ -93,8 +93,13 @@
                 }
             },
             async writeReponse(speechRecognizer) {
-                speechRecognizer.recognizing = (s, e) => {
-                    if (e.result.text.toLowerCase().includes("suivant") || e.result.text.toLowerCase().includes("commencer")) {
+                speechRecognizer.recognized = (s, e) => {
+                    if (e.result.text.toLowerCase().includes("cliquez") && e.result.text.toLowerCase().includes("suivant")){
+                        console.log("Ne changeons pas de page")
+                    }
+                    else if (e.result.text.toLowerCase().includes("suivant") || e.result.text.toLowerCase().includes("commencer")) {
+                        console.log(e.result.text.toLowerCase())
+                        console.log(this.audioHelper.toLowerCase())
                         this.startSurvey()
                     }
                 }
@@ -109,10 +114,10 @@
             setHelperMessage() {
                 if (this.introductions.length - 1 !== this.position) {
                     this.mainButtonText = "Suivant"
-                    this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
+                    this.audioHelper = 'Cliquez sur le bouton, ou dites Suivant'
                 } else {
                     this.mainButtonText = "Commencer"
-                    this.audioHelper = 'Cliquez sur le bouton, ou dites "Commencer"'
+                    this.audioHelper = 'Cliquez sur le bouton, ou dites Commencer'
                 }
             },
             getParamsFromLocalStorage() {
@@ -131,8 +136,10 @@
                 this.introductions.forEach(async (introduction) => {
                     if (introduction.position == this.position) {
                         this.introduction = introduction
-                        this.speech()
+                        this.setParamsToLocalStorage()
                         this.setHelperMessage()
+                        this.speech()
+                        await this.writeReponse(await this.STTService.speechToText())
                     }
                 })
             }
