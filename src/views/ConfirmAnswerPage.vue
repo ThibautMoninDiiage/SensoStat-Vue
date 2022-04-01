@@ -8,7 +8,7 @@
 			</div>
     	</div>
 
-    	<textarea class="areaAnswer" id="userAnswer" rows="15" cols="30" v-model="userAnswer"></textarea>
+    	<textarea class="areaAnswer" id="userAnswer" rows="15" cols="30" v-model="userAnswer"/>
 
 		<div id="microphoneContainer">
 			<MainButton @click="endSurvey" class="itemCentered" :message="confirmButtonText"/>
