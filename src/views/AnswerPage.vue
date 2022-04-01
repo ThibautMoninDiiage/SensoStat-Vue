@@ -56,7 +56,6 @@
 				event.preventDefault()
 				this.TTSService.finalize()
 				this.userAnswer = document.getElementById("userAnswer").value
-				console.log(this.userAnswer)
 				this.setParamsToLocalStorage()
 			  	router.push({
 					name : 'ConfirmAnswerPage'
