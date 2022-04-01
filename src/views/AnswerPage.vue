@@ -65,7 +65,9 @@
 				let textarea = document.getElementById("userAnswer")
 				let micro = document.getElementById("mic")
 				speechRecognizer.recognized = (s, e) => {
-            		if(e.result.text.toLowerCase().includes("suivant")) {
+					if (e.result.text.toLowerCase().includes("pour confirmer") && e.result.text.toLowerCase().includes("suivant")){
+                    }
+            		else if(e.result.text.toLowerCase().includes("suivant")) {
 						this.nextStep()
             		}
 					else {
@@ -81,7 +83,7 @@
 			setHelperMessage() {
 				this.title = 'Parlez pour enregistrer votre réponse !'
 				this.mainButtonText = 'Suivant'
-            	this.audioHelper = 'Pour confirmer votre réponse, dites "Suivant"'
+            	this.audioHelper = 'Pour confirmer votre réponse, dites Suivant'
 			},
             getParamsFromLocalStorage() {
                 this.position = localStorage.getItem('position')

@@ -103,8 +103,10 @@
                 }
             },
             async writeReponse(speechRecognizer) {
-                speechRecognizer.recognizing = (s, e) => {  
-                    if (e.result.text.toLowerCase().includes("suivant")) {
+                speechRecognizer.recognized = (s, e) => { 
+                    if (e.result.text.toLowerCase().includes("cliquez") && e.result.text.toLowerCase().includes("suivant")){
+                    } 
+                    else if (e.result.text.toLowerCase().includes("suivant")) {
                         this.nextStep();
                     }
                 }
@@ -126,7 +128,7 @@
             },
             setHelperMessage() {
                 this.mainButtonText = "Suivant"
-                this.audioHelper = 'Cliquez sur le bouton, ou dites "Suivant"'
+                this.audioHelper = 'Cliquez sur le bouton, ou dites Suivant'
             },
             getParamsFromLocalStorage() {
                 this.token = this.AuthService.getTokenFromLocalStorage()

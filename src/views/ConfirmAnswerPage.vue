@@ -98,8 +98,10 @@
 				}
 			},
 			async writeReponse(speechRecognizer){
-				speechRecognizer.recognizing = (s, e) => {
-            		if(e.result.text.toLowerCase().includes("valider")){
+				speechRecognizer.recognized = (s, e) => {
+					if (e.result.text.toLowerCase().includes("cliquez") && e.result.text.toLowerCase().includes("suivant")){
+                    }
+            		else if(e.result.text.toLowerCase().includes("valider")){
 						this.endSurvey()
             		}
 					else if(e.result.text.toLowerCase().includes("reformuler")){
@@ -120,8 +122,8 @@
 			setHelperMessage() {
 				this.reformulateButtonText = "Reformuler"
 				this.confirmButtonText = "Valider"
-				this.audioHelperReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites "Reformuler"'
-				this.audioHelper = 'Pour confirmer votre réponse, cliquez sur le bouton ou dites "Valider"'
+				this.audioHelperReformulate = 'Pour reformuler votre réponse, cliquez sur le bouton ou dites Reformuler'
+				this.audioHelper = 'Pour confirmer votre réponse, cliquez sur le bouton ou dites Valider'
 			},
 			getParamsFromLocalStorage() {
             	this.token = this.AuthService.getTokenFromLocalStorage()
