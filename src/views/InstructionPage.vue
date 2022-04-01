@@ -105,7 +105,6 @@
             async writeReponse(speechRecognizer) {
                 speechRecognizer.recognized = (s, e) => { 
                     if (e.result.text.toLowerCase().includes("cliquez") && e.result.text.toLowerCase().includes("suivant")){
-                        console.log("Ne changeons pas de page")
                     } 
                     else if (e.result.text.toLowerCase().includes("suivant")) {
                         this.nextStep();

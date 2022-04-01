@@ -66,7 +66,6 @@
 				let micro = document.getElementById("mic")
 				speechRecognizer.recognized = (s, e) => {
 					if (e.result.text.toLowerCase().includes("pour confirmer") && e.result.text.toLowerCase().includes("suivant")){
-                        console.log("Ne changeons pas de page")
                     }
             		else if(e.result.text.toLowerCase().includes("suivant")) {
 						this.nextStep()
