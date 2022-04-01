@@ -51,7 +51,8 @@
                 questionId : undefined,
                 productPosition : undefined,
                 productId : undefined,
-                totalProducts : undefined
+                totalProducts : undefined,
+                productText : undefined
             }
         },
         async mounted() {
@@ -91,6 +92,7 @@
                 if (this.type === "Instruction") {
                     this.incrementPosition()
                     this.setParamsToLocalStorage()
+                    this.TTSService.finalize()
                     router.push({
                         name : "InstructionPage"
                     })
@@ -112,6 +114,8 @@
                 }
             },
             async speech() {
+                this.productText = this.products[this.productPosition].code
+                await this.TTSService.initialize('Produit ' + this.productText)
                 await this.TTSService.initialize(this.message.libelle)
                 await this.TTSService.initialize(this.audioHelper)
             },
