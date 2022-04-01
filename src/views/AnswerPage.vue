@@ -55,7 +55,7 @@
 		  	async nextStep() {
 				event.preventDefault()
 				this.TTSService.finalize()
-				this.userAnswer = document.getElementById("userAnswer").innerHTML
+				this.userAnswer = document.getElementById("userAnswer").value
 				this.setParamsToLocalStorage()
 			  	router.push({
 					name : 'ConfirmAnswerPage'
@@ -70,7 +70,7 @@
             		}
 					else {
 						micro.style.color = "red"
-						textarea.innerHTML = e.result.text
+						textarea.value = e.result.text
 					}
           		}
 			},
