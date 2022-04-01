@@ -71,6 +71,7 @@
 			async endSurvey() {
 				event.preventDefault()
 				this.TTSService.finalize()
+				this.userAnswer = "";
 				this.AnswerService.saveUserAnswer(this.userAnswer, this.questionId, this.token, this.productId)
 				if (this.totalInstructionsQuestions == this.position && this.totalProducts !== this.productPosition) {
 					this.incrementProductPosition()
@@ -139,6 +140,7 @@
 			setParamsToLocalStorage() {
                 localStorage.setItem('position', this.position)
 				localStorage.setItem('productPosition', this.productPosition)
+				localStorage.setItem('userAnswer',this.userAnswer)
             }
 		}
     }
